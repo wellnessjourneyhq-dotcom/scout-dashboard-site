@@ -7,7 +7,7 @@
 <meta name="description" content="Paste your GameChanger stats export once. Get team views, player cards, leaderboards, and lineup starting points in about two minutes. Excel & Google Sheets. One purchase, no subscription.">
 <meta property="og:title" content="Scout Dashboard — Your GameChanger Export, Coach-Ready">
 <meta property="og:description" content="174 messy columns in. 10 coach-ready views out. About two minutes.">
-<meta property="og:image" content="img/hero.png">
+<meta property="og:image" content="img/hero.webp">
 <link rel="icon" href="img/logo.png" type="image/png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,11 +20,11 @@
   Shopify later by editing ONE line.
 
   PROOF IMAGES — drop-in replacement, no code edits:
-    img/proof_01_raw_export.png     → screenshot of the raw GameChanger CSV open in Excel/Sheets
-    img/proof_02_import_tab.png     → screenshot of the Import tab with the PASTE HERE cell
-    img/proof_03_team_dashboard.png → screenshot of the Team Scout Board with sample data
-    img/proof_04_player_card.png    → screenshot of a Player Card
-    img/proof_05_lineup.png         → screenshot of the Lineup Builder
+    img/proof_01_raw_export.webp     → screenshot of the raw GameChanger CSV open in Excel/Sheets
+    img/proof_02_import_tab.webp     → screenshot of the Import tab with the PASTE HERE cell
+    img/proof_03_team_dashboard.webp → screenshot of the Team Scout Board with sample data
+    img/proof_04_player_card.webp    → screenshot of a Player Card
+    img/proof_05_lineup.webp         → screenshot of the Lineup Builder
   Current files are styled marketing graphics as stand-ins. Overwrite
   each file with a real screenshot (any size, ~square works best).
 
@@ -257,6 +257,74 @@
               background:rgba(10,30,51,.97);border-top:1px solid rgba(249,115,22,.5);padding:12px 16px}
   .mobile-cta .btn{width:100%;text-align:center;padding:15px;font-size:1.05rem}
 
+  /* ───── Interactive Try-It Tool ───── */
+  .try-wrap{max-width:920px;margin:44px auto 0}
+  .dropzone{background:#fff;border:2.5px dashed var(--ltblue);border-radius:18px;padding:48px 36px;
+            text-align:center;transition:border-color .15s,background .15s,box-shadow .15s;cursor:pointer}
+  .dropzone:hover,.dropzone.drag{border-color:var(--green);background:#fafffb;box-shadow:0 8px 30px rgba(22,163,74,.12)}
+  .dropzone .dz-ic{font-size:2.6rem;margin-bottom:10px}
+  .dropzone h3{font-size:1.35rem;color:var(--navy);margin-bottom:8px}
+  .dropzone p{color:var(--mut);font-size:1rem;margin-bottom:20px}
+  .dz-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  .dz-pick{display:inline-block;background:var(--orange);color:#fff;font-family:'Oswald',Arial,sans-serif;
+           text-transform:uppercase;letter-spacing:.5px;font-weight:700;padding:15px 32px;border-radius:10px;
+           cursor:pointer;transition:background .15s,transform .15s;box-shadow:0 6px 22px rgba(249,115,22,.35)}
+  .dz-pick:hover{background:var(--orange2);transform:translateY(-2px)}
+  .dz-sample{display:inline-block;background:transparent;color:var(--navy);border:2px solid var(--line);
+             font-family:'Oswald',Arial,sans-serif;text-transform:uppercase;letter-spacing:.5px;font-weight:600;
+             padding:13px 28px;border-radius:10px;cursor:pointer;transition:border-color .15s,background .15s}
+  .dz-sample:hover{border-color:var(--green);background:#f3fbf5}
+  .privacy-badge{display:inline-flex;align-items:center;gap:9px;margin-top:22px;background:var(--greenhl);
+        color:#0f6b35;font-size:.9rem;font-weight:600;padding:9px 18px;border-radius:999px}
+  .privacy-badge::before{content:"🔒";font-size:1rem}
+  .try-error{display:none;margin-top:20px;background:#FEECEC;border:1px solid #f5c2bd;color:#9b2c20;
+             border-radius:12px;padding:18px 22px;font-size:.97rem;text-align:left}
+  .try-results{display:none;margin-top:36px;text-align:left}
+  .glance{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:28px}
+  .gtile{background:var(--navy);border-radius:14px;padding:24px;text-align:center;color:#fff}
+  .gtile .gl{font-size:.78rem;color:var(--ltblue);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:8px}
+  .gtile .gv{font-family:'Oswald',Arial,sans-serif;font-size:1.5rem;font-weight:700;color:var(--green2);line-height:1.15}
+  .gtile .gs{font-size:.82rem;color:var(--ltblue);margin-top:4px}
+  .res-h{font-family:'Oswald',Arial,sans-serif;text-transform:uppercase;letter-spacing:.5px;color:var(--navy);
+         font-size:1.3rem;margin:6px 0 14px;display:flex;align-items:center;gap:10px}
+  .res-h .tag{background:var(--greenhl);color:var(--green);font-size:.66rem;font-weight:700;letter-spacing:1px;
+         padding:3px 10px;border-radius:999px}
+  .lb{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 4px 18px rgba(15,42,68,.06)}
+  .lb table{width:100%;border-collapse:collapse}
+  .lb th{background:var(--slate,#34495E);background:#34495E;color:#fff;font-family:'Oswald',Arial,sans-serif;
+         font-size:.8rem;letter-spacing:.5px;text-transform:uppercase;padding:13px 14px;text-align:center}
+  .lb th:nth-child(2){text-align:left}
+  .lb td{padding:12px 14px;text-align:center;font-size:.95rem;border-bottom:1px solid var(--line);color:#374151}
+  .lb td:nth-child(2){text-align:left;font-weight:600;color:var(--ink)}
+  .lb tr:last-child td{border-bottom:none}
+  .lb tr.top td{background:var(--greenhl)}
+  .lb .rk{font-family:'Oswald',Arial,sans-serif;font-weight:700;color:var(--mut)}
+  .lb .ops{font-weight:700;color:var(--green)}
+  .pcards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:28px}
+  .pcard{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 4px 18px rgba(15,42,68,.06)}
+  .pcard .ph{background:var(--navy);color:#fff;padding:16px 18px;display:flex;align-items:center;gap:12px}
+  .pcard .pn{width:42px;height:42px;border-radius:50%;background:var(--green);display:flex;align-items:center;
+        justify-content:center;font-family:'Oswald',Arial,sans-serif;font-weight:700;font-size:1.1rem;flex-shrink:0}
+  .pcard .pnm{font-family:'Oswald',Arial,sans-serif;font-size:1.05rem;line-height:1.2;text-transform:uppercase}
+  .pcard .pgp{font-size:.74rem;color:var(--ltblue)}
+  .pcard .ptiles{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line)}
+  .pcard .pt{background:#fff;padding:12px;text-align:center}
+  .pcard .pt .l{font-size:.68rem;color:var(--mut);text-transform:uppercase;letter-spacing:.5px}
+  .pcard .pt .v{font-family:'Oswald',Arial,sans-serif;font-size:1.25rem;font-weight:700;color:var(--ink)}
+  .pcard .pt.arm .v{color:#B7791F}
+  .locked{position:relative;margin-top:32px;border-radius:16px;overflow:hidden;border:1px solid var(--line)}
+  .locked .blur{filter:blur(6px);pointer-events:none;opacity:.55;display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:22px;background:#fff}
+  .locked .blur .bk{height:120px;background:linear-gradient(135deg,#dbe4ec,#eef3f7);border-radius:10px}
+  .locked .lockover{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+        text-align:center;background:rgba(10,30,51,.82);color:#fff;padding:30px}
+  .locked .lockover .li{font-size:2rem;margin-bottom:10px}
+  .locked .lockover h3{font-size:1.45rem;color:#fff;margin-bottom:10px;max-width:520px}
+  .locked .lockover p{color:var(--ltblue);max-width:520px;margin-bottom:22px}
+  .locked .lockover .chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:24px}
+  .locked .lockover .chip{background:rgba(255,255,255,.1);border:1px solid rgba(157,178,198,.3);
+        color:#fff;font-size:.82rem;padding:6px 14px;border-radius:999px}
+  .try-again{display:inline-block;margin-top:22px;color:var(--mut);font-size:.9rem;text-decoration:underline;cursor:pointer;background:none;border:none}
+
   /* ───── Responsive ───── */
   @media(max-width:960px){
     .hero .wrap,.ba,.guarantee,.proof-grid{grid-template-columns:1fr}
@@ -264,6 +332,9 @@
     .hero h1{font-size:2.4rem}
     .pains,.steps{grid-template-columns:1fr}
     .features{grid-template-columns:1fr}
+    .glance,.pcards{grid-template-columns:1fr}
+    .lb th:nth-child(3),.lb td:nth-child(3),
+    .lb th:nth-child(4),.lb td:nth-child(4){display:none}
     h2{font-size:1.9rem}
     .final h2{font-size:2.1rem}
     section{padding:60px 0}
@@ -298,7 +369,7 @@
           <a class="btn big buy" href="https://www.etsy.com/listing/4515555185/baseball-softball-stats-spreadsheet-for" target="_blank" rel="noopener">Turn My Export Into a Dashboard</a>
           <span class="btn-sub">Instant download · Excel &amp; Google Sheets · One purchase, no subscription</span>
         </div>
-        <a class="btn-ghost" href="#demo">▶ Watch It Work (90 sec)</a>
+        <a class="btn-ghost" href="#demo">▶ Try It Free With My Stats</a>
       </div>
       <div class="stats">
         <div class="stat"><div class="n">174</div><div class="l">Columns Organized</div></div>
@@ -308,7 +379,7 @@
       </div>
     </div>
     <div>
-      <img class="hero-img" src="img/hero.png" alt="Scout Dashboard — GameChanger export transformed into a coach dashboard with roster, lineup, pitching and player card views">
+      <img class="hero-img" src="img/hero.webp" alt="Scout Dashboard — GameChanger export transformed into a coach dashboard with roster, lineup, pitching and player card views">
     </div>
   </div>
 </section>
@@ -380,40 +451,69 @@
       </div>
     </div>
     <div class="ba-img">
-      <img src="img/before_after.png" alt="Side by side: raw 174-column GameChanger export on the left, organized Scout Dashboard views on the right">
+      <img src="img/before_after.webp" alt="Side by side: raw 174-column GameChanger export on the left, organized Scout Dashboard views on the right">
       <p class="ba-cap">Same data. Same two minutes. A very different Tuesday night.</p>
     </div>
   </div>
 </section>
 
-<!-- ════════ SEE IT IN ACTION ════════ -->
+<!-- ════════ SEE IT IN ACTION — INTERACTIVE ════════ -->
 <section class="light" id="demo">
   <div class="wrap center">
     <div class="eyebrow">See It In Action</div>
-    <h2>Watch a Real Export Become a Dashboard</h2>
-    <p class="lead">About 90 seconds. Open the export, paste it once, and watch the tabs fill in — no formulas, no cleanup, no spreadsheet skills required.</p>
-    <div class="ba-img" style="position:relative;max-width:880px">
-      <!-- DEMO VIDEO: when img/demo.mp4 is ready, delete the <a> wrapper + <img>
-           below and uncomment the <video> tag. Poster keeps it looking right
-           until the recording exists. -->
-      <a href="#offer" style="display:block;position:relative;text-decoration:none">
-        <img src="img/before_after.png" alt="Preview of the Scout Dashboard demo: raw GameChanger export transforming into coach-ready views">
-        <span style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-              width:96px;height:96px;border-radius:50%;background:rgba(249,115,22,.95);
-              display:flex;align-items:center;justify-content:center;
-              box-shadow:0 10px 40px rgba(0,0,0,.5);">
-          <span style="color:#fff;font-size:2.2rem;margin-left:6px;line-height:1">▶</span>
-        </span>
-      </a>
-      <!--
-      <video src="img/demo.mp4" poster="img/before_after.png" controls preload="none"
-             playsinline style="width:100%;border-radius:14px"></video>
-      -->
-      <p class="ba-cap">Demo uses sample data — your own export fills these same views the same way.</p>
-    </div>
-    <div class="cta-block">
-      <a class="btn big buy" href="https://www.etsy.com/listing/4515555185/baseball-softball-stats-spreadsheet-for" target="_blank" rel="noopener">Get Scout Dashboard</a>
-      <span class="btn-sub" style="color:var(--mut)">Instant download · $22 once · Excel &amp; Google Sheets</span>
+    <h2>Try It Free — With Your Own Team</h2>
+    <p class="lead">Drop in your GameChanger export and watch your real roster turn into coach-ready views, right here. No purchase, no sign-up.</p>
+
+    <div class="try-wrap">
+      <!-- STAGE 1: dropzone -->
+      <div id="dropzone" class="dropzone">
+        <div class="dz-ic">⚾</div>
+        <h3>Upload Your GameChanger Export</h3>
+        <p>Drag your stats <b>.csv</b> here, or pick it from your device.</p>
+        <div class="dz-actions">
+          <label class="dz-pick" for="csvfile">Choose My Export</label>
+          <input id="csvfile" type="file" accept=".csv,text/csv" style="display:none">
+          <button id="sampleBtn" class="dz-sample" type="button">No file handy? Try a sample team</button>
+        </div>
+        <div class="privacy-badge">Your file never leaves your device — nothing is uploaded or stored.</div>
+        <div id="tryError" class="try-error"></div>
+      </div>
+
+      <!-- STAGE 2: results (revealed after parse) -->
+      <div id="tryResults" class="try-results">
+        <div class="glance" id="glance"></div>
+
+        <div class="res-h">Team Leaderboard <span class="tag">Your Data</span></div>
+        <div class="lb"><table><thead id="lbHead"></thead><tbody id="lbBody"></tbody></table></div>
+
+        <div class="res-h" style="margin-top:30px">Top 3 Player Cards <span class="tag">Your Data</span></div>
+        <div class="pcards" id="pcards"></div>
+
+        <!-- GATE -->
+        <div class="locked">
+          <div class="blur">
+            <div class="bk"></div><div class="bk"></div><div class="bk"></div>
+            <div class="bk"></div><div class="bk"></div><div class="bk"></div>
+          </div>
+          <div class="lockover">
+            <div class="li">🔒</div>
+            <h3 id="lockHeadline">That's the preview. Unlock the full dashboard for your whole team.</h3>
+            <p>You're seeing the leaderboard and your top 3. The full Scout Dashboard builds these from your entire roster — plus the views coaches use every week.</p>
+            <div class="chips">
+              <span class="chip">Lineup Builder</span>
+              <span class="chip">Pitching Workloads</span>
+              <span class="chip">Practice Plan</span>
+              <span class="chip">Every Player Card</span>
+              <span class="chip">Leaderboards &amp; Awards</span>
+            </div>
+            <a class="btn big buy" href="https://www.etsy.com/listing/4515555185/baseball-softball-stats-spreadsheet-for" target="_blank" rel="noopener">Unlock the Full Dashboard — $22</a>
+          </div>
+        </div>
+
+        <div style="text-align:center">
+          <button id="tryAgain" class="try-again" type="button">↻ Try a different export</button>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -426,7 +526,7 @@
     <p class="lead">No mockups, no stock photos — these are the real tabs you'll be working in minutes after download.</p>
     <div class="proof-grid">
       <div class="proof wide">
-        <img src="img/proof_01_raw_export.png" alt="The raw GameChanger export next to the finished Scout Dashboard views">
+        <img src="img/proof_01_raw_export.webp" alt="The raw GameChanger export next to the finished Scout Dashboard views">
         <div class="pbody">
           <span class="ptag">The Whole Story</span>
           <h3>Raw Export In. Dashboard Out.</h3>
@@ -434,7 +534,7 @@
         </div>
       </div>
       <div class="proof">
-        <img src="img/proof_02_import_tab.png" alt="The Import tab with the marked paste cell" loading="lazy">
+        <img src="img/proof_02_import_tab.webp" alt="The Import tab with the marked paste cell" loading="lazy">
         <div class="pbody">
           <span class="ptag">Step One</span>
           <h3>The Import Tab</h3>
@@ -442,7 +542,7 @@
         </div>
       </div>
       <div class="proof">
-        <img src="img/proof_03_team_dashboard.png" alt="Team Scout Board with every player ranked and role-tagged" loading="lazy">
+        <img src="img/proof_03_team_dashboard.webp" alt="Team Scout Board with every player ranked and role-tagged" loading="lazy">
         <div class="pbody">
           <span class="ptag">The Big Picture</span>
           <h3>The Team Scout Board</h3>
@@ -450,7 +550,7 @@
         </div>
       </div>
       <div class="proof">
-        <img src="img/proof_04_player_card.png" alt="Player Card showing one player's hitting, pitching and fielding stats" loading="lazy">
+        <img src="img/proof_04_player_card.webp" alt="Player Card showing one player's hitting, pitching and fielding stats" loading="lazy">
         <div class="pbody">
           <span class="ptag">One Kid, One Page</span>
           <h3>The Player Card</h3>
@@ -458,7 +558,7 @@
         </div>
       </div>
       <div class="proof">
-        <img src="img/proof_05_lineup.png" alt="Lineup Builder with data-backed batting order starting points" loading="lazy">
+        <img src="img/proof_05_lineup.webp" alt="Lineup Builder with data-backed batting order starting points" loading="lazy">
         <div class="pbody">
           <span class="ptag">Game Day</span>
           <h3>The Lineup Builder</h3>
@@ -508,7 +608,7 @@
     <h2>Built Around the Decisions<br>Coaches Actually Make</h2>
     <div class="features">
       <div class="feature">
-        <img src="img/roster.png" alt="Team Scout Board" loading="lazy">
+        <img src="img/roster.webp" alt="Team Scout Board" loading="lazy">
         <div class="fbody">
           <h3>Team Scout Board</h3>
           <p>Every player ranked by OPS with role tags and a development focus.</p>
@@ -516,7 +616,7 @@
         </div>
       </div>
       <div class="feature">
-        <img src="img/lineup.png" alt="Lineup Builder" loading="lazy">
+        <img src="img/lineup.webp" alt="Lineup Builder" loading="lazy">
         <div class="fbody">
           <h3>Lineup Builder</h3>
           <p>Data-backed batting order starting points from on-base, contact, and production numbers — with overrides for your judgment.</p>
@@ -524,7 +624,7 @@
         </div>
       </div>
       <div class="feature">
-        <img src="img/practice.png" alt="Practice Plan" loading="lazy">
+        <img src="img/practice.webp" alt="Practice Plan" loading="lazy">
         <div class="fbody">
           <h3>Practice Priorities</h3>
           <p>Your team's weak spots — first-pitch strikes, fielding consistency, plate discipline — flagged from the numbers, with suggested drills.</p>
@@ -532,7 +632,7 @@
         </div>
       </div>
       <div class="feature">
-        <img src="img/pitching.png" alt="Pitching Staff view" loading="lazy">
+        <img src="img/pitching.webp" alt="Pitching Staff view" loading="lazy">
         <div class="fbody">
           <h3>Pitching Staff View</h3>
           <p>Every arm ranked by innings with workload, command numbers, and a clear role read.</p>
@@ -540,7 +640,7 @@
         </div>
       </div>
       <div class="feature">
-        <img src="img/player_card.png" alt="Player Card" loading="lazy">
+        <img src="img/player_card.webp" alt="Player Card" loading="lazy">
         <div class="fbody">
           <h3>Player Cards</h3>
           <p>One clean page per player — hitting, pitching, fielding, and a coaching read.</p>
@@ -548,7 +648,7 @@
         </div>
       </div>
       <div class="feature">
-        <img src="img/everything.png" alt="Everything included" loading="lazy">
+        <img src="img/everything.webp" alt="Everything included" loading="lazy">
         <div class="fbody">
           <h3>Plus Leaderboards, Awards &amp; More</h3>
           <p>Hitting, pitching, and fielding leaderboards. Season awards and recap. A guided Import tab that does the heavy lifting.</p>
@@ -717,6 +817,145 @@
     if (typeof fbq === "function") fbq("track", "InitiateCheckout");
     if (typeof ttq === "object" && ttq.track) ttq.track("ClickButton");
   }));
+
+  // ════════ INTERACTIVE TRY-IT TOOL — 100% client-side, nothing uploaded ════════
+  (function(){
+    const $ = id => document.getElementById(id);
+    const dz=$('dropzone'), fileInput=$('csvfile'), sampleBtn=$('sampleBtn'),
+          results=$('tryResults'), errBox=$('tryError'), tryAgain=$('tryAgain');
+    if(!dz) return;
+
+    const esc = s => String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+    const avg3 = v => (v==null||isNaN(v)) ? '—' : v.toFixed(3).replace(/^0(?=\.)/,'');
+    const f2   = v => (v==null||isNaN(v)) ? '—' : v.toFixed(2);
+    const num  = s => { const v=parseFloat(s); return isNaN(v)?null:v; };
+
+    // Minimal, dependency-free CSV parser (handles quoted fields)
+    function parseCSV(text){
+      text = text.replace(/^﻿/,'');
+      const rows=[]; let f='',row=[],q=false;
+      for(let i=0;i<text.length;i++){
+        const c=text[i];
+        if(q){ if(c==='"'){ if(text[i+1]==='"'){f+='"';i++;} else q=false; } else f+=c; }
+        else if(c==='"') q=true;
+        else if(c===','){ row.push(f); f=''; }
+        else if(c==='\n'){ row.push(f); rows.push(row); row=[]; f=''; }
+        else if(c!=='\r') f+=c;
+      }
+      if(f.length||row.length){ row.push(f); rows.push(row); }
+      return rows;
+    }
+
+    // Map columns by header NAME (position-independent, first occurrence wins —
+    // dodges the batting/pitching duplicate-name trap; preview uses unique names).
+    function build(rows){
+      let hr=-1;
+      for(let r=0;r<Math.min(rows.length,8);r++){
+        const up=rows[r].map(x=>(x||'').trim().toUpperCase());
+        if(up.indexOf('OPS')>-1 && up.indexOf('LAST')>-1 && up.indexOf('OBP')>-1){ hr=r; break; }
+      }
+      if(hr<0) return null;
+      const map={};
+      rows[hr].forEach((h,i)=>{ const k=(h||'').trim(); if(k && !(k in map)) map[k]=i; });
+      const g=(row,name)=>{ const i=map[name]; return i==null?'':(row[i]||'').trim(); };
+      const players=[];
+      for(let r=hr+1;r<rows.length;r++){
+        const row=rows[r]; if(!row) continue;
+        const id=(row[0]||'').trim();
+        if(!id || /^(totals|glossary)$/i.test(id)) continue;
+        const first=g(row,'First'), last=g(row,'Last');
+        if(!first && !last) continue;
+        players.push({
+          number:id, first, last, name:(first+' '+last).trim(),
+          gp:num(g(row,'GP')), pa:num(g(row,'PA')),
+          avg:num(g(row,'AVG')), obp:num(g(row,'OBP')), ops:num(g(row,'OPS')), slg:num(g(row,'SLG')),
+          sb:num(g(row,'SB')), ip:num(g(row,'IP')), era:num(g(row,'ERA')), whip:num(g(row,'WHIP')),
+          fpct:num(g(row,'FPCT'))
+        });
+      }
+      return players.length ? players : null;
+    }
+
+    const tile=(l,v,s)=>'<div class="gtile"><div class="gl">'+esc(l)+'</div><div class="gv">'+esc(v)+'</div><div class="gs">'+esc(s)+'</div></div>';
+    const pt=(l,v,arm)=>'<div class="pt'+(arm?' arm':'')+'"><div class="l">'+l+'</div><div class="v">'+v+'</div></div>';
+
+    function render(players){
+      const ranked=[...players].filter(p=>p.ops!=null).sort((a,b)=>b.ops-a.ops);
+      const list=ranked.length?ranked:players;
+      const anyArm=players.some(p=>p.era!=null && p.ip);
+      const topHit=list[0];
+      const topArm=players.filter(p=>p.era!=null && p.ip>0).sort((a,b)=>a.era-b.era)[0];
+
+      $('glance').innerHTML =
+        tile('Players Found', players.length, 'in your export') +
+        (topHit?tile('Top Hitter','#'+esc(topHit.number)+' '+esc(topHit.first||topHit.last),avg3(topHit.ops)+' OPS'):'') +
+        (topArm?tile('Top Arm','#'+esc(topArm.number)+' '+esc(topArm.first||topArm.last),f2(topArm.era)+' ERA')
+               :tile('Coaching Views','10','unlocked with the full file'));
+
+      const cols=['#','Player','AVG','OBP','OPS','SB'].concat(anyArm?['ERA']:[]);
+      $('lbHead').innerHTML='<tr>'+cols.map(c=>'<th>'+c+'</th>').join('')+'</tr>';
+      $('lbBody').innerHTML=list.slice(0,8).map((p,i)=>{
+        const tds=['<span class="rk">'+(i+1)+'</span>','#'+esc(p.number)+' '+esc(p.name),
+                   avg3(p.avg),avg3(p.obp),'<span class="ops">'+avg3(p.ops)+'</span>',(p.sb==null?'—':p.sb)];
+        if(anyArm) tds.push(p.era==null?'—':f2(p.era));
+        return '<tr'+(i===0?' class="top"':'')+'>'+tds.map(t=>'<td>'+t+'</td>').join('')+'</tr>';
+      }).join('');
+
+      $('pcards').innerHTML=list.slice(0,3).map(p=>{
+        const isArm=p.era!=null && p.ip;
+        const t=[pt('AVG',avg3(p.avg)),pt('OBP',avg3(p.obp)),pt('OPS',avg3(p.ops)),
+                 isArm?pt('ERA',f2(p.era),true):pt('SLG',avg3(p.slg))];
+        return '<div class="pcard"><div class="ph"><div class="pn">'+esc(p.number)+'</div>'+
+          '<div><div class="pnm">'+esc(p.name)+'</div><div class="pgp">'+(p.gp?('GP '+p.gp):'')+(isArm?(' · IP '+p.ip):'')+'</div></div></div>'+
+          '<div class="ptiles">'+t.join('')+'</div></div>';
+      }).join('');
+
+      if(topHit) $('lockHeadline').innerHTML="Nice — #"+esc(topHit.number)+" "+esc(topHit.first||topHit.last)+" is leading your team. Unlock the full dashboard for everyone.";
+      dz.style.display='none'; results.style.display='block';
+      results.scrollIntoView({behavior:'smooth',block:'start'});
+    }
+
+    function showErr(){
+      errBox.innerHTML="<b>Hmm — that doesn't look like a GameChanger stats export.</b><br>Upload the <b>.csv</b> you downloaded from GameChanger (the season stats export). Want a peek first? Hit “Try a sample team” above.";
+      errBox.style.display='block';
+    }
+    function handleText(text){ errBox.style.display='none'; const p=build(parseCSV(text)); if(!p){ showErr(); return; } render(p); }
+    function readFile(file){
+      if(!file) return;
+      if(!/\.csv$/i.test(file.name) && file.type!=='text/csv'){ showErr(); return; }
+      const fr=new FileReader(); fr.onload=e=>handleText(e.target.result); fr.onerror=showErr; fr.readAsText(file);
+    }
+
+    fileInput.addEventListener('change',e=>readFile(e.target.files[0]));
+    sampleBtn.addEventListener('click',()=>handleText(SAMPLE_CSV));
+    tryAgain.addEventListener('click',()=>{ results.style.display='none'; dz.style.display='block'; fileInput.value=''; dz.scrollIntoView({behavior:'smooth',block:'center'}); });
+    ['dragover','dragenter'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.add('drag');}));
+    ['dragleave','dragend'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove('drag');}));
+    dz.addEventListener('drop',e=>{ e.preventDefault(); dz.classList.remove('drag'); readFile(e.dataTransfer.files[0]); });
+
+    // Embedded sample team (real demo data) — runs through the SAME parser path.
+    const S=[
+      ['Number','Last','First','GP','PA','AB','AVG','OBP','OPS','SLG','SB','QAB%','IP','ERA','WHIP','BAA','FPCT'],
+      [7,'Mercer','Caleb',18,62,53,'.412','.500','1.140','.640',6,'64.00','28.0','2.25','1.07','.198','.955'],
+      [24,'Bianchi','Marco',18,60,52,'.327','.400','.910','.510',1,'','','','','','.938'],
+      [2,'Okafor','Jaylen',17,58,49,'.355','.483','.903','.420',14,'','','','','','.933'],
+      [15,'Delacroix','Andre',17,55,48,'.280','.345','.785','.440',2,'','','','','','.886'],
+      [11,'Sorenson','Erik',16,52,45,'.300','.404','.784','.380',4,'','22.0','3.82','1.36','','.944'],
+      [33,'Whitfield','Sam',16,50,43,'.265','.380','.730','.350',7,'54.00','18.0','5.44','1.83','','.833'],
+      [9,'Pawlak','Tomas',15,46,40,'.255','.330','.720','.390',3,'','','','','','.885'],
+      [5,'Hammond','Reese',16,48,42,'.245','.350','.660','.310',9,'','','','','','.950'],
+      [21,'Castellano','Nico',14,40,35,'.230','.310','.610','.300',1,'','15.0','3.73','1.33','','.900'],
+      [18,'Yamamoto','Ren',15,42,37,'.220','.320','.600','.280',5,'','','','','','.864'],
+      [3,'Ferreira','Luis',13,35,30,'.200','.290','.550','.260',2,'','','','','','.867'],
+      [44,'Bergstrom','Cole',11,28,24,'.185','.280','.500','.220',1,'','9.0','5.44','2.11','','.875'],
+      [8,'Novak','Petey',8,16,13,'.150','.250','.430','.180',0,'','','','','','.833']
+    ];
+    const SAMPLE_CSV=',,,Batting\n'+S.map(r=>r.join(',')).join('\n')+'\nTotals,,,18';
+  })();
 </script>
+
+<!-- Vercel Web Analytics — turn on in Vercel dashboard → your project → Analytics.
+     Harmless (404s quietly) until the site is deployed on Vercel. -->
+<script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
