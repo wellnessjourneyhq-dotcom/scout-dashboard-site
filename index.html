@@ -1234,6 +1234,8 @@
     const PAY_URL_FULL     = "";              // $14.99 full-product checkout (Gumroad/Payhip delivers the files)
     const REPORT_CODE      = "DUGOUT-PDF";    // code shown on the $5.99 receipt
     const WORKBOOK_CODE    = "DUGOUT-XLS";    // code shown on the $9.99 receipt
+    const TEST_CODE        = "GATORS-TEST";   // ⚙ universal TESTING code — unlocks BOTH the PDF and workbook
+                                              //   so you can preview outputs. Remove this before going live if you want.
     const ETSY_FALLBACK    = "https://www.etsy.com/listing/4515555185/baseball-softball-stats-spreadsheet-for";
 
     // ── Tier 3: full dashboard direct link (falls back to Etsy until PAY_URL_FULL is set) ──
@@ -1254,7 +1256,7 @@
       });
       unlockBtn.addEventListener('click',()=>{
         const v=(unlockInput.value||'').trim().toUpperCase();
-        if(v && v===REPORT_CODE.toUpperCase()){ unlockErr.textContent=''; window.print(); }
+        if(v && (v===REPORT_CODE.toUpperCase() || v===TEST_CODE)){ unlockErr.textContent=''; window.print(); }
         else unlockErr.textContent="That code didn't match. Check your receipt, or email coach@scoutdashboard.com.";
       });
     }
@@ -1310,7 +1312,7 @@
       });
       wbUnlockBtn.addEventListener('click',()=>{
         const v=(wbInput.value||'').trim().toUpperCase();
-        if(v && v===WORKBOOK_CODE.toUpperCase()){ wbErr.textContent=''; generateWorkbook(); }
+        if(v && (v===WORKBOOK_CODE.toUpperCase() || v===TEST_CODE)){ wbErr.textContent=''; generateWorkbook(); }
         else wbErr.textContent="That code didn't match. Check your receipt, or email coach@scoutdashboard.com.";
       });
     }
