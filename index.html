@@ -572,7 +572,7 @@
           <input id="csvfile" type="file" accept=".csv,text/csv" style="display:none">
           <button id="sampleBtn" class="dz-sample" type="button">No file handy? Try a sample team</button>
         </div>
-        <div class="privacy-badge">Your file never leaves your device — nothing is uploaded or stored.</div>
+        <div class="privacy-badge">Your stats are used only to build your dashboard — never sold, never shared.</div>
         <div id="tryError" class="try-error"></div>
       </div>
 
@@ -647,7 +647,7 @@
           </div>
 
         </div>
-        <p class="tiers-priv">All three are built from the file on your device — nothing is uploaded or stored.</p>
+        <p class="tiers-priv">Your stats are used only to build your files — never sold, never shared.</p>
 
         <div style="text-align:center;margin-top:26px">
           <button id="shareBtn" class="try-again" type="button" style="margin-right:20px">📋 Share this free tool with a coach</button>
@@ -994,6 +994,12 @@
 <script>
   // ── CHECKOUT URL — change this one line to move checkout off Etsy later ──
   const BUY_URL = "https://www.etsy.com/listing/4515555185/baseball-softball-stats-spreadsheet-for";
+
+  // ── OUTPUT BACKEND — once the generator service is deployed, paste its URL here
+  //    (e.g. "https://scout-output.onrender.com"). While blank, the $9.99 workbook
+  //    falls back to the in-browser builder. The backend produces TRUE product-quality
+  //    output from the real v66 template. ──
+  const BACKEND_URL = "";
   document.querySelectorAll("a.buy").forEach(a => { a.href = BUY_URL; });
 
   // ── Outbound click tracking stub — wire to your pixel before paid traffic ──
@@ -1200,15 +1206,15 @@
       errBox.innerHTML="<b>Hmm — that doesn't look like a GameChanger stats export.</b><br>Upload the <b>.csv</b> you downloaded from GameChanger (the season stats export). Want a peek first? Hit “Try a sample team” above.";
       errBox.style.display='block';
     }
-    function handleText(text){ errBox.style.display='none'; const p=build(parseCSV(text)); if(!p){ showErr(); return; } track('ToolPreviewGenerated',{players:p.length}); render(p); }
+    function handleText(text, isSample){ errBox.style.display='none'; const p=build(parseCSV(text)); if(!p){ showErr(); return; } track('ToolPreviewGenerated',{players:p.length}); render(p); if(current){ current.rawCsv=text; current.isSample=!!isSample; } }
     function readFile(file){
       if(!file) return;
       if(!/\.csv$/i.test(file.name) && file.type!=='text/csv'){ showErr(); return; }
-      const fr=new FileReader(); fr.onload=e=>handleText(e.target.result); fr.onerror=showErr; fr.readAsText(file);
+      const fr=new FileReader(); fr.onload=e=>handleText(e.target.result, false); fr.onerror=showErr; fr.readAsText(file);
     }
 
     fileInput.addEventListener('change',e=>readFile(e.target.files[0]));
-    sampleBtn.addEventListener('click',()=>handleText(SAMPLE_CSV));
+    sampleBtn.addEventListener('click',()=>handleText(SAMPLE_CSV, true));
     tryAgain.addEventListener('click',()=>{ results.style.display='none'; dz.style.display='block'; fileInput.value=''; dz.scrollIntoView({behavior:'smooth',block:'center'}); });
     const shareBtn=$('shareBtn');
     if(shareBtn) shareBtn.addEventListener('click',async()=>{
@@ -1273,6 +1279,27 @@
     }
     function generateWorkbook(){
       if(!current){ wbErr.textContent='Please upload your export again.'; return; }
+      // True product-quality path: send the raw export to the backend (real template + recalc).
+      // Falls back to the in-browser builder if the backend isn't configured, it's the sample team,
+      // or the server errors.
+      if(BACKEND_URL && current.rawCsv && !current.isSample){ backendWorkbook(); return; }
+      clientSideWorkbook();
+    }
+    function backendWorkbook(){
+      wbErr.style.color='var(--mut)'; wbErr.textContent='Building your workbook…';
+      const fd=new FormData();
+      fd.append('file', new Blob([current.rawCsv],{type:'text/csv'}), 'export.csv');
+      fd.append('fmt','xlsx'); fd.append('code',(wbInput.value||'').trim());
+      fetch(BACKEND_URL.replace(/\/+$/,'')+'/generate',{method:'POST',body:fd})
+        .then(r=>{ if(!r.ok) throw new Error('http'); return r.blob(); })
+        .then(blob=>{
+          const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+          a.download='Scout_Dashboard_Team.xlsx'; document.body.appendChild(a); a.click(); a.remove();
+          setTimeout(()=>URL.revokeObjectURL(a.href),1500); wbErr.textContent='';
+        })
+        .catch(()=>{ wbErr.style.color=''; wbErr.textContent='Server was busy — built a local copy instead.'; clientSideWorkbook(); });
+    }
+    function clientSideWorkbook(){
       loadExcelJS(async ()=>{
        try{
         const {list, anyArm}=current;
