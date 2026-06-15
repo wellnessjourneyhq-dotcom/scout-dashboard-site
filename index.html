@@ -1263,45 +1263,91 @@
 
     // ── Tier 2: $9.99 static workbook (.xlsx generated on device via SheetJS) ──
     const wbBtn=$('wbBtn'), wbUnlock=$('wbUnlock'), wbUnlockBtn=$('wbUnlockBtn'), wbInput=$('wbInput'), wbErr=$('wbErr');
-    function loadSheetJS(cb){
-      if(window.XLSX) return cb();
+    // ExcelJS (free, in-browser) — supports real styling so the workbook looks like the product.
+    function loadExcelJS(cb){
+      if(window.ExcelJS) return cb();
       const s=document.createElement('script');
-      s.src='https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js';
+      s.src='https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js';
       s.onload=cb; s.onerror=()=>{ wbErr.textContent='Could not load the workbook engine — check your connection and try again.'; };
       document.head.appendChild(s);
     }
     function generateWorkbook(){
       if(!current){ wbErr.textContent='Please upload your export again.'; return; }
-      loadSheetJS(()=>{
+      loadExcelJS(async ()=>{
+       try{
         const {list, anyArm}=current;
-        const wb=XLSX.utils.book_new();
-        // Team Board (values)
-        const tbHead=['Rank','#','Player','GP','AVG','OBP','OPS','SLG','SB'].concat(anyArm?['IP','ERA','WHIP']:[]);
-        const tb=[tbHead].concat(list.map((p,i)=>{
-          const r=[i+1,p.number,p.name,p.gp,p.avg,p.obp,p.ops,p.slg,p.sb];
-          if(anyArm) r.push(p.ip,p.era,p.whip);
-          return r;
-        }));
-        XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(tb), 'Team Board');
-        // Suggested Lineup
-        const lu=suggestLineup(list);
-        const luAoa=[['Spot','#','Player','Why']].concat(lu.map(r=>[r.spot,r.p.number,r.p.name,r.note]));
-        XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(luAoa), 'Suggested Lineup');
-        // Pitching (if any)
-        if(anyArm){
-          const arms=list.filter(p=>p.ip).sort((a,b)=>(a.era??99)-(b.era??99));
-          const pAoa=[['#','Player','IP','ERA','WHIP']].concat(arms.map(p=>[p.number,p.name,p.ip,p.era,p.whip]));
-          XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(pAoa), 'Pitching');
+        const NAVY='FF0F2A44',SLATE='FF34495E',GREEN='FF16A34A',GREENHL='FFDCFCE7',
+              WHITE='FFFFFFFF',LINE='FFE5E7EB',ALT='FFF7F8FA',INK='FF1F2937';
+        const thin={style:'thin',color:{argb:LINE}};
+        const wb=new ExcelJS.Workbook(); wb.creator='Scout Dashboard';
+        function sheet(name,title,cols,rows,highlight){
+          const ws=wb.addWorksheet(name,{views:[{state:'frozen',ySplit:2}]});
+          const n=cols.length;
+          ws.mergeCells(1,1,1,n);
+          const tc=ws.getCell(1,1); tc.value=title;
+          tc.fill={type:'pattern',pattern:'solid',fgColor:{argb:NAVY}};
+          tc.font={name:'Arial',bold:true,size:13,color:{argb:WHITE}};
+          tc.alignment={vertical:'middle',horizontal:'left',indent:1};
+          ws.getRow(1).height=26;
+          cols.forEach((c,i)=>{
+            const h=ws.getCell(2,i+1); h.value=c.label;
+            h.fill={type:'pattern',pattern:'solid',fgColor:{argb:SLATE}};
+            h.font={name:'Arial',bold:true,size:10.5,color:{argb:WHITE}};
+            h.alignment={vertical:'middle',horizontal:c.align||'center'};
+            h.border={bottom:thin};
+            ws.getColumn(i+1).width=c.w;
+          });
+          ws.getRow(2).height=20;
+          rows.forEach((rv,ri)=>{
+            const er=ri+3, hl=highlight&&ri===0;
+            cols.forEach((c,i)=>{
+              const cell=ws.getCell(er,i+1), v=rv[i];
+              cell.value=(v===null||v===undefined||v==='')?null:v;
+              if(c.fmt && typeof cell.value==='number') cell.numFmt=c.fmt;
+              cell.font={name:'Arial',size:10.5,bold:!!hl,color:{argb:INK}};
+              cell.alignment={vertical:'middle',horizontal:c.align||'center'};
+              cell.fill={type:'pattern',pattern:'solid',fgColor:{argb:hl?GREENHL:(ri%2?ALT:WHITE)}};
+              cell.border={bottom:thin};
+            });
+            ws.getRow(er).height=18;
+          });
         }
-        // Notes
-        XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([
-          ['Scout Dashboard — Static Workbook'],
-          ['Generated '+new Date().toLocaleDateString()+' from your GameChanger export.'],
-          ['Values only — no formulas. This snapshot will not update if you paste a new export.'],
-          ['Want a version that rebuilds from any fresh paste all season? Get the full dashboard at scoutdashboard.com.'],
-          ['Independent product — not affiliated with GameChanger.']
-        ]), 'Read Me');
-        XLSX.writeFile(wb, 'Scout_Dashboard_Team_Values.xlsx');
+        const AVG='#.000';
+        const tbCols=[{label:'Rank',w:7,fmt:'0'},{label:'#',w:6},{label:'Player',w:24,align:'left'},
+          {label:'GP',w:6,fmt:'0'},{label:'AVG',w:8,fmt:AVG},{label:'OBP',w:8,fmt:AVG},
+          {label:'OPS',w:8,fmt:AVG},{label:'SLG',w:8,fmt:AVG},{label:'SB',w:6,fmt:'0'}]
+          .concat(anyArm?[{label:'IP',w:7,fmt:'0.0'},{label:'ERA',w:8,fmt:'0.00'},{label:'WHIP',w:8,fmt:'0.00'}]:[]);
+        sheet('Team Board','SCOUT DASHBOARD  ·  TEAM BOARD', tbCols, list.map((p,i)=>{
+          const r=[i+1,p.number,p.name,p.gp,p.avg,p.obp,p.ops,p.slg,p.sb];
+          if(anyArm) r.push(p.ip,p.era,p.whip); return r;
+        }), true);
+        const lu=suggestLineup(list);
+        sheet('Suggested Lineup','SCOUT DASHBOARD  ·  SUGGESTED BATTING ORDER',
+          [{label:'Spot',w:12,align:'left'},{label:'#',w:6},{label:'Player',w:24,align:'left'},{label:'Why',w:24,align:'left'}],
+          lu.map(r=>[r.spot,r.p.number,r.p.name,r.note]), false);
+        if(anyArm){
+          const arms=list.filter(p=>p.ip).sort((a,b)=>(a.era==null?99:a.era)-(b.era==null?99:b.era));
+          sheet('Pitching','SCOUT DASHBOARD  ·  PITCHING STAFF',
+            [{label:'#',w:6},{label:'Player',w:24,align:'left'},{label:'IP',w:7,fmt:'0.0'},{label:'ERA',w:8,fmt:'0.00'},{label:'WHIP',w:8,fmt:'0.00'}],
+            arms.map(p=>[p.number,p.name,p.ip,p.era,p.whip]), true);
+        }
+        const rm=wb.addWorksheet('Read Me'); rm.getColumn(1).width=95;
+        const rt=rm.getCell(1,1); rt.value='SCOUT DASHBOARD — STATIC WORKBOOK';
+        rt.fill={type:'pattern',pattern:'solid',fgColor:{argb:NAVY}};
+        rt.font={name:'Arial',bold:true,size:13,color:{argb:WHITE}};
+        rt.alignment={vertical:'middle',indent:1}; rm.getRow(1).height=26;
+        ['Generated '+new Date().toLocaleDateString()+' from your GameChanger export.',
+         'Values only — no formulas. This snapshot will not update if you paste a new export.',
+         'Want a version that rebuilds from any fresh paste all season? Get the full dashboard at scoutdashboard.com.',
+         'Independent product — not affiliated with, endorsed by, or connected to GameChanger.'
+        ].forEach((t,i)=>{ const c=rm.getCell(i+3,1); c.value=t; c.font={name:'Arial',size:11,color:{argb:INK}}; });
+
+        const buf=await wb.xlsx.writeBuffer();
+        const blob=new Blob([buf],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+        const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+        a.download='Scout_Dashboard_Team_Values.xlsx'; document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(()=>URL.revokeObjectURL(a.href),1500);
+       }catch(e){ wbErr.textContent='Workbook build error — try again, or email coach@scoutdashboard.com.'; }
       });
     }
     if(wbBtn){
