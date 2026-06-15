@@ -249,6 +249,42 @@
   details[open] summary::after{transform:rotate(45deg)}
   details p{padding:0 26px 22px;color:var(--mut)}
 
+  /* ───── Tripwire ($5.99 report) ───── */
+  .tw-or{margin:30px 0 18px;color:var(--mut);font-size:.92rem;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+  .tw-card{display:grid;grid-template-columns:1.4fr 1fr;gap:0;background:#fff;border:2px solid var(--green);
+           border-radius:16px;overflow:hidden;box-shadow:0 10px 36px rgba(22,163,74,.14);text-align:left}
+  .tw-left{padding:30px 32px}
+  .tw-left .tw-price{font-family:'Oswald',Arial,sans-serif;font-size:2.2rem;font-weight:700;color:var(--green);line-height:1}
+  .tw-left .tw-price span{font-size:.9rem;color:var(--mut);font-weight:600;letter-spacing:.5px}
+  .tw-left h3{font-size:1.3rem;color:var(--navy);margin:8px 0 8px}
+  .tw-left p{color:var(--mut);font-size:.97rem;margin-bottom:14px}
+  .tw-note{background:var(--graybg);border-radius:10px;padding:12px 16px;font-size:.88rem;color:var(--ink)}
+  .tw-note b{color:var(--navy)}
+  .tw-right{background:var(--navy);padding:30px 28px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+  .tw-right .btn{width:100%}
+  .tw-fine{color:var(--ltblue);font-size:.8rem;margin-top:12px}
+  .unlock{width:100%;margin-top:14px}
+  .unlock p{color:var(--ltblue);font-size:.85rem;margin-bottom:8px}
+  .unlock input{width:100%;padding:12px 14px;border-radius:8px;border:1px solid var(--ltblue);font-size:1rem;text-align:center;text-transform:uppercase;margin-bottom:8px}
+  .unlock .ubtn{width:100%;background:var(--green);color:#fff;border:none;font-family:'Oswald',Arial,sans-serif;
+        text-transform:uppercase;letter-spacing:.5px;font-weight:700;padding:13px;border-radius:8px;cursor:pointer}
+  .unlock .uerr{color:#FCA5A5;font-size:.82rem;margin-top:8px;min-height:1em}
+
+  /* ───── Printable report (screen-hidden; only this prints) ───── */
+  #reportDoc{display:none}
+  @media print{
+    @page{margin:0.5in}
+    body{background:#fff!important;padding:0!important}
+    body > *:not(#reportDoc){display:none!important}
+    #reportDoc{display:block!important}
+  }
+  .rep-head{background:var(--navy);color:#fff;padding:24px 28px;border-radius:12px;margin-bottom:22px}
+  .rep-head .rk{color:var(--green2);font-family:'Oswald',Arial,sans-serif;letter-spacing:2px;font-size:.8rem;text-transform:uppercase}
+  .rep-head h1{font-family:'Oswald',Arial,sans-serif;font-size:1.8rem;text-transform:uppercase;margin:4px 0}
+  .rep-head .rsub{color:var(--ltblue);font-size:.9rem}
+  .rep-sec{font-family:'Oswald',Arial,sans-serif;text-transform:uppercase;letter-spacing:.5px;color:var(--navy);font-size:1.2rem;margin:18px 0 10px}
+  .rep-foot{margin-top:18px;border-top:1px solid var(--line);padding-top:10px;color:var(--mut);font-size:.75rem;text-align:center}
+
   /* ───── Final CTA ───── */
   .final{background:radial-gradient(ellipse at 50% 120%, #1A4A7A 0%, var(--navy3) 70%);text-align:center}
   .final h2{font-size:2.8rem;max-width:820px;margin:0 auto 18px}
@@ -341,6 +377,7 @@
     .pains,.steps{grid-template-columns:1fr}
     .features{grid-template-columns:1fr}
     .glance,.pcards{grid-template-columns:1fr}
+    .tw-card{grid-template-columns:1fr}
     .lb th:nth-child(3),.lb td:nth-child(3),
     .lb th:nth-child(4),.lb td:nth-child(4){display:none}
     h2{font-size:1.9rem}
@@ -518,7 +555,28 @@
           </div>
         </div>
 
-        <div style="text-align:center">
+        <!-- TRIPWIRE: $5.99 one-time team report -->
+        <div class="tw-or">— or just want this week's numbers? —</div>
+        <div class="tw-card">
+          <div class="tw-left">
+            <div class="tw-price">$5.99 <span>one-time</span></div>
+            <h3>Get This Week's Team Report (PDF)</h3>
+            <p>A clean, shareable PDF built from the file you just uploaded — your full roster leaderboard and a card for every player. A snapshot of right now: no formulas, no re-pasting. Great for sharing with players and parents.</p>
+            <div class="tw-note"><b>Want this every week</b> — plus the lineup builder, pitching workloads, and practice plan? The <b>$22 full dashboard</b> above re-builds it from a fresh paste all season.</div>
+          </div>
+          <div class="tw-right">
+            <button id="reportBtn" class="btn" type="button">Get My Report — $5.99</button>
+            <div id="unlockArea" class="unlock" style="display:none">
+              <p>Finished checkout? Paste the unlock code from your receipt:</p>
+              <input id="unlockInput" type="text" placeholder="Unlock code" autocomplete="off">
+              <button id="unlockBtn" class="ubtn" type="button">Unlock &amp; Download PDF</button>
+              <div id="unlockErr" class="uerr"></div>
+            </div>
+            <div class="tw-fine">Instant PDF after checkout · built on your device, nothing uploaded</div>
+          </div>
+        </div>
+
+        <div style="text-align:center;margin-top:26px">
           <button id="tryAgain" class="try-again" type="button">↻ Try a different export</button>
         </div>
       </div>
@@ -810,6 +868,9 @@
   </div>
 </footer>
 
+<!-- ════════ PRINTABLE TEAM REPORT (screen-hidden; populated from upload; only this prints) ════════ -->
+<div id="reportDoc" class="pad" style="max-width:8in;margin:0 auto"></div>
+
 <!-- ════════ MOBILE STICKY CTA ════════ -->
 <div class="mobile-cta">
   <a class="btn buy" href="https://www.etsy.com/listing/4515555185/baseball-softball-stats-spreadsheet-for" target="_blank" rel="noopener">Get Scout Dashboard — $22</a>
@@ -919,8 +980,37 @@
       }).join('');
 
       if(topHit) $('lockHeadline').innerHTML="Nice — #"+esc(topHit.number)+" "+esc(topHit.first||topHit.last)+" is leading your team. Unlock the full dashboard for everyone.";
+      buildReport(list, anyArm);
       dz.style.display='none'; results.style.display='block';
       results.scrollIntoView({behavior:'smooth',block:'start'});
+    }
+
+    // Build the full printable report (ALL players) into #reportDoc — this is the $5.99 deliverable.
+    function buildReport(list, anyArm){
+      const today=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+      const cols=['#','Player','GP','AVG','OBP','OPS','SLG','SB'].concat(anyArm?['IP','ERA','WHIP']:[]);
+      const head='<tr>'+cols.map(c=>'<th>'+c+'</th>').join('')+'</tr>';
+      const body=list.map((p,i)=>{
+        const cells=[(i+1),'#'+esc(p.number)+' '+esc(p.name),(p.gp==null?'—':p.gp),avg3(p.avg),avg3(p.obp),avg3(p.ops),avg3(p.slg),(p.sb==null?'—':p.sb)];
+        if(anyArm){ cells.push(p.ip==null?'—':p.ip, p.era==null?'—':f2(p.era), p.whip==null?'—':f2(p.whip)); }
+        return '<tr'+(i===0?' class="top"':'')+'>'+cells.map(c=>'<td>'+c+'</td>').join('')+'</tr>';
+      }).join('');
+      const cards=list.map(p=>{
+        const isArm=p.era!=null && p.ip;
+        const t=[pt('AVG',avg3(p.avg)),pt('OBP',avg3(p.obp)),pt('OPS',avg3(p.ops)),isArm?pt('ERA',f2(p.era),true):pt('SLG',avg3(p.slg))];
+        return '<div class="pcard" style="break-inside:avoid"><div class="ph"><div class="pn">'+esc(p.number)+'</div>'+
+          '<div><div class="pnm">'+esc(p.name)+'</div><div class="pgp">'+(p.gp?('GP '+p.gp):'')+(isArm?(' · IP '+p.ip):'')+'</div></div></div>'+
+          '<div class="ptiles">'+t.join('')+'</div></div>';
+      }).join('');
+      $('reportDoc').innerHTML =
+        '<div class="rep-head"><div class="rk">Scout Dashboard · Team Report</div><h1>Team Stat Report</h1>'+
+          '<div class="rsub">Generated '+today+' · '+list.length+' players · from your GameChanger export</div></div>'+
+        '<div class="rep-sec">Team Leaderboard</div>'+
+        '<div class="lb"><table>'+head+body+'</table></div>'+
+        '<div class="rep-sec" style="margin-top:22px">Player Cards</div>'+
+        '<div class="pcards" style="display:grid;grid-template-columns:1fr 1fr;gap:14px">'+cards+'</div>'+
+        '<div class="rep-foot">Generated by Scout Dashboard · scoutdashboard.com · A snapshot of values only (not the interactive dashboard). '+
+          'Independent product · not affiliated with GameChanger.</div>';
     }
 
     function showErr(){
@@ -940,6 +1030,31 @@
     ['dragover','dragenter'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.add('drag');}));
     ['dragleave','dragend'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove('drag');}));
     dz.addEventListener('drop',e=>{ e.preventDefault(); dz.classList.remove('drag'); readFile(e.dataTransfer.files[0]); });
+
+    // ── $5.99 TEAM REPORT — payment + unlock (soft gate, client-side) ──
+    // Set PAY_URL_REPORT to your Stripe Payment Link / Gumroad / Payhip / Ko-fi checkout for the report.
+    // REPORT_CODE is the unlock code you show buyers on the receipt / thank-you page after they pay.
+    const PAY_URL_REPORT = "";              // TODO: paste your $5.99 checkout link
+    const REPORT_CODE    = "DUGOUT-REPORT"; // TODO: set this to match your post-purchase code
+    const reportBtn=$('reportBtn'), unlockArea=$('unlockArea'), unlockBtn=$('unlockBtn'),
+          unlockInput=$('unlockInput'), unlockErr=$('unlockErr');
+    if(reportBtn){
+      reportBtn.addEventListener('click',()=>{
+        if(typeof fbq==='function') fbq('track','InitiateCheckout',{content_name:'Team Report',value:5.99,currency:'USD'});
+        if(PAY_URL_REPORT) window.open(PAY_URL_REPORT,'_blank','noopener');
+        unlockArea.style.display='block';
+        unlockArea.scrollIntoView({behavior:'smooth',block:'center'});
+      });
+      unlockBtn.addEventListener('click',()=>{
+        const v=(unlockInput.value||'').trim().toUpperCase();
+        if(v && v===REPORT_CODE.toUpperCase()){
+          unlockErr.textContent='';
+          window.print();   // user picks "Save as PDF" → only #reportDoc prints
+        } else {
+          unlockErr.textContent="That code didn't match. Check your receipt email, or message coach@scoutdashboard.com.";
+        }
+      });
+    }
 
     // Embedded sample team (real demo data) — runs through the SAME parser path.
     const S=[
