@@ -16,6 +16,21 @@
 <meta name="twitter:title" content="Scout Dashboard — Your GameChanger Export, Coach-Ready">
 <meta name="twitter:description" content="174 messy columns in. 10 coach-ready views out. About two minutes.">
 <meta name="twitter:image" content="https://www.scoutdashboard.com/img/hero.webp">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "Scout Dashboard",
+  "brand": { "@type": "Brand", "name": "DugoutData" },
+  "description": "Turn your GameChanger stats export into coach-ready views — team leaderboard, player cards, and lineup starting points — for baseball and softball coaches. Works in Excel and Google Sheets.",
+  "image": "https://www.scoutdashboard.com/img/hero.webp",
+  "url": "https://www.scoutdashboard.com/",
+  "offers": [
+    { "@type": "Offer", "name": "Team Report PDF (one-time)", "price": "5.99", "priceCurrency": "USD", "availability": "https://schema.org/InStock" },
+    { "@type": "Offer", "name": "Scout Dashboard (Excel + Google Sheets)", "price": "22.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://www.etsy.com/listing/4515555185/baseball-softball-stats-spreadsheet-for" }
+  ]
+}
+</script>
 <link rel="icon" href="img/logo.png" type="image/png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -894,6 +909,11 @@
           results=$('tryResults'), errBox=$('tryError'), tryAgain=$('tryAgain');
     if(!dz) return;
 
+    // Funnel events — fire to Meta/TikTok pixels if present, else no-op (safe before pixels added).
+    function track(name, params){
+      try{ if(typeof fbq==='function') fbq('trackCustom',name,params||{}); }catch(e){}
+      try{ if(typeof ttq==='object'&&ttq.track) ttq.track(name); }catch(e){}
+    }
     const esc = s => String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
     const avg3 = v => (v==null||isNaN(v)) ? '—' : v.toFixed(3).replace(/^0(?=\.)/,'');
     const f2   = v => (v==null||isNaN(v)) ? '—' : v.toFixed(2);
@@ -985,9 +1005,60 @@
       results.scrollIntoView({behavior:'smooth',block:'start'});
     }
 
+    // Mean of a numeric field across players who have it.
+    function mean(players, key){
+      const v=players.map(p=>p[key]).filter(x=>x!=null && !isNaN(x));
+      return v.length ? v.reduce((a,b)=>a+b,0)/v.length : null;
+    }
+
+    // Data-backed batting-order STARTING POINTS (same logic the guide teaches).
+    function suggestLineup(players){
+      const pool=players.filter(p=>p.ops!=null || p.obp!=null);
+      const used=new Set(); const pick=(sortFn,label)=>{
+        const cand=pool.filter(p=>!used.has(p)).sort(sortFn)[0];
+        if(cand){ used.add(cand); return {p:cand,label}; } return null;
+      };
+      const byOBP=(a,b)=>(b.obp??-1)-(a.obp??-1);
+      const byOPS=(a,b)=>(b.ops??-1)-(a.ops??-1);
+      const bySLG=(a,b)=>(b.slg??-1)-(a.slg??-1);
+      const order=[];
+      const spots=[
+        ['Leadoff', byOBP, p=>'OBP '+avg3(p.obp)+(p.sb!=null?(' · SB '+p.sb):'')],
+        ['2-hole',  byOBP, p=>'OBP '+avg3(p.obp)],
+        ['3-hole',  byOPS, p=>'OPS '+avg3(p.ops)],
+        ['Cleanup', bySLG, p=>'SLG '+avg3(p.slg)],
+        ['5-hole',  byOPS, p=>'OPS '+avg3(p.ops)]
+      ];
+      spots.forEach(([label,fn,note])=>{ const r=pick(fn,label); if(r) order.push({spot:label,p:r.p,note:note(r.p)}); });
+      // remaining 6+ by OPS
+      let n=6; pool.filter(p=>!used.has(p)).sort(byOPS).forEach(p=>{ order.push({spot:n+'-hole',p,note:'OPS '+avg3(p.ops)}); n++; });
+      return order;
+    }
+
     // Build the full printable report (ALL players) into #reportDoc — this is the $5.99 deliverable.
     function buildReport(list, anyArm){
       const today=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+      const topHit=list[0];
+      const topArm=list.filter(p=>p.era!=null && p.ip>0).sort((a,b)=>a.era-b.era)[0];
+      const tAvg=mean(list,'avg'), tObp=mean(list,'obp'), tOps=mean(list,'ops');
+
+      // Team summary tiles
+      const sum=[
+        ['Players',list.length,''],
+        ['Team AVG',avg3(tAvg),'roster average'],
+        ['Team OBP',avg3(tObp),'roster average'],
+        ['Team OPS',avg3(tOps),'roster average'],
+        topHit?['Top Hitter','#'+esc(topHit.number)+' '+esc(topHit.first||topHit.last),avg3(topHit.ops)+' OPS']:null,
+        topArm?['Top Arm','#'+esc(topArm.number)+' '+esc(topArm.first||topArm.last),f2(topArm.era)+' ERA']:null
+      ].filter(Boolean).map(([l,v,s])=>tile(l,v,s)).join('');
+
+      // Suggested lineup
+      const lu=suggestLineup(list);
+      const luRows=lu.map(r=>'<tr><td style="font-weight:700;color:#0F2A44;font-family:Oswald,Arial">'+esc(r.spot)+'</td>'+
+        '<td style="text-align:left;font-weight:600">#'+esc(r.p.number)+' '+esc(r.p.name)+'</td>'+
+        '<td style="text-align:left;color:#16A34A;font-weight:600">'+r.note+'</td></tr>').join('');
+
+      // Leaderboard
       const cols=['#','Player','GP','AVG','OBP','OPS','SLG','SB'].concat(anyArm?['IP','ERA','WHIP']:[]);
       const head='<tr>'+cols.map(c=>'<th>'+c+'</th>').join('')+'</tr>';
       const body=list.map((p,i)=>{
@@ -995,6 +1066,8 @@
         if(anyArm){ cells.push(p.ip==null?'—':p.ip, p.era==null?'—':f2(p.era), p.whip==null?'—':f2(p.whip)); }
         return '<tr'+(i===0?' class="top"':'')+'>'+cells.map(c=>'<td>'+c+'</td>').join('')+'</tr>';
       }).join('');
+
+      // Player cards
       const cards=list.map(p=>{
         const isArm=p.era!=null && p.ip;
         const t=[pt('AVG',avg3(p.avg)),pt('OBP',avg3(p.obp)),pt('OPS',avg3(p.ops)),isArm?pt('ERA',f2(p.era),true):pt('SLG',avg3(p.slg))];
@@ -1002,10 +1075,16 @@
           '<div><div class="pnm">'+esc(p.name)+'</div><div class="pgp">'+(p.gp?('GP '+p.gp):'')+(isArm?(' · IP '+p.ip):'')+'</div></div></div>'+
           '<div class="ptiles">'+t.join('')+'</div></div>';
       }).join('');
+
       $('reportDoc').innerHTML =
         '<div class="rep-head"><div class="rk">Scout Dashboard · Team Report</div><h1>Team Stat Report</h1>'+
           '<div class="rsub">Generated '+today+' · '+list.length+' players · from your GameChanger export</div></div>'+
-        '<div class="rep-sec">Team Leaderboard</div>'+
+        '<div class="rep-sec">Team Summary</div>'+
+        '<div class="glance" style="grid-template-columns:repeat(3,1fr)">'+sum+'</div>'+
+        '<div class="rep-sec" style="margin-top:22px">Suggested Batting Order <span style="font-size:.7rem;color:#6B7280;font-weight:400;text-transform:none;letter-spacing:0">— a data-backed starting point; you make the final call</span></div>'+
+        '<div class="lb" style="break-inside:avoid"><table>'+
+          '<tr><th style="text-align:left">Spot</th><th style="text-align:left">Player</th><th style="text-align:left">Why</th></tr>'+luRows+'</table></div>'+
+        '<div class="rep-sec" style="margin-top:22px">Team Leaderboard</div>'+
         '<div class="lb"><table>'+head+body+'</table></div>'+
         '<div class="rep-sec" style="margin-top:22px">Player Cards</div>'+
         '<div class="pcards" style="display:grid;grid-template-columns:1fr 1fr;gap:14px">'+cards+'</div>'+
@@ -1017,7 +1096,7 @@
       errBox.innerHTML="<b>Hmm — that doesn't look like a GameChanger stats export.</b><br>Upload the <b>.csv</b> you downloaded from GameChanger (the season stats export). Want a peek first? Hit “Try a sample team” above.";
       errBox.style.display='block';
     }
-    function handleText(text){ errBox.style.display='none'; const p=build(parseCSV(text)); if(!p){ showErr(); return; } render(p); }
+    function handleText(text){ errBox.style.display='none'; const p=build(parseCSV(text)); if(!p){ showErr(); return; } track('ToolPreviewGenerated',{players:p.length}); render(p); }
     function readFile(file){
       if(!file) return;
       if(!/\.csv$/i.test(file.name) && file.type!=='text/csv'){ showErr(); return; }
