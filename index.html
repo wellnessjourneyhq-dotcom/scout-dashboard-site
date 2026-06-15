@@ -239,7 +239,7 @@
   .offer-cta{text-align:center;padding-bottom:8px}
 
   /* ───── Guarantee ───── */
-  .guarantee{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:48px}
+  .guarantee{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
   .g-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:36px;
           box-shadow:0 4px 18px rgba(15,42,68,.06)}
   .g-card .gi{width:52px;height:52px;border-radius:12px;background:var(--greenhl);color:var(--green);
@@ -342,6 +342,9 @@
   /* ───── Footer ───── */
   footer{background:var(--navy3);border-top:1px solid rgba(157,178,198,.12);padding:36px 0;text-align:center}
   footer p{color:var(--ltblue);font-size:.85rem;margin-bottom:6px}
+  footer .flinks{margin:10px 0 14px}
+  footer .flinks a{color:var(--green2);text-decoration:none;font-size:.85rem}
+  footer .flinks a:hover{text-decoration:underline}
   footer .dis{color:#5A7088;font-size:.78rem;max-width:640px;margin:0 auto}
 
   /* ───── Mobile sticky CTA ───── */
@@ -647,6 +650,7 @@
         <p class="tiers-priv">All three are built from the file on your device — nothing is uploaded or stored.</p>
 
         <div style="text-align:center;margin-top:26px">
+          <button id="shareBtn" class="try-again" type="button" style="margin-right:20px">📋 Share this free tool with a coach</button>
           <button id="tryAgain" class="try-again" type="button">↻ Try a different export</button>
         </div>
       </div>
@@ -836,18 +840,53 @@
     <h2>You Won't Be Left Figuring It Out Alone</h2>
     <div class="guarantee">
       <div class="g-card">
+        <div class="gi">✓</div>
+        <h3>Works-With-Your-Export Guarantee</h3>
+        <p>If Scout Dashboard doesn't work with your GameChanger export, I'll fix it or refund you — just email within 14 days. <b>You're not stuck with something that doesn't fit your file.</b></p>
+      </div>
+      <div class="g-card">
         <div class="gi">✉</div>
-        <h3>Stuck? Message Me. I'll Help.</h3>
-        <p>If your first import doesn't go smoothly, message me through Etsy and I'll personally walk you through it. <b>Not a help desk. Not a chatbot. Me.</b> I built this file and I answer my own messages.</p>
+        <h3>Stuck? Email Me. I'll Help.</h3>
+        <p>Questions before or after you buy? Email <b>coach@scoutdashboard.com</b> and I'll personally walk you through it. Not a help desk. Not a chatbot. Me — the coach who built it.</p>
       </div>
       <div class="g-card">
         <div class="gi">🔒</div>
         <h3>Built So You Can't Break It</h3>
-        <p>The formula engine is protected in both versions — <b>Excel locks formula cells outright; Google Sheets warns you before an accidental edit.</b> Your team data stays fully yours to edit. The machinery underneath stays safe.</p>
+        <p>The formula engine is protected — <b>Excel locks formula cells; Google Sheets warns before an accidental edit.</b> Your team data stays fully yours to edit. The machinery underneath stays safe.</p>
       </div>
     </div>
   </div>
 </section>
+
+<!--
+  ════════ TESTIMONIALS — READY TO TURN ON ════════
+  When you have 2–3 real coach reviews, delete this comment wrapper (the line
+  above and the closing line below) to make the section visible, and replace
+  the placeholder quotes/names. Do NOT invent reviews — only use real ones.
+
+<section class="light">
+  <div class="wrap center">
+    <div class="eyebrow">What Coaches Say</div>
+    <h2>Coaches Are Using It</h2>
+    <div class="features" style="margin-top:44px">
+      <div class="feature" style="padding:0">
+        <div class="fbody">
+          <p style="color:#1F2937;font-size:1.05rem">"REAL QUOTE HERE — what changed for them, in their words."</p>
+          <p class="fb" style="border:0;color:#0F2A44">★★★★★ — Coach First Name, 12U Travel</p>
+        </div>
+      </div>
+      <div class="feature" style="padding:0">
+        <div class="fbody">
+          <p style="color:#1F2937;font-size:1.05rem">"REAL QUOTE HERE."</p>
+          <p class="fb" style="border:0;color:#0F2A44">★★★★★ — Coach First Name, Rec League</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+  ════════ END TESTIMONIALS ════════
+-->
 
 <!-- ════════ FOUNDER ════════ -->
 <section class="dark">
@@ -934,6 +973,12 @@
 <footer>
   <div class="wrap">
     <p><b style="color:#fff">Scout Dashboard</b> by DugoutData · Built for baseball &amp; softball coaches</p>
+    <p class="flinks">
+      <a href="/refund">Refund Policy</a> ·
+      <a href="/terms">Terms</a> ·
+      <a href="/privacy">Privacy</a> ·
+      <a href="mailto:coach@scoutdashboard.com">coach@scoutdashboard.com</a>
+    </p>
     <p class="dis">Scout Dashboard is an independent product and is not affiliated with, endorsed by, or connected to GameChanger. GameChanger is a trademark of its respective owner. Stats shown in product images are sample data.</p>
   </div>
 </footer>
@@ -1163,6 +1208,16 @@
     fileInput.addEventListener('change',e=>readFile(e.target.files[0]));
     sampleBtn.addEventListener('click',()=>handleText(SAMPLE_CSV));
     tryAgain.addEventListener('click',()=>{ results.style.display='none'; dz.style.display='block'; fileInput.value=''; dz.scrollIntoView({behavior:'smooth',block:'center'}); });
+    const shareBtn=$('shareBtn');
+    if(shareBtn) shareBtn.addEventListener('click',async()=>{
+      const url='https://www.scoutdashboard.com/', text='Free tool: turn your GameChanger export into coach-ready views in about 2 minutes.';
+      try{
+        if(navigator.share){ await navigator.share({title:'Scout Dashboard',text,url}); track('Shared'); }
+        else { await navigator.clipboard.writeText(url); track('ShareCopied');
+          const o=shareBtn.textContent; shareBtn.textContent='✓ Link copied — paste it to a coach';
+          setTimeout(()=>{shareBtn.textContent=o;},2600); }
+      }catch(e){}
+    });
     ['dragover','dragenter'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.add('drag');}));
     ['dragleave','dragend'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove('drag');}));
     dz.addEventListener('drop',e=>{ e.preventDefault(); dz.classList.remove('drag'); readFile(e.dataTransfer.files[0]); });
