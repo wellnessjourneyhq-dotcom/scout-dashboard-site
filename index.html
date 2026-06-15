@@ -285,6 +285,39 @@
         text-transform:uppercase;letter-spacing:.5px;font-weight:700;padding:13px;border-radius:8px;cursor:pointer}
   .unlock .uerr{color:#FCA5A5;font-size:.82rem;margin-top:8px;min-height:1em}
 
+  /* ───── 3-tier offer ───── */
+  .tiers-head{font-family:'Oswald',Arial,sans-serif;text-transform:uppercase;letter-spacing:.5px;color:var(--navy);
+        font-size:1.4rem;text-align:center;margin:34px auto 22px;max-width:640px;line-height:1.2}
+  .tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;text-align:left}
+  .tier{background:#fff;border:1px solid var(--line);border-radius:16px;padding:28px 24px;display:flex;
+        flex-direction:column;box-shadow:0 4px 18px rgba(15,42,68,.06)}
+  .tier.feat{border:2px solid var(--green);box-shadow:0 16px 44px rgba(22,163,74,.18);position:relative}
+  .tier-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--green);color:#fff;
+        font-family:'Oswald',Arial,sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:.7rem;font-weight:700;
+        padding:5px 16px;border-radius:99px;white-space:nowrap}
+  .tier-price{font-family:'Oswald',Arial,sans-serif;font-size:2.5rem;font-weight:700;color:var(--navy);line-height:1}
+  .tier.feat .tier-price{color:var(--green)}
+  .tier-name{font-family:'Oswald',Arial,sans-serif;text-transform:uppercase;letter-spacing:.5px;color:var(--navy);
+        font-size:1.05rem;margin:4px 0 12px}
+  .tier-desc{color:var(--mut);font-size:.92rem;margin-bottom:16px}
+  .tier-feat{list-style:none;margin-bottom:20px;flex:1}
+  .tier-feat li{padding:6px 0 6px 26px;position:relative;font-size:.9rem;color:var(--ink)}
+  .tier-feat li::before{content:"✓";position:absolute;left:0;color:var(--green);font-weight:700}
+  .tier-feat li.no{color:var(--mut)}
+  .tier-feat li.no::before{content:"–";color:var(--mut)}
+  .tier-btn{display:block;width:100%;text-align:center;background:var(--navy);color:#fff;border:none;cursor:pointer;
+        font-family:'Oswald',Arial,sans-serif;text-transform:uppercase;letter-spacing:.5px;font-weight:700;font-size:1rem;
+        padding:15px;border-radius:10px;text-decoration:none;transition:transform .15s,background .15s}
+  .tier-btn:hover{transform:translateY(-2px);background:var(--navy2)}
+  .tier-btn.primary{background:var(--orange);box-shadow:0 6px 22px rgba(249,115,22,.35)}
+  .tier-btn.primary:hover{background:var(--orange2)}
+  .tier-fine{color:var(--mut);font-size:.78rem;text-align:center;margin-top:10px}
+  .tier .unlock{margin-top:14px}
+  .tier .unlock p{color:var(--mut);font-size:.82rem}
+  .tier .unlock input{border-color:var(--line)}
+  .tier .unlock .uerr{color:#C0392B}
+  .tiers-priv{text-align:center;color:var(--mut);font-size:.85rem;margin-top:20px}
+
   /* ───── Printable report (screen-hidden; only this prints) ───── */
   #reportDoc{display:none}
   @media print{
@@ -393,6 +426,7 @@
     .features{grid-template-columns:1fr}
     .glance,.pcards{grid-template-columns:1fr}
     .tw-card{grid-template-columns:1fr}
+    .tiers{grid-template-columns:1fr}
     .lb th:nth-child(3),.lb td:nth-child(3),
     .lb th:nth-child(4),.lb td:nth-child(4){display:none}
     h2{font-size:1.9rem}
@@ -549,47 +583,68 @@
         <div class="res-h" style="margin-top:30px">Top 3 Player Cards <span class="tag">Your Data</span></div>
         <div class="pcards" id="pcards"></div>
 
-        <!-- GATE -->
-        <div class="locked">
-          <div class="blur">
-            <div class="bk"></div><div class="bk"></div><div class="bk"></div>
-            <div class="bk"></div><div class="bk"></div><div class="bk"></div>
-          </div>
-          <div class="lockover">
-            <div class="li">🔒</div>
-            <h3 id="lockHeadline">That's the preview. Unlock the full dashboard for your whole team.</h3>
-            <p>You're seeing the leaderboard and your top 3. The full Scout Dashboard builds these from your entire roster — plus the views coaches use every week.</p>
-            <div class="chips">
-              <span class="chip">Lineup Builder</span>
-              <span class="chip">Pitching Workloads</span>
-              <span class="chip">Practice Plan</span>
-              <span class="chip">Every Player Card</span>
-              <span class="chip">Leaderboards &amp; Awards</span>
-            </div>
-            <a class="btn big buy" href="https://www.etsy.com/listing/4515555185/baseball-softball-stats-spreadsheet-for" target="_blank" rel="noopener">Unlock the Full Dashboard — $22</a>
-          </div>
-        </div>
+        <!-- 3-TIER OFFER (built from the upload above) -->
+        <h3 id="lockHeadline" class="tiers-head">That's a free taste. Take your team's numbers with you — three ways:</h3>
+        <div class="tiers">
 
-        <!-- TRIPWIRE: $5.99 one-time team report -->
-        <div class="tw-or">— or just want this week's numbers? —</div>
-        <div class="tw-card">
-          <div class="tw-left">
-            <div class="tw-price">$5.99 <span>one-time</span></div>
-            <h3>Get This Week's Team Report (PDF)</h3>
-            <p>A clean, shareable PDF built from the file you just uploaded — your full roster leaderboard and a card for every player. A snapshot of right now: no formulas, no re-pasting. Great for sharing with players and parents.</p>
-            <div class="tw-note"><b>Want this every week</b> — plus the lineup builder, pitching workloads, and practice plan? The <b>$22 full dashboard</b> above re-builds it from a fresh paste all season.</div>
-          </div>
-          <div class="tw-right">
-            <button id="reportBtn" class="btn" type="button">Get My Report — $5.99</button>
+          <!-- $5.99 — PDF report -->
+          <div class="tier">
+            <div class="tier-price">$5.99</div>
+            <div class="tier-name">Team Report · PDF</div>
+            <p class="tier-desc">A clean, shareable PDF of your whole roster — leaderboard, a suggested batting order, and a card for every player.</p>
+            <ul class="tier-feat">
+              <li>Full roster + player cards</li>
+              <li>Suggested batting order</li>
+              <li>Print &amp; share with parents</li>
+              <li class="no">Snapshot only — won't update</li>
+            </ul>
+            <button id="reportBtn" class="tier-btn" type="button">Get the PDF — $5.99</button>
             <div id="unlockArea" class="unlock" style="display:none">
-              <p>Finished checkout? Paste the unlock code from your receipt:</p>
+              <p>Paste the unlock code from your receipt:</p>
               <input id="unlockInput" type="text" placeholder="Unlock code" autocomplete="off">
               <button id="unlockBtn" class="ubtn" type="button">Unlock &amp; Download PDF</button>
               <div id="unlockErr" class="uerr"></div>
             </div>
-            <div class="tw-fine">Instant PDF after checkout · built on your device, nothing uploaded</div>
           </div>
+
+          <!-- $9.99 — static workbook -->
+          <div class="tier">
+            <div class="tier-price">$9.99</div>
+            <div class="tier-name">Static Workbook · Excel</div>
+            <p class="tier-desc">A multi-tab Excel file of your data as values — team board, suggested lineup, and pitching. Sort and filter it yourself.</p>
+            <ul class="tier-feat">
+              <li>Multi-tab .xlsx workbook</li>
+              <li>All your values, ready to sort</li>
+              <li>Opens in Excel or Google Sheets</li>
+              <li class="no">Values only — no formulas, won't re-paste</li>
+            </ul>
+            <button id="wbBtn" class="tier-btn" type="button">Get the Workbook — $9.99</button>
+            <div id="wbUnlock" class="unlock" style="display:none">
+              <p>Paste the unlock code from your receipt:</p>
+              <input id="wbInput" type="text" placeholder="Unlock code" autocomplete="off">
+              <button id="wbUnlockBtn" class="ubtn" type="button">Unlock &amp; Download Excel</button>
+              <div id="wbErr" class="uerr"></div>
+            </div>
+          </div>
+
+          <!-- $14.99 — full dashboard (featured) -->
+          <div class="tier feat">
+            <div class="tier-badge">Best Value</div>
+            <div class="tier-price">$14.99</div>
+            <div class="tier-name">The Full Dashboard</div>
+            <p class="tier-desc">The living tool: 10 connected views with formulas. Paste a fresh export anytime and everything rebuilds — all season long.</p>
+            <ul class="tier-feat">
+              <li><b>Re-paste anytime — auto-updates</b></li>
+              <li>Lineup builder, pitching, practice plan</li>
+              <li>A card for every player + awards</li>
+              <li>Excel <b>and</b> Google Sheets</li>
+            </ul>
+            <a id="fullBtn" class="tier-btn primary" href="https://www.etsy.com/listing/4515555185/baseball-softball-stats-spreadsheet-for" target="_blank" rel="noopener">Get the Dashboard — $14.99</a>
+            <div class="tier-fine">Instant download · same product sells for $22 on Etsy</div>
+          </div>
+
         </div>
+        <p class="tiers-priv">All three are built from the file on your device — nothing is uploaded or stored.</p>
 
         <div style="text-align:center;margin-top:26px">
           <button id="tryAgain" class="try-again" type="button">↻ Try a different export</button>
@@ -908,6 +963,7 @@
     const dz=$('dropzone'), fileInput=$('csvfile'), sampleBtn=$('sampleBtn'),
           results=$('tryResults'), errBox=$('tryError'), tryAgain=$('tryAgain');
     if(!dz) return;
+    let current=null;  // {list, anyArm} from the most recent parse — used by report + workbook
 
     // Funnel events — fire to Meta/TikTok pixels if present, else no-op (safe before pixels added).
     function track(name, params){
@@ -999,7 +1055,8 @@
           '<div class="ptiles">'+t.join('')+'</div></div>';
       }).join('');
 
-      if(topHit) $('lockHeadline').innerHTML="Nice — #"+esc(topHit.number)+" "+esc(topHit.first||topHit.last)+" is leading your team. Unlock the full dashboard for everyone.";
+      if(topHit) $('lockHeadline').innerHTML="Nice — #"+esc(topHit.number)+" "+esc(topHit.first||topHit.last)+" tops your team. Take your numbers with you — three ways:";
+      current={list, anyArm};
       buildReport(list, anyArm);
       dz.style.display='none'; results.style.display='block';
       results.scrollIntoView({behavior:'smooth',block:'start'});
@@ -1110,28 +1167,94 @@
     ['dragleave','dragend'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove('drag');}));
     dz.addEventListener('drop',e=>{ e.preventDefault(); dz.classList.remove('drag'); readFile(e.dataTransfer.files[0]); });
 
-    // ── $5.99 TEAM REPORT — payment + unlock (soft gate, client-side) ──
-    // Set PAY_URL_REPORT to your Stripe Payment Link / Gumroad / Payhip / Ko-fi checkout for the report.
-    // REPORT_CODE is the unlock code you show buyers on the receipt / thank-you page after they pay.
-    const PAY_URL_REPORT = "";              // TODO: paste your $5.99 checkout link
-    const REPORT_CODE    = "DUGOUT-REPORT"; // TODO: set this to match your post-purchase code
+    // ════ 3-TIER OFFER — checkout links + unlock (soft gate, client-side) ════
+    // Set each PAY_URL_* to your checkout link. Tiers 1–2 generate the buyer's OWN
+    // data on their device after they paste the code shown on the receipt. Tier 3
+    // (full product) delivers YOUR files, so it goes to a real digital-delivery
+    // checkout (Gumroad/Payhip) — no code needed; that store delivers the download.
+    const PAY_URL_REPORT   = "";              // $5.99 PDF checkout link
+    const PAY_URL_WORKBOOK = "";              // $9.99 workbook checkout link
+    const PAY_URL_FULL     = "";              // $14.99 full-product checkout (Gumroad/Payhip delivers the files)
+    const REPORT_CODE      = "DUGOUT-PDF";    // code shown on the $5.99 receipt
+    const WORKBOOK_CODE    = "DUGOUT-XLS";    // code shown on the $9.99 receipt
+    const ETSY_FALLBACK    = "https://www.etsy.com/listing/4515555185/baseball-softball-stats-spreadsheet-for";
+
+    // ── Tier 3: full dashboard direct link (falls back to Etsy until PAY_URL_FULL is set) ──
+    const fullBtn=$('fullBtn');
+    if(fullBtn){
+      fullBtn.href = PAY_URL_FULL || ETSY_FALLBACK;
+      fullBtn.addEventListener('click',()=>{ if(typeof fbq==='function') fbq('track','InitiateCheckout',{content_name:'Full Dashboard',value:14.99,currency:'USD'}); });
+    }
+
+    // ── Tier 1: $5.99 PDF ──
     const reportBtn=$('reportBtn'), unlockArea=$('unlockArea'), unlockBtn=$('unlockBtn'),
           unlockInput=$('unlockInput'), unlockErr=$('unlockErr');
     if(reportBtn){
       reportBtn.addEventListener('click',()=>{
-        if(typeof fbq==='function') fbq('track','InitiateCheckout',{content_name:'Team Report',value:5.99,currency:'USD'});
+        track('Checkout_PDF',{value:5.99}); if(typeof fbq==='function') fbq('track','InitiateCheckout',{content_name:'Team Report PDF',value:5.99,currency:'USD'});
         if(PAY_URL_REPORT) window.open(PAY_URL_REPORT,'_blank','noopener');
-        unlockArea.style.display='block';
-        unlockArea.scrollIntoView({behavior:'smooth',block:'center'});
+        unlockArea.style.display='block'; unlockArea.scrollIntoView({behavior:'smooth',block:'center'});
       });
       unlockBtn.addEventListener('click',()=>{
         const v=(unlockInput.value||'').trim().toUpperCase();
-        if(v && v===REPORT_CODE.toUpperCase()){
-          unlockErr.textContent='';
-          window.print();   // user picks "Save as PDF" → only #reportDoc prints
-        } else {
-          unlockErr.textContent="That code didn't match. Check your receipt email, or message coach@scoutdashboard.com.";
+        if(v && v===REPORT_CODE.toUpperCase()){ unlockErr.textContent=''; window.print(); }
+        else unlockErr.textContent="That code didn't match. Check your receipt, or email coach@scoutdashboard.com.";
+      });
+    }
+
+    // ── Tier 2: $9.99 static workbook (.xlsx generated on device via SheetJS) ──
+    const wbBtn=$('wbBtn'), wbUnlock=$('wbUnlock'), wbUnlockBtn=$('wbUnlockBtn'), wbInput=$('wbInput'), wbErr=$('wbErr');
+    function loadSheetJS(cb){
+      if(window.XLSX) return cb();
+      const s=document.createElement('script');
+      s.src='https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js';
+      s.onload=cb; s.onerror=()=>{ wbErr.textContent='Could not load the workbook engine — check your connection and try again.'; };
+      document.head.appendChild(s);
+    }
+    function generateWorkbook(){
+      if(!current){ wbErr.textContent='Please upload your export again.'; return; }
+      loadSheetJS(()=>{
+        const {list, anyArm}=current;
+        const wb=XLSX.utils.book_new();
+        // Team Board (values)
+        const tbHead=['Rank','#','Player','GP','AVG','OBP','OPS','SLG','SB'].concat(anyArm?['IP','ERA','WHIP']:[]);
+        const tb=[tbHead].concat(list.map((p,i)=>{
+          const r=[i+1,p.number,p.name,p.gp,p.avg,p.obp,p.ops,p.slg,p.sb];
+          if(anyArm) r.push(p.ip,p.era,p.whip);
+          return r;
+        }));
+        XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(tb), 'Team Board');
+        // Suggested Lineup
+        const lu=suggestLineup(list);
+        const luAoa=[['Spot','#','Player','Why']].concat(lu.map(r=>[r.spot,r.p.number,r.p.name,r.note]));
+        XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(luAoa), 'Suggested Lineup');
+        // Pitching (if any)
+        if(anyArm){
+          const arms=list.filter(p=>p.ip).sort((a,b)=>(a.era??99)-(b.era??99));
+          const pAoa=[['#','Player','IP','ERA','WHIP']].concat(arms.map(p=>[p.number,p.name,p.ip,p.era,p.whip]));
+          XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(pAoa), 'Pitching');
         }
+        // Notes
+        XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([
+          ['Scout Dashboard — Static Workbook'],
+          ['Generated '+new Date().toLocaleDateString()+' from your GameChanger export.'],
+          ['Values only — no formulas. This snapshot will not update if you paste a new export.'],
+          ['Want a version that rebuilds from any fresh paste all season? Get the full dashboard at scoutdashboard.com.'],
+          ['Independent product — not affiliated with GameChanger.']
+        ]), 'Read Me');
+        XLSX.writeFile(wb, 'Scout_Dashboard_Team_Values.xlsx');
+      });
+    }
+    if(wbBtn){
+      wbBtn.addEventListener('click',()=>{
+        track('Checkout_Workbook',{value:9.99}); if(typeof fbq==='function') fbq('track','InitiateCheckout',{content_name:'Static Workbook',value:9.99,currency:'USD'});
+        if(PAY_URL_WORKBOOK) window.open(PAY_URL_WORKBOOK,'_blank','noopener');
+        wbUnlock.style.display='block'; wbUnlock.scrollIntoView({behavior:'smooth',block:'center'});
+      });
+      wbUnlockBtn.addEventListener('click',()=>{
+        const v=(wbInput.value||'').trim().toUpperCase();
+        if(v && v===WORKBOOK_CODE.toUpperCase()){ wbErr.textContent=''; generateWorkbook(); }
+        else wbErr.textContent="That code didn't match. Check your receipt, or email coach@scoutdashboard.com.";
       });
     }
 
