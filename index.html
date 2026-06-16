@@ -593,15 +593,15 @@
           <!-- $5.99 — PDF report -->
           <div class="tier">
             <div class="tier-price">$5.99</div>
-            <div class="tier-name">Team Report · PDF</div>
-            <p class="tier-desc">A clean, shareable PDF of your whole roster — leaderboard, a suggested batting order, and a card for every player.</p>
+            <div class="tier-name">Season Report · PDF</div>
+            <p class="tier-desc">A polished, shareable PDF of your season — team board, leaderboards, pitching staff, and season awards. Print it or send it to players and families.</p>
             <ul class="tier-feat">
-              <li>Full roster + player cards</li>
-              <li>Suggested batting order</li>
-              <li>Print &amp; share with parents</li>
-              <li class="no">Snapshot only — won't update</li>
+              <li>Team board + full leaderboards</li>
+              <li>Pitching staff + season awards</li>
+              <li>Print &amp; share with families</li>
+              <li class="no">Season snapshot — won't update</li>
             </ul>
-            <button id="reportBtn" class="tier-btn" type="button">Get the PDF — $5.99</button>
+            <button id="reportBtn" class="tier-btn" type="button">Get the Report — $5.99</button>
             <div id="unlockArea" class="unlock" style="display:none">
               <p>Paste the unlock code from your receipt:</p>
               <input id="unlockInput" type="text" placeholder="Unlock code" autocomplete="off">
@@ -1262,9 +1262,28 @@
       });
       unlockBtn.addEventListener('click',()=>{
         const v=(unlockInput.value||'').trim().toUpperCase();
-        if(v && (v===REPORT_CODE.toUpperCase() || v===TEST_CODE)){ unlockErr.textContent=''; window.print(); }
-        else unlockErr.textContent="That code didn't match. Check your receipt, or email coach@scoutdashboard.com.";
+        if(v && (v===REPORT_CODE.toUpperCase() || v===TEST_CODE)){
+          unlockErr.textContent='';
+          if(BACKEND_URL && current && current.rawCsv && !current.isSample) backendReport();
+          else window.print();   // sample team / no backend → printable client report
+        } else {
+          unlockErr.textContent="That code didn't match. Check your receipt, or email coach@scoutdashboard.com.";
+        }
       });
+    }
+    function backendReport(){
+      unlockErr.style.color='var(--mut)'; unlockErr.textContent='Building your report…';
+      const fd=new FormData();
+      fd.append('file', new Blob([current.rawCsv],{type:'text/csv'}), 'export.csv');
+      fd.append('fmt','pdf'); fd.append('code',(unlockInput.value||'').trim());
+      fetch(BACKEND_URL.replace(/\/+$/,'')+'/generate',{method:'POST',body:fd})
+        .then(r=>{ if(!r.ok) throw new Error('http'); return r.blob(); })
+        .then(blob=>{
+          const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+          a.download='Scout_Dashboard_Team_Report.pdf'; document.body.appendChild(a); a.click(); a.remove();
+          setTimeout(()=>URL.revokeObjectURL(a.href),1500); unlockErr.textContent='';
+        })
+        .catch(()=>{ unlockErr.style.color=''; unlockErr.textContent='Server was busy — opening a printable copy instead.'; window.print(); });
     }
 
     // ── Tier 2: $9.99 static workbook (.xlsx generated on device via SheetJS) ──
