@@ -369,6 +369,10 @@
              font-family:'Oswald',Arial,sans-serif;text-transform:uppercase;letter-spacing:.5px;font-weight:600;
              padding:13px 28px;border-radius:10px;cursor:pointer;transition:border-color .15s,background .15s}
   .dz-sample:hover{border-color:var(--green);background:#f3fbf5}
+  .dz-meta{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:20px}
+  .dz-meta input{flex:1;min-width:150px;max-width:220px;padding:11px 14px;border:1px solid var(--line);border-radius:8px;font-size:.95rem;font-family:'Inter',Arial,sans-serif}
+  .dz-meta input:focus{outline:none;border-color:var(--green)}
+  .dz-meta-note{margin-top:8px;font-size:.8rem;color:var(--mut)}
   .privacy-badge{display:inline-flex;align-items:center;gap:9px;margin-top:22px;background:var(--greenhl);
         color:#0f6b35;font-size:.9rem;font-weight:600;padding:9px 18px;border-radius:999px}
   .privacy-badge::before{content:"🔒";font-size:1rem}
@@ -572,6 +576,12 @@
           <input id="csvfile" type="file" accept=".csv,text/csv" style="display:none">
           <button id="sampleBtn" class="dz-sample" type="button">No file handy? Try a sample team</button>
         </div>
+        <div class="dz-meta">
+          <input id="metaTeam" type="text" placeholder="Team name" autocomplete="off">
+          <input id="metaSeason" type="text" placeholder="Season (e.g. Summer 2026)" autocomplete="off">
+          <input id="metaRecord" type="text" placeholder="Record (e.g. 21-2)" autocomplete="off">
+        </div>
+        <div class="dz-meta-note">Optional — appears on your purchased report &amp; workbook.</div>
         <div class="privacy-badge">Your stats are used only to build your dashboard — never sold, never shared.</div>
         <div id="tryError" class="try-error"></div>
       </div>
@@ -1021,6 +1031,11 @@
       try{ if(typeof fbq==='function') fbq('trackCustom',name,params||{}); }catch(e){}
       try{ if(typeof ttq==='object'&&ttq.track) ttq.track(name); }catch(e){}
     }
+    function appendMeta(fd){    // team identity → flows onto the purchased report/workbook
+      fd.append('team',   ($('metaTeam')   ? $('metaTeam').value   : '').trim());
+      fd.append('season', ($('metaSeason') ? $('metaSeason').value : '').trim());
+      fd.append('record', ($('metaRecord') ? $('metaRecord').value : '').trim());
+    }
     const esc = s => String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
     const avg3 = v => (v==null||isNaN(v)) ? '—' : v.toFixed(3).replace(/^0(?=\.)/,'');
     const f2   = v => (v==null||isNaN(v)) ? '—' : v.toFixed(2);
@@ -1275,7 +1290,7 @@
       unlockErr.style.color='var(--mut)'; unlockErr.textContent='Building your report…';
       const fd=new FormData();
       fd.append('file', new Blob([current.rawCsv],{type:'text/csv'}), 'export.csv');
-      fd.append('fmt','pdf'); fd.append('code',(unlockInput.value||'').trim());
+      fd.append('fmt','pdf'); fd.append('code',(unlockInput.value||'').trim()); appendMeta(fd);
       fetch(BACKEND_URL.replace(/\/+$/,'')+'/generate',{method:'POST',body:fd})
         .then(r=>{ if(!r.ok) throw new Error('http'); return r.blob(); })
         .then(blob=>{
@@ -1308,7 +1323,7 @@
       wbErr.style.color='var(--mut)'; wbErr.textContent='Building your workbook…';
       const fd=new FormData();
       fd.append('file', new Blob([current.rawCsv],{type:'text/csv'}), 'export.csv');
-      fd.append('fmt','xlsx'); fd.append('code',(wbInput.value||'').trim());
+      fd.append('fmt','xlsx'); fd.append('code',(wbInput.value||'').trim()); appendMeta(fd);
       fetch(BACKEND_URL.replace(/\/+$/,'')+'/generate',{method:'POST',body:fd})
         .then(r=>{ if(!r.ok) throw new Error('http'); return r.blob(); })
         .then(blob=>{
