@@ -615,7 +615,7 @@
             <div id="unlockArea" class="unlock" style="display:none">
               <p>Paste the unlock code from your receipt:</p>
               <input id="unlockInput" type="text" placeholder="Unlock code" autocomplete="off">
-              <button id="unlockBtn" class="ubtn" type="button">Unlock &amp; Open Report</button>
+              <button id="unlockBtn" class="ubtn" type="button">Unlock &amp; Download PDF</button>
               <div id="unlockErr" class="uerr"></div>
             </div>
           </div>
@@ -1009,7 +1009,7 @@
   //    (e.g. "https://scout-output.onrender.com"). While blank, the $9.99 workbook
   //    falls back to the in-browser builder. The backend produces TRUE product-quality
   //    output from the real v66 template. ──
-  const BACKEND_URL = "https://scout-output.onrender.com";
+  const BACKEND_URL = "https://scout-output-hd7ufzrqxa-uc.a.run.app";
   document.querySelectorAll("a.buy").forEach(a => { a.href = BUY_URL; });
 
   // ── Outbound click tracking stub — wire to your pixel before paid traffic ──
@@ -1287,26 +1287,18 @@
       });
     }
     function backendReport(){
-      // Open the report tab synchronously (inside the click gesture) so pop-up blockers allow it,
-      // show a placeholder, then fill it with the rendered report HTML and trigger Save-as-PDF.
-      const w=window.open('','_blank');
-      if(w){ try{ w.document.write('<!doctype html><meta charset="utf-8"><title>Building your report…</title>'+
-        '<body style="font:16px/1.5 Arial,sans-serif;color:#0F2A44;padding:48px">Building your Season Report… this tab will fill in a moment.</body>'); }catch(e){} }
-      unlockErr.style.color='var(--mut)'; unlockErr.textContent='Building your report…';
+      unlockErr.style.color='var(--mut)'; unlockErr.textContent='Building your report… (first one can take up to a minute)';
       const fd=new FormData();
       fd.append('file', new Blob([current.rawCsv],{type:'text/csv'}), 'export.csv');
-      fd.append('fmt','html'); fd.append('code',(unlockInput.value||'').trim()); appendMeta(fd);
+      fd.append('fmt','pdf'); fd.append('code',(unlockInput.value||'').trim()); appendMeta(fd);
       fetch(BACKEND_URL.replace(/\/+$/,'')+'/generate',{method:'POST',body:fd})
-        .then(r=>{ if(!r.ok) throw new Error('http'); return r.text(); })
-        .then(html=>{
-          if(!w){ unlockErr.style.color=''; unlockErr.textContent='Please allow pop-ups for this site, then click Unlock again.'; return; }
-          w.document.open(); w.document.write(html); w.document.close();
-          try{ w.document.title='Scout Dashboard — Season Report'; }catch(e){}
-          const print=()=>{ try{ w.focus(); w.print(); }catch(e){} };
-          w.onload=print; setTimeout(print,700);   // print dialog = Save as PDF; report stays viewable in the tab
-          unlockErr.textContent='';
+        .then(r=>{ if(!r.ok) throw new Error('http'); return r.blob(); })
+        .then(blob=>{
+          const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+          a.download='Scout_Dashboard_Season_Report.pdf'; document.body.appendChild(a); a.click(); a.remove();
+          setTimeout(()=>URL.revokeObjectURL(a.href),1500); unlockErr.textContent='';
         })
-        .catch(()=>{ if(w){ try{ w.close(); }catch(e){} } unlockErr.style.color=''; unlockErr.textContent='Server was busy — opening a printable copy instead.'; window.print(); });
+        .catch(()=>{ unlockErr.style.color=''; unlockErr.textContent='Server was busy — opening a printable copy instead.'; window.print(); });
     }
 
     // ── Tier 2: $9.99 static workbook (.xlsx generated on device via SheetJS) ──
