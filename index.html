@@ -26,9 +26,9 @@
   "image": "https://www.scoutdashboard.com/img/hero.webp",
   "url": "https://www.scoutdashboard.com/",
   "offers": [
-    { "@type": "Offer", "name": "Season PDF Report", "price": "5.99", "priceCurrency": "USD", "availability": "https://schema.org/InStock" },
-    { "@type": "Offer", "name": "Coach Workbook", "price": "12.99", "priceCurrency": "USD", "availability": "https://schema.org/InStock" },
-    { "@type": "Offer", "name": "Full Dashboard Analyzer", "price": "22.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://www.etsy.com/listing/4515555185/baseball-softball-stats-spreadsheet-for" }
+    { "@type": "Offer", "name": "Season PDF Report", "price": "4.99", "priceCurrency": "USD", "availability": "https://schema.org/InStock" },
+    { "@type": "Offer", "name": "Coach Workbook", "price": "8.99", "priceCurrency": "USD", "availability": "https://schema.org/InStock" },
+    { "@type": "Offer", "name": "Full Dashboard Analyzer", "price": "14.99", "priceCurrency": "USD", "availability": "https://schema.org/InStock" }
   ]
 }
 </script>
@@ -38,10 +38,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <!--
   ════════════════════════════════════════════════════════════════
-  CHECKOUT URL — one place to change it.
-  All buy buttons carry class="buy". The script at the bottom of
-  this file points them at BUY_URL. Swap Etsy for Payhip/Gumroad/
-  Shopify later by editing ONE line.
+  PRICING — single source of truth in the script at the bottom:
+  const PRICES = { pdf, coach, full }. All three products sell direct
+  on-site (no Etsy). Wire PAY_URL_* when payment is connected.
 
   PROOF IMAGES — drop-in replacement, no code edits:
     img/proof_01_raw_export.webp     → screenshot of the raw GameChanger CSV open in Excel/Sheets
@@ -708,8 +707,8 @@
               <li>Lineup, pitching, practice, awards</li>
               <li>Excel &amp; Google Sheets</li>
             </ul>
-            <a id="fullBtn" class="tier-btn" href="https://www.etsy.com/listing/4515555185/baseball-softball-stats-spreadsheet-for" target="_blank" rel="noopener" data-cta="full">Get Full Analyzer</a>
-            <div class="tier-fine etsy">Full Analyzer checkout currently opens on Etsy.</div>
+            <a class="tier-btn" href="#offer" data-cta="full">Get Full Analyzer</a>
+            <div class="tier-fine">Instant download · Excel &amp; Google Sheets</div>
           </div>
 
         </div>
@@ -931,8 +930,14 @@
         </div>
         <p class="offer-note">Best for coaches tracking a full season. One purchase, no subscription.</p>
         <div class="offer-cta">
-          <a class="btn big" href="https://www.etsy.com/listing/4515555185/baseball-softball-stats-spreadsheet-for" target="_blank" rel="noopener">Get Full Analyzer</a>
-          <span class="btn-sub">Full Analyzer checkout currently opens on Etsy · Instant delivery</span>
+          <button id="fullBtn" class="btn big" type="button">Get Full Analyzer</button>
+          <span class="btn-sub">Instant download · Excel &amp; Google Sheets · One purchase, no subscription</span>
+          <div id="fullUnlock" class="unlock" style="display:none;max-width:420px;margin:18px auto 0">
+            <p>Paste the unlock code from your receipt:</p>
+            <input id="fullInput" type="text" placeholder="Unlock code" autocomplete="off">
+            <button id="fullUnlockBtn" class="ubtn" type="button">Unlock &amp; Download</button>
+            <div id="fullErr" class="uerr"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -1091,27 +1096,16 @@
 </div>
 
 <script>
-  // ── CHECKOUT URL — change this one line to move checkout off Etsy later ──
-  const BUY_URL = "https://www.etsy.com/listing/4515555185/baseball-softball-stats-spreadsheet-for";
-
-  // ── OUTPUT BACKEND — once the generator service is deployed, paste its URL here
-  //    (e.g. "https://scout-output.onrender.com"). While blank, the $9.99 workbook
-  //    falls back to the in-browser builder. The backend produces TRUE product-quality
-  //    output from the real v66 template. ──
+  // ── OUTPUT BACKEND — Cloud Run service that generates the PDF / Coach Workbook and
+  //    serves the Full Analyzer bundle. All three products are sold direct on-site. ──
   const BACKEND_URL = "https://scout-output-hd7ufzrqxa-uc.a.run.app";
-  document.querySelectorAll("a.buy").forEach(a => { a.href = BUY_URL; });
 
   // ── SINGLE SOURCE OF TRUTH for displayed prices (change here only) ──
-  const PRICES = { pdf: "5.99", coach: "12.99", full: "22" };
+  const PRICES = { pdf: "4.99", coach: "8.99", full: "14.99" };
   document.querySelectorAll("[data-price]").forEach(el => {
     const p = PRICES[el.getAttribute("data-price")]; if (p) el.textContent = "$" + p;
   });
 
-  // ── Outbound click tracking stub — wire to your pixel before paid traffic ──
-  document.querySelectorAll("a.buy").forEach(a => a.addEventListener("click", () => {
-    if (typeof fbq === "function") fbq("track", "InitiateCheckout");
-    if (typeof ttq === "object" && ttq.track) ttq.track("ClickButton");
-  }));
 
   // ════════ INTERACTIVE TRY-IT TOOL — 100% client-side, nothing uploaded ════════
   (function(){
@@ -1344,25 +1338,40 @@
     ['dragleave','dragend'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove('drag');}));
     dz.addEventListener('drop',e=>{ e.preventDefault(); dz.classList.remove('drag'); readFile(e.dataTransfer.files[0]); });
 
-    // ════ 3-TIER OFFER — checkout links + unlock (soft gate, client-side) ════
-    // Set each PAY_URL_* to your checkout link. Tiers 1–2 generate the buyer's OWN
-    // data on their device after they paste the code shown on the receipt. Tier 3
-    // (full product) delivers YOUR files, so it goes to a real digital-delivery
-    // checkout (Gumroad/Payhip) — no code needed; that store delivers the download.
-    const PAY_URL_REPORT   = "";              // $5.99 PDF checkout link
-    const PAY_URL_WORKBOOK = "";              // $9.99 workbook checkout link
-    const PAY_URL_FULL     = "";              // $14.99 full-product checkout (Gumroad/Payhip delivers the files)
-    const REPORT_CODE      = "DUGOUT-PDF";    // code shown on the $5.99 receipt
-    const WORKBOOK_CODE    = "DUGOUT-XLS";    // code shown on the $9.99 receipt
-    const TEST_CODE        = "GATORS-TEST";   // ⚙ universal TESTING code — unlocks BOTH the PDF and workbook
-                                              //   so you can preview outputs. Remove this before going live if you want.
-    const ETSY_FALLBACK    = "https://www.etsy.com/listing/4515555185/baseball-softball-stats-spreadsheet-for";
+    // ════ PRODUCTS — checkout codes + unlock (soft gate, client-side) ════
+    // Set each PAY_URL_* to your checkout link when payment is wired. All three are
+    // sold direct on-site: the buyer enters the code from their receipt and the file
+    // is generated (PDF/Workbook) or downloaded (Full Analyzer bundle).
+    const PAY_URL_REPORT   = "";              // $4.99 PDF checkout link
+    const PAY_URL_WORKBOOK = "";              // $8.99 Coach Workbook checkout link
+    const PAY_URL_FULL     = "";              // $14.99 Full Analyzer checkout link
+    const REPORT_CODE      = "DUGOUT-PDF";    // code shown on the $4.99 receipt
+    const WORKBOOK_CODE    = "DUGOUT-XLS";    // code shown on the $8.99 receipt
+    const FULL_CODE        = "DUGOUT-FULL";   // code shown on the $14.99 receipt
+    const TEST_CODE        = "GATORS-TEST";   // ⚙ universal TESTING code — unlocks all three (remove before launch if you want)
 
-    // ── Tier 3: full dashboard direct link (falls back to Etsy until PAY_URL_FULL is set) ──
-    const fullBtn=$('fullBtn');
+    // ── Full Dashboard Analyzer: direct on-site download (gated zip from the backend) ──
+    const fullBtn=$('fullBtn'), fullUnlock=$('fullUnlock'), fullUnlockBtn=$('fullUnlockBtn'),
+          fullInput=$('fullInput'), fullErr=$('fullErr');
     if(fullBtn){
-      fullBtn.href = PAY_URL_FULL || ETSY_FALLBACK;
-      fullBtn.addEventListener('click',()=>{ if(typeof fbq==='function') fbq('track','InitiateCheckout',{content_name:'Full Analyzer',value:22,currency:'USD'}); });
+      fullBtn.addEventListener('click',()=>{
+        track('Checkout_Full',{value:14.99}); if(typeof fbq==='function') fbq('track','InitiateCheckout',{content_name:'Full Analyzer',value:14.99,currency:'USD'});
+        if(PAY_URL_FULL) window.open(PAY_URL_FULL,'_blank','noopener');
+        fullUnlock.style.display='block'; fullUnlock.scrollIntoView({behavior:'smooth',block:'center'});
+      });
+      fullUnlockBtn.addEventListener('click',()=>{
+        const v=(fullInput.value||'').trim().toUpperCase();
+        if(!(v===FULL_CODE.toUpperCase() || v===TEST_CODE)){
+          fullErr.textContent="That code didn't match. Check your receipt, or email coach@scoutdashboard.com."; return; }
+        fullErr.style.color='var(--mut)'; fullErr.textContent='Preparing your download…';
+        const fd=new FormData(); fd.append('code', fullInput.value.trim());
+        fetch(BACKEND_URL.replace(/\/+$/,'')+'/full',{method:'POST',body:fd})
+          .then(r=>{ if(!r.ok) throw new Error('http'); return r.blob(); })
+          .then(blob=>{ const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+            a.download='Scout_Dashboard_Full_Analyzer.zip'; document.body.appendChild(a); a.click(); a.remove();
+            setTimeout(()=>URL.revokeObjectURL(a.href),1500); fullErr.textContent=''; })
+          .catch(()=>{ fullErr.style.color=''; fullErr.textContent='Download failed — please try again, or email coach@scoutdashboard.com.'; });
+      });
     }
 
     // ── Tier 1: $5.99 PDF ──
@@ -1370,7 +1379,7 @@
           unlockInput=$('unlockInput'), unlockErr=$('unlockErr');
     if(reportBtn){
       reportBtn.addEventListener('click',()=>{
-        track('Checkout_PDF',{value:5.99}); if(typeof fbq==='function') fbq('track','InitiateCheckout',{content_name:'Team Report PDF',value:5.99,currency:'USD'});
+        track('Checkout_PDF',{value:4.99}); if(typeof fbq==='function') fbq('track','InitiateCheckout',{content_name:'Team Report PDF',value:4.99,currency:'USD'});
         if(PAY_URL_REPORT) window.open(PAY_URL_REPORT,'_blank','noopener');
         unlockArea.style.display='block'; unlockArea.scrollIntoView({behavior:'smooth',block:'center'});
       });
@@ -1412,11 +1421,12 @@
     }
     function generateWorkbook(){
       if(!current){ wbErr.textContent='Please upload your export again.'; return; }
-      // True product-quality path: send the raw export to the backend (real template + recalc).
-      // Falls back to the in-browser builder if the backend isn't configured, it's the sample team,
-      // or the server errors.
-      if(BACKEND_URL && current.rawCsv && !current.isSample){ backendWorkbook(); return; }
-      clientSideWorkbook();
+      // Coach Workbook is generated server-side from the real export (no client-side fallback).
+      if(current.isSample || !current.rawCsv){
+        wbErr.style.color=''; wbErr.textContent='This is the sample team — upload your own GameChanger export above to generate your Coach Workbook.';
+        $('dropzone').scrollIntoView({behavior:'smooth',block:'center'}); return;
+      }
+      backendWorkbook();
     }
     function backendWorkbook(){
       wbErr.style.color='var(--mut)'; wbErr.textContent='Building your Coach Workbook… (first one can take up to a minute)';
@@ -1430,7 +1440,7 @@
           a.download='Scout_Dashboard_Coach_Workbook.xlsx'; document.body.appendChild(a); a.click(); a.remove();
           setTimeout(()=>URL.revokeObjectURL(a.href),1500); wbErr.textContent='';
         })
-        .catch(()=>{ wbErr.style.color=''; wbErr.textContent='Server was busy — built a local copy instead.'; clientSideWorkbook(); });
+        .catch(()=>{ wbErr.style.color=''; wbErr.textContent='Server was busy — please try again in a moment, or email coach@scoutdashboard.com.'; });
     }
     function clientSideWorkbook(){
       loadExcelJS(async ()=>{
@@ -1512,7 +1522,7 @@
     }
     if(wbBtn){
       wbBtn.addEventListener('click',()=>{
-        track('Checkout_Workbook',{value:12.99}); if(typeof fbq==='function') fbq('track','InitiateCheckout',{content_name:'Coach Workbook',value:12.99,currency:'USD'});
+        track('Checkout_Workbook',{value:8.99}); if(typeof fbq==='function') fbq('track','InitiateCheckout',{content_name:'Coach Workbook',value:8.99,currency:'USD'});
         if(PAY_URL_WORKBOOK) window.open(PAY_URL_WORKBOOK,'_blank','noopener');
         wbUnlock.style.display='block'; wbUnlock.scrollIntoView({behavior:'smooth',block:'center'});
       });
