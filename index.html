@@ -1320,15 +1320,15 @@
       clientSideWorkbook();
     }
     function backendWorkbook(){
-      wbErr.style.color='var(--mut)'; wbErr.textContent='Building your workbook…';
+      wbErr.style.color='var(--mut)'; wbErr.textContent='Building your Coach Workbook… (first one can take up to a minute)';
       const fd=new FormData();
       fd.append('file', new Blob([current.rawCsv],{type:'text/csv'}), 'export.csv');
-      fd.append('fmt','xlsx'); fd.append('code',(wbInput.value||'').trim()); appendMeta(fd);
+      fd.append('fmt','coach'); fd.append('code',(wbInput.value||'').trim()); appendMeta(fd);
       fetch(BACKEND_URL.replace(/\/+$/,'')+'/generate',{method:'POST',body:fd})
         .then(r=>{ if(!r.ok) throw new Error('http'); return r.blob(); })
         .then(blob=>{
           const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
-          a.download='Scout_Dashboard_Team.xlsx'; document.body.appendChild(a); a.click(); a.remove();
+          a.download='Scout_Dashboard_Coach_Workbook.xlsx'; document.body.appendChild(a); a.click(); a.remove();
           setTimeout(()=>URL.revokeObjectURL(a.href),1500); wbErr.textContent='';
         })
         .catch(()=>{ wbErr.style.color=''; wbErr.textContent='Server was busy — built a local copy instead.'; clientSideWorkbook(); });
