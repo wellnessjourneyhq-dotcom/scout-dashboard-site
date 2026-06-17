@@ -373,6 +373,10 @@
   .dz-meta input{flex:1;min-width:150px;max-width:220px;padding:11px 14px;border:1px solid var(--line);border-radius:8px;font-size:.95rem;font-family:'Inter',Arial,sans-serif}
   .dz-meta input:focus{outline:none;border-color:var(--green)}
   .dz-meta-note{margin-top:8px;font-size:.8rem;color:var(--mut)}
+  .review{margin:14px 0 22px;padding:18px 20px 8px;background:var(--graybg,#F7F8FA);border:1px solid var(--line);border-radius:12px}
+  .review .res-h{margin:0}
+  .review-note{font-size:.85rem;color:var(--mut);margin:6px 0 4px}
+  .review .dz-meta{justify-content:flex-start;margin-top:12px}
   .privacy-badge{display:inline-flex;align-items:center;gap:9px;margin-top:22px;background:var(--greenhl);
         color:#0f6b35;font-size:.9rem;font-weight:600;padding:9px 18px;border-radius:999px}
   .privacy-badge::before{content:"🔒";font-size:1rem}
@@ -595,6 +599,17 @@
 
         <div class="res-h" style="margin-top:30px">Top 3 Player Cards <span class="tag">Your Data</span></div>
         <div class="pcards" id="pcards"></div>
+
+        <!-- REVIEW STEP: team details (editable after upload; appear on what you generate) -->
+        <div class="review" id="reviewBox">
+          <div class="res-h">Confirm your team details <span class="tag">appears on your report &amp; workbook</span></div>
+          <p class="review-note">Add or edit these before you download — they're stamped on your PDF and Coach Workbook. (Optional, but recommended.)</p>
+          <div class="dz-meta">
+            <input id="metaTeam2" type="text" placeholder="Team name" autocomplete="off">
+            <input id="metaSeason2" type="text" placeholder="Season (e.g. Summer 2026)" autocomplete="off">
+            <input id="metaRecord2" type="text" placeholder="Record (e.g. 21-2)" autocomplete="off">
+          </div>
+        </div>
 
         <!-- 3-TIER OFFER (built from the upload above) -->
         <h3 id="lockHeadline" class="tiers-head">That's a free taste. Take your team's numbers with you — three ways:</h3>
@@ -1032,9 +1047,11 @@
       try{ if(typeof ttq==='object'&&ttq.track) ttq.track(name); }catch(e){}
     }
     function appendMeta(fd){    // team identity → flows onto the purchased report/workbook
-      fd.append('team',   ($('metaTeam')   ? $('metaTeam').value   : '').trim());
-      fd.append('season', ($('metaSeason') ? $('metaSeason').value : '').trim());
-      fd.append('record', ($('metaRecord') ? $('metaRecord').value : '').trim());
+      // The review step (stage-2 inputs) is authoritative; fall back to the pre-upload inputs.
+      const pick=(a,b)=>{ const v2=$(b)?($(b).value||'').trim():''; return v2 || ($(a)?($(a).value||'').trim():''); };
+      fd.append('team',   pick('metaTeam','metaTeam2'));
+      fd.append('season', pick('metaSeason','metaSeason2'));
+      fd.append('record', pick('metaRecord','metaRecord2'));
     }
     const esc = s => String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
     const avg3 = v => (v==null||isNaN(v)) ? '—' : v.toFixed(3).replace(/^0(?=\.)/,'');
@@ -1126,6 +1143,8 @@
       if(topHit) $('lockHeadline').innerHTML="Nice — #"+esc(topHit.number)+" "+esc(topHit.first||topHit.last)+" tops your team. Take your numbers with you — three ways:";
       current={list, anyArm};
       buildReport(list, anyArm);
+      // carry any pre-upload team details into the editable review step
+      ['Team','Season','Record'].forEach(k=>{ const a=$('meta'+k), b=$('meta'+k+'2'); if(a&&b&&!b.value&&a.value) b.value=a.value; });
       dz.style.display='none'; results.style.display='block';
       results.scrollIntoView({behavior:'smooth',block:'start'});
     }
