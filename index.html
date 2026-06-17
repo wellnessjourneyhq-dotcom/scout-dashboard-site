@@ -71,8 +71,8 @@
     --maxw:1120px;
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{font-family:'Inter',Arial,sans-serif;color:var(--ink);background:var(--navy3);line-height:1.6}
+  html{scroll-behavior:smooth;scroll-padding-top:78px;-webkit-text-size-adjust:100%}
+  body{font-family:'Inter',Arial,sans-serif;color:var(--ink);background:var(--navy3);line-height:1.6;overflow-x:hidden}
   h1,h2,h3,.btn,.eyebrow{font-family:'Oswald',Arial,sans-serif;text-transform:uppercase;letter-spacing:.5px}
   img{max-width:100%;display:block}
   .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
@@ -264,7 +264,7 @@
   details[open] summary::after{transform:rotate(45deg)}
   details p{padding:0 26px 22px;color:var(--mut)}
 
-  /* ───── Tripwire ($5.99 report) ───── */
+  /* ───── Tripwire ($4.99 report) ───── */
   .tw-or{margin:30px 0 18px;color:var(--mut);font-size:.92rem;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
   .tw-card{display:grid;grid-template-columns:1.4fr 1fr;gap:0;background:#fff;border:2px solid var(--green);
            border-radius:16px;overflow:hidden;box-shadow:0 10px 36px rgba(22,163,74,.14);text-align:left}
@@ -428,27 +428,99 @@
         color:#fff;font-size:.82rem;padding:6px 14px;border-radius:999px}
   .try-again{display:inline-block;margin-top:22px;color:var(--mut);font-size:.9rem;text-decoration:underline;cursor:pointer;background:none;border:none}
 
-  /* ───── Responsive ───── */
-  @media(max-width:960px){
-    .hero .wrap,.ba,.guarantee,.proof-grid{grid-template-columns:1fr}
-    .offer-body ul{grid-template-columns:1fr}
-    .hero h1{font-size:2.4rem}
-    .pains,.steps{grid-template-columns:1fr}
-    .features{grid-template-columns:1fr}
-    .glance,.pcards{grid-template-columns:1fr}
-    .tw-card{grid-template-columns:1fr}
-    .tiers{grid-template-columns:1fr}
+  /* ═══════════ RESPONSIVE LADDER ═══════════ */
+
+  /* ── Tablet landscape: ease the hero, keep editorial two-up layouts ── */
+  @media(max-width:1024px){
+    :root{--maxw:960px}
+    .hero h1{font-size:2.8rem}
+    .hero .wrap{gap:40px}
+    section{padding:72px 0}
+  }
+
+  /* ── Tablet portrait: stack the hero, cards go two-up (not stretched single col) ── */
+  @media(max-width:880px){
+    .hero .wrap{grid-template-columns:1fr;gap:32px}
+    .hero .sub{max-width:none}
+    .ba,.offer-body ul,.tw-card,.tiers{grid-template-columns:1fr}
+    .pains,.guarantee,.features,.proof-grid,.steps{grid-template-columns:repeat(2,1fr)}
+    .proof.wide{grid-column:1/-1}
+    h2{font-size:2.1rem}
+    .final h2{font-size:2.3rem}
+    section{padding:64px 0}
+    /* nav collapses to logo + sticky CTA */
+    .nav .navlinks,.nav-right .btn{display:none}
+    .mobile-cta{display:block}
+    body{padding-bottom:76px}
+  }
+
+  /* ── Phones: single column, full-width tap targets, tuned type & spacing ── */
+  @media(max-width:600px){
+    .wrap{padding:0 18px}
+    section{padding:48px 0}
+    h2{font-size:1.75rem}
+    .lead{font-size:1.05rem}
+    .eyebrow{font-size:.82rem;letter-spacing:1.8px}
+
+    /* hero */
+    .hero{padding:54px 0 60px}
+    .hero h1{font-size:2.05rem}
+    .hero .sub{font-size:1.08rem;margin-bottom:26px}
+    .cta-row{flex-direction:column;align-items:stretch;gap:14px;margin-bottom:30px}
+    .cta-row>div{width:100%}
+    .stats{flex-wrap:wrap;gap:16px 0;max-width:none;padding-top:22px}
+    .stat{flex:1 1 44%;padding-right:0}
+    .stat .n{font-size:1.7rem}
+
+    /* full-width, easy-to-tap CTAs everywhere */
+    .btn{display:block;width:100%;text-align:center;padding:16px 22px}
+    .btn.big{font-size:1.1rem;padding:17px 22px}
+    .btn-ghost{display:block;width:100%;text-align:center;padding:15px 22px}
+    .final .btn-ghost{margin-left:0!important;margin-top:14px}
+
+    /* every card grid to one column */
+    .pains,.steps,.features,.guarantee,.proof-grid,.glance,.pcards{grid-template-columns:1fr}
+
+    /* trim heavy inner paddings so content breathes */
+    .pain,.g-card,.ba-col{padding:26px 22px}
+    .offer-head{padding:22px 24px}
+    .offer-body{padding:26px 22px}
+    .tw-left,.tw-right{padding:24px 22px}
+    .empathy{padding:20px 22px;font-size:1rem}
+    .feature .fbody{padding:22px 22px 26px}
+    .offer-price .now{font-size:2.8rem}
+    .final h2{font-size:1.95rem}
+    .tiers-head{font-size:1.2rem}
+
+    /* leaderboard: drop the deepest stat cols on small screens */
     .lb th:nth-child(3),.lb td:nth-child(3),
     .lb th:nth-child(4),.lb td:nth-child(4){display:none}
-    h2{font-size:1.9rem}
-    .final h2{font-size:2.1rem}
-    section{padding:60px 0}
-    .mobile-cta{display:block}
-    body{padding-bottom:70px}
-    .nav .btn{display:none}
-    .nav .navlinks{display:none}
+
+    /* comparison table: freeze the feature column, swipe the products */
+    .cmp-hint{display:block}
     .cmp-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
-    .cmp{min-width:680px}
+    .cmp{min-width:540px;font-size:.9rem}
+    .cmp th,.cmp td{padding:11px 12px}
+    .cmp thead th:first-child,.cmp tbody th{position:sticky;left:0;z-index:1}
+    .cmp thead th:first-child{background:var(--navy)}
+    .cmp tbody th{box-shadow:1px 0 0 var(--line)}
+
+    .mobile-cta{display:block}
+    body{padding-bottom:74px}
+    .nav .navlinks,.nav-right .btn{display:none}
+  }
+
+  /* ── Small phones: tighten type and chrome ── */
+  @media(max-width:400px){
+    .wrap{padding:0 14px}
+    .hero h1{font-size:1.85rem}
+    h2{font-size:1.6rem}
+    .brand .bt b{font-size:1.1rem}
+    .brand .bt span{font-size:.66rem}
+    .brand img{height:34px}
+    .stat .n{font-size:1.5rem}
+    .offer-price .now{font-size:2.4rem}
+    .res-h{font-size:1.15rem}
   }
 
   /* ── nav links ── */
@@ -476,6 +548,7 @@
   .cmp td.n{color:#CBD5E1}
   .cmp tbody tr:last-child td,.cmp tbody tr:last-child th{border-bottom:0;font-weight:700;color:var(--navy)}
   .cmp .col-coach{background:rgba(22,163,74,.06)}
+  .cmp-hint{display:none;color:var(--ltblue);font-size:.85rem;margin:0 0 12px;font-weight:600;letter-spacing:.5px}
 </style>
 </head>
 <body>
@@ -664,6 +737,7 @@
               <li>Shareable, printable PDF</li>
             </ul>
             <button id="reportBtn" class="tier-btn" type="button" data-cta="pdf">Generate PDF Report</button>
+            <div class="tier-fine">Finished PDF · share &amp; print · not editable</div>
             <div id="unlockArea" class="unlock" style="display:none">
               <p>Paste the unlock code from your receipt:</p>
               <input id="unlockInput" type="text" placeholder="Unlock code" autocomplete="off">
@@ -686,7 +760,7 @@
               <li><b>Editable coach-planning fields</b></li>
             </ul>
             <button id="wbBtn" class="tier-btn primary" type="button" data-cta="coach">Generate Coach Workbook</button>
-            <div class="tier-fine">Stats are fixed from this export · yellow fields are editable</div>
+            <div class="tier-fine">Built from one export · stats are fixed · editable yellow planning fields · can't import new exports</div>
             <div id="wbUnlock" class="unlock" style="display:none">
               <p>Paste the unlock code from your receipt:</p>
               <input id="wbInput" type="text" placeholder="Unlock code" autocomplete="off">
@@ -729,6 +803,7 @@
     <div class="eyebrow">Which One Is Right for You?</div>
     <h2>Share. Coach. Reuse.</h2>
     <p class="lead">All three start from the same free preview of your real team. Pick the one that matches what you need to do.</p>
+    <p class="cmp-hint">← Swipe the table to compare all three →</p>
     <div class="cmp-wrap">
       <table class="cmp">
         <thead>
@@ -1253,7 +1328,7 @@
       return order;
     }
 
-    // Build the full printable report (ALL players) into #reportDoc — this is the $5.99 deliverable.
+    // Build the full printable report (ALL players) into #reportDoc — this is the $4.99 deliverable.
     function buildReport(list, anyArm){
       const today=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
       const topHit=list[0];
@@ -1374,7 +1449,7 @@
       });
     }
 
-    // ── Tier 1: $5.99 PDF ──
+    // ── Tier 1: $4.99 PDF ──
     const reportBtn=$('reportBtn'), unlockArea=$('unlockArea'), unlockBtn=$('unlockBtn'),
           unlockInput=$('unlockInput'), unlockErr=$('unlockErr');
     if(reportBtn){
