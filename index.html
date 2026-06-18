@@ -27,7 +27,7 @@
   "url": "https://www.scoutdashboard.com/",
   "offers": [
     { "@type": "Offer", "name": "Season PDF Report", "price": "4.99", "priceCurrency": "USD", "availability": "https://schema.org/InStock" },
-    { "@type": "Offer", "name": "Coach Workbook", "price": "8.99", "priceCurrency": "USD", "availability": "https://schema.org/InStock" },
+    { "@type": "Offer", "name": "Team Development Report", "price": "8.99", "priceCurrency": "USD", "availability": "https://schema.org/InStock" },
     { "@type": "Offer", "name": "Full Dashboard Analyzer", "price": "14.99", "priceCurrency": "USD", "availability": "https://schema.org/InStock" }
   ]
 }
@@ -577,7 +577,7 @@
     <div>
       <div class="badge">For Baseball &amp; Softball Coaches</div>
       <h1>Your GameChanger Export, <em>Finally Coach-Ready</em></h1>
-      <p class="sub">Upload your GameChanger stats and turn the raw export into a polished <b>season report</b>, an editable <b>coach workbook</b>, or a reusable <b>dashboard</b> — in minutes.</p>
+      <p class="sub">Upload your GameChanger stats and turn the raw export into a polished <b>season report</b>, a full <b>team development report</b>, or a reusable <b>dashboard</b> — in minutes.</p>
       <div class="cta-row">
         <div>
           <a class="btn big" href="#demo">Try It Free With My Export</a>
@@ -587,7 +587,7 @@
       </div>
       <div class="stats">
         <div class="stat"><div class="n">Share</div><div class="l">Season PDF Report</div></div>
-        <div class="stat"><div class="n">Coach</div><div class="l">Coach Workbook</div></div>
+        <div class="stat"><div class="n">Coach</div><div class="l">Team Development Report</div></div>
         <div class="stat"><div class="n">Reuse</div><div class="l">Full Analyzer</div></div>
         <div class="stat"><div class="n">2 min</div><div class="l">From Export to File</div></div>
       </div>
@@ -704,7 +704,7 @@
         <!-- STEP: confirm team details first (so they're never lost; stamped on your files) -->
         <div class="review" id="reviewBox">
           <div class="res-h">Confirm your team details <span class="tag">step 1 of 2</span></div>
-          <p class="review-note">Add or edit these now — they're stamped on your PDF and Coach Workbook. Optional, but recommended.</p>
+          <p class="review-note">Add or edit these now — they're stamped on the title and header of every report you generate. Optional, but recommended.</p>
           <div class="dz-meta">
             <input id="metaTeam2" type="text" placeholder="Team name" autocomplete="off">
             <input id="metaSeason2" type="text" placeholder="Season (e.g. Summer 2026)" autocomplete="off">
@@ -746,25 +746,25 @@
             </div>
           </div>
 
-          <!-- Coach Workbook — Coach (recommended) -->
+          <!-- Team Development Report — Coach (recommended) -->
           <div class="tier feat">
-            <div class="tier-badge">Most practical for coaches</div>
+            <div class="tier-badge">Most popular with coaches</div>
             <span class="purpose coach">Best for coaching</span>
             <div class="tier-price" data-price="coach"></div>
-            <div class="tier-name">Coach Workbook</div>
-            <p class="tier-desc">A one-season editable coaching workbook from your export — player cards, lineup planning, pitching decisions, practice focus, and season wrap-up.</p>
+            <div class="tier-name">Team Development Report</div>
+            <p class="tier-desc">Everything in the Season Report plus a full coaching analysis of your export — strengths &amp; weaknesses, top practice priorities, focus players, and a 30-day plan.</p>
             <ul class="tier-feat">
-              <li>Player cards + Team Scout Board</li>
-              <li>Game-Day Lineup &amp; Pitching Plan</li>
-              <li>Practice Plan + Awards &amp; Recap</li>
-              <li><b>Editable coach-planning fields</b></li>
+              <li>The complete Season Report (Scout Board, leaderboards, pitching, awards)</li>
+              <li>Coach's executive summary + strengths &amp; weaknesses</li>
+              <li>Top practice priorities — with drills and the players affected</li>
+              <li><b>Focus players, lineup &amp; pitching notes, 30-day plan</b></li>
             </ul>
-            <button id="wbBtn" class="tier-btn primary" type="button" data-cta="coach">Generate Coach Workbook</button>
-            <div class="tier-fine">Built from one export · stats are fixed · editable yellow planning fields · can't import new exports</div>
+            <button id="wbBtn" class="tier-btn primary" type="button" data-cta="devreport">Generate Team Development Report</button>
+            <div class="tier-fine">Polished multi-page PDF · share &amp; print · built from this export</div>
             <div id="wbUnlock" class="unlock" style="display:none">
               <p>Paste the unlock code from your receipt:</p>
               <input id="wbInput" type="text" placeholder="Unlock code" autocomplete="off">
-              <button id="wbUnlockBtn" class="ubtn" type="button">Unlock &amp; Download Workbook</button>
+              <button id="wbUnlockBtn" class="ubtn" type="button">Unlock &amp; Download Report</button>
               <div id="wbErr" class="uerr"></div>
             </div>
           </div>
@@ -810,24 +810,24 @@
           <tr>
             <th style="text-align:left">Feature</th>
             <th>Season PDF Report<span class="pp">SHARE</span></th>
-            <th class="col-coach">Coach Workbook<span class="pp">COACH</span></th>
+            <th class="col-coach">Team Development Report<span class="pp">COACH</span></th>
             <th>Full Dashboard Analyzer<span class="pp">REUSE</span></th>
           </tr>
         </thead>
         <tbody>
           <tr><th>Generated from your GameChanger export</th><td class="y">✓</td><td class="y col-coach">✓</td><td class="y">✓</td></tr>
           <tr><th>Free preview before you buy</th><td class="y">✓</td><td class="y col-coach">✓</td><td class="y">✓</td></tr>
-          <tr><th>Shareable PDF</th><td class="y">✓</td><td class="n col-coach">—</td><td class="n">—</td></tr>
-          <tr><th>Team Scout Board</th><td class="y">✓</td><td class="y col-coach">✓</td><td class="y">✓</td></tr>
-          <tr><th>Leaderboards</th><td class="y">✓</td><td class="y col-coach">✓</td><td class="y">✓</td></tr>
-          <tr><th>Player Cards</th><td class="y">✓</td><td class="y col-coach">✓</td><td class="y">✓</td></tr>
-          <tr><th>Game-Day Lineup Planner</th><td class="n">—</td><td class="y col-coach">✓</td><td class="y">✓</td></tr>
-          <tr><th>Pitching Plan</th><td class="n">—</td><td class="y col-coach">✓</td><td class="y">✓</td></tr>
-          <tr><th>Practice Plan</th><td class="n">—</td><td class="y col-coach">✓</td><td class="y">✓</td></tr>
-          <tr><th>Awards &amp; Recap</th><td class="y">✓</td><td class="y col-coach">✓</td><td class="y">✓</td></tr>
-          <tr><th>Editable coach-planning fields</th><td class="n">—</td><td class="y col-coach">✓</td><td class="y">✓</td></tr>
-          <tr><th>Import new exports later</th><td class="n">—</td><td class="n col-coach">—</td><td class="y">✓</td></tr>
-          <tr><th>Best for</th><td>Sharing</td><td class="col-coach">Coaching</td><td>Reusing all season</td></tr>
+          <tr><th>Team Scout Board, leaderboards &amp; pitching staff</th><td class="y">✓</td><td class="y col-coach">✓</td><td class="y">✓</td></tr>
+          <tr><th>Awards &amp; Season Recap</th><td class="y">✓</td><td class="y col-coach">✓</td><td class="y">✓</td></tr>
+          <tr><th>Coach's Executive Summary</th><td class="n">—</td><td class="y col-coach">✓</td><td class="n">—</td></tr>
+          <tr><th>Team Strengths &amp; Weaknesses</th><td class="n">—</td><td class="y col-coach">✓</td><td class="n">—</td></tr>
+          <tr><th>Top Practice Priorities (with drills)</th><td class="n">—</td><td class="y col-coach">✓</td><td class="n">—</td></tr>
+          <tr><th>Focus Players</th><td class="n">—</td><td class="y col-coach">✓</td><td class="n">—</td></tr>
+          <tr><th>Lineup &amp; pitching recommendations</th><td class="n">—</td><td class="y col-coach">✓</td><td class="y">✓</td></tr>
+          <tr><th>30-Day Development Plan</th><td class="n">—</td><td class="y col-coach">✓</td><td class="n">—</td></tr>
+          <tr><th>Shareable, print-ready PDF</th><td class="y">✓</td><td class="y col-coach">✓</td><td class="n">—</td></tr>
+          <tr><th>Editable &amp; reusable — import new exports all season</th><td class="n">—</td><td class="n col-coach">—</td><td class="y">✓</td></tr>
+          <tr><th>Best for</th><td>Sharing</td><td class="col-coach">Coaching decisions</td><td>Reusing all season</td></tr>
         </tbody>
       </table>
     </div>
@@ -839,7 +839,7 @@
   <div class="wrap center">
     <div class="eyebrow">Sample Outputs</div>
     <h2>See What You'll Get — Before You Buy</h2>
-    <p class="lead">Real views from real exports. The <b>PDF Report</b> shares it, the <b>Coach Workbook</b> lets you plan in it, and the <b>Full Analyzer</b> rebuilds it from every new export.</p>
+    <p class="lead">Real views from real exports. The <b>Season Report</b> shares it, the <b>Team Development Report</b> tells you what to do about it, and the <b>Full Analyzer</b> rebuilds it from every new export.</p>
     <div class="proof-grid">
       <div class="proof wide">
         <img src="img/proof_01_raw_export.webp" alt="The raw GameChanger export next to the finished Scout Dashboard views">
@@ -915,7 +915,7 @@
       <div class="step">
         <div class="num">4</div>
         <h3>Choose</h3>
-        <p>Generate your Season PDF Report, Coach Workbook, or Full Dashboard Analyzer.</p>
+        <p>Generate your Season PDF Report, Team Development Report, or Full Dashboard Analyzer.</p>
       </div>
     </div>
     <p class="steps-note">Works with standard GameChanger stat exports for baseball &amp; softball.</p>
@@ -1101,20 +1101,20 @@
         <p>Yes. Upload your export and preview key stats — your team leaderboard and top player cards — before choosing a product. No sign-up required.</p>
       </details>
       <details>
-        <summary>What's the difference between the PDF and the Coach Workbook?</summary>
-        <p>The <b>Season PDF Report</b> is a polished, shareable report — perfect for parents, players, and end-of-season recaps. The <b>Coach Workbook</b> is an editable one-season workbook for lineups, player cards, pitching plans, practice plans, and recap work.</p>
+        <summary>What's the difference between the Season Report and the Team Development Report?</summary>
+        <p>The <b>Season PDF Report</b> is a polished, shareable recap — Team Scout Board, leaderboards, pitching staff, and season awards. The <b>Team Development Report</b> includes all of that <em>plus</em> a full coaching analysis: an executive summary, team strengths &amp; weaknesses, top practice priorities with drills, focus players, lineup &amp; pitching notes, and a 30-day development plan.</p>
       </details>
       <details>
-        <summary>What's the difference between the Coach Workbook and the Full Analyzer?</summary>
-        <p>The <b>Coach Workbook</b> is generated from one export — your stats for that season are fixed in it. The <b>Full Dashboard Analyzer</b> is reusable: import new GameChanger exports throughout the season and the dashboards rebuild.</p>
+        <summary>What's the difference between the Team Development Report and the Full Analyzer?</summary>
+        <p>The <b>Team Development Report</b> is a finished, print-ready PDF built from one export — read it, share it, coach from it. The <b>Full Dashboard Analyzer</b> is the reusable Excel &amp; Google Sheets product: import new GameChanger exports all season and the dashboards rebuild.</p>
       </details>
       <details>
-        <summary>Does the Coach Workbook work in Google Sheets?</summary>
-        <p>It's Excel-first and Google Sheets-friendly for everyday editing. Some formatting and edit-protection may look slightly different in Google Sheets, but your stats and coach-planning fields work in both.</p>
+        <summary>Can I edit the Team Development Report?</summary>
+        <p>It's a polished, print-ready PDF — perfect to share with coaches, parents, and players. If you want files you can edit and reuse all season, choose the <b>Full Dashboard Analyzer</b>.</p>
       </details>
       <details>
-        <summary>Can I import new exports into the Coach Workbook?</summary>
-        <p>No — the Coach Workbook is a one-season workbook generated from a single export. If you want to import new exports all season, choose the Full Dashboard Analyzer.</p>
+        <summary>Is the Team Development Report built from one export?</summary>
+        <p>Yes — it's generated from a single GameChanger export, so it reflects your team at that point in the season. Run it again anytime with a fresh export. To import new exports into one reusable file, choose the Full Dashboard Analyzer.</p>
       </details>
       <details>
         <summary>Is it for baseball and softball?</summary>
@@ -1171,7 +1171,7 @@
 </div>
 
 <script>
-  // ── OUTPUT BACKEND — Cloud Run service that generates the PDF / Coach Workbook and
+  // ── OUTPUT BACKEND — Cloud Run service that generates the Season Report / Team Development Report and
   //    serves the Full Analyzer bundle. All three products are sold direct on-site. ──
   const BACKEND_URL = "https://scout-output-hd7ufzrqxa-uc.a.run.app";
 
@@ -1418,7 +1418,7 @@
     // sold direct on-site: the buyer enters the code from their receipt and the file
     // is generated (PDF/Workbook) or downloaded (Full Analyzer bundle).
     const PAY_URL_REPORT   = "";              // $4.99 PDF checkout link
-    const PAY_URL_WORKBOOK = "";              // $8.99 Coach Workbook checkout link
+    const PAY_URL_WORKBOOK = "";              // $8.99 Team Development Report checkout link
     const PAY_URL_FULL     = "";              // $14.99 Full Analyzer checkout link
     const REPORT_CODE      = "DUGOUT-PDF";    // code shown on the $4.99 receipt
     const WORKBOOK_CODE    = "DUGOUT-XLS";    // code shown on the $8.99 receipt
@@ -1484,7 +1484,7 @@
         .catch(()=>{ unlockErr.style.color=''; unlockErr.textContent='Server was busy — opening a printable copy instead.'; window.print(); });
     }
 
-    // ── Tier 2: Coach Workbook (backend fmt=coach; in-browser offline copy as fallback) ──
+    // ── Tier 2: Team Development Report (backend fmt=devreport → multi-page PDF) ──
     const wbBtn=$('wbBtn'), wbUnlock=$('wbUnlock'), wbUnlockBtn=$('wbUnlockBtn'), wbInput=$('wbInput'), wbErr=$('wbErr');
     // ExcelJS (free, in-browser) — supports real styling so the workbook looks like the product.
     function loadExcelJS(cb){
@@ -1496,23 +1496,23 @@
     }
     function generateWorkbook(){
       if(!current){ wbErr.textContent='Please upload your export again.'; return; }
-      // Coach Workbook is generated server-side from the real export (no client-side fallback).
+      // Team Development Report is generated server-side from the real export.
       if(current.isSample || !current.rawCsv){
-        wbErr.style.color=''; wbErr.textContent='This is the sample team — upload your own GameChanger export above to generate your Coach Workbook.';
+        wbErr.style.color=''; wbErr.textContent='This is the sample team — upload your own GameChanger export above to generate your Team Development Report.';
         $('dropzone').scrollIntoView({behavior:'smooth',block:'center'}); return;
       }
       backendWorkbook();
     }
     function backendWorkbook(){
-      wbErr.style.color='var(--mut)'; wbErr.textContent='Building your Coach Workbook… (first one can take up to a minute)';
+      wbErr.style.color='var(--mut)'; wbErr.textContent='Building your Team Development Report… (first one can take up to a minute)';
       const fd=new FormData();
       fd.append('file', new Blob([current.rawCsv],{type:'text/csv'}), 'export.csv');
-      fd.append('fmt','coach'); fd.append('code',(wbInput.value||'').trim()); appendMeta(fd);
+      fd.append('fmt','devreport'); fd.append('code',(wbInput.value||'').trim()); appendMeta(fd);
       fetch(BACKEND_URL.replace(/\/+$/,'')+'/generate',{method:'POST',body:fd})
         .then(r=>{ if(!r.ok) throw new Error('http'); return r.blob(); })
         .then(blob=>{
           const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
-          a.download='Scout_Dashboard_Coach_Workbook.xlsx'; document.body.appendChild(a); a.click(); a.remove();
+          a.download='Scout_Dashboard_Team_Development_Report.pdf'; document.body.appendChild(a); a.click(); a.remove();
           setTimeout(()=>URL.revokeObjectURL(a.href),1500); wbErr.textContent='';
         })
         .catch(()=>{ wbErr.style.color=''; wbErr.textContent='Server was busy — please try again in a moment, or email coach@scoutdashboard.com.'; });
@@ -1582,7 +1582,7 @@
         rt.font={name:'Arial',bold:true,size:13,color:{argb:WHITE}};
         rt.alignment={vertical:'middle',indent:1}; rm.getRow(1).height=26;
         ['Generated '+new Date().toLocaleDateString()+' from your GameChanger export.',
-         'This is a lightweight offline copy your browser built because the server was busy. For the full designed Coach Workbook, try again in a moment.',
+         'This is a lightweight offline copy your browser built because the server was busy. For the full Team Development Report, try again in a moment.',
          'For the reusable version that imports new exports all season, see the Full Dashboard Analyzer at scoutdashboard.com.',
          'Independent product — not affiliated with, endorsed by, or connected to GameChanger.'
         ].forEach((t,i)=>{ const c=rm.getCell(i+3,1); c.value=t; c.font={name:'Arial',size:11,color:{argb:INK}}; });
@@ -1597,7 +1597,7 @@
     }
     if(wbBtn){
       wbBtn.addEventListener('click',()=>{
-        track('Checkout_Workbook',{value:8.99}); if(typeof fbq==='function') fbq('track','InitiateCheckout',{content_name:'Coach Workbook',value:8.99,currency:'USD'});
+        track('Checkout_Workbook',{value:8.99}); if(typeof fbq==='function') fbq('track','InitiateCheckout',{content_name:'Team Development Report',value:8.99,currency:'USD'});
         if(PAY_URL_WORKBOOK) window.open(PAY_URL_WORKBOOK,'_blank','noopener');
         wbUnlock.style.display='block'; wbUnlock.scrollIntoView({behavior:'smooth',block:'center'});
       });
