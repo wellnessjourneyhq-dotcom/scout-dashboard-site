@@ -183,13 +183,18 @@
         <span class="flex items-center gap-2"><span class="text-green2">✓</span> From $4.99 · no subscription</span>
       </div>
     </div>
-    <!-- HERO IMAGE: real Season Report page (swap: img/season1.webp) -->
-    <div class="relative">
-      <div class="absolute -inset-3 bg-green2/10 blur-2xl rounded-3xl"></div>
+    <!-- HERO COLLAGE: real report pages layered into a mockup.
+         Primary = season1; a Team Development page peeks in on sm+ (clipped by the
+         hero's overflow-hidden). IMAGE SWAP: primary img/season1.webp, peek img/team_dev3.webp -->
+    <div class="relative sm:pb-10 sm:pr-6">
+      <div class="absolute -inset-4 bg-green2/10 blur-3xl rounded-[2rem]"></div>
+      <span class="hidden sm:inline-flex absolute -top-3 left-3 z-20 items-center gap-1.5 bg-green text-white text-[.62rem] font-display uppercase tracking-widest font-bold px-3 py-1 rounded-full shadow-lg">★ Real report output</span>
       <img src="img/season1.webp" alt="Scout Dashboard Team Scout Board — every player ranked with roles and coaching notes"
-           class="relative rounded-xl border border-white/15 shadow-2xl shadow-black/50 w-full" loading="eager">
-      <div class="relative mt-3 text-center text-[.8rem] text-ltblue">Real output — a coach-ready Team Scout Board from one export.</div>
+           class="relative z-10 rounded-xl border border-white/15 shadow-2xl shadow-black/50 w-full sm:-rotate-1" loading="eager">
+      <img src="img/team_dev3.webp" alt="Team Development Report — Top Practice Priorities"
+           class="hidden sm:block absolute z-20 -bottom-4 -right-2 w-[48%] rounded-lg border border-white/20 ring-1 ring-green2/30 shadow-2xl shadow-black/60 rotate-2" loading="lazy">
     </div>
+    <div class="lg:col-span-2 -mt-2 text-center text-[.8rem] text-ltblue">Real output — a coach-ready Season Report &amp; Team Development Report from one export.</div>
   </div>
 </section>
 
@@ -342,7 +347,13 @@
     <div class="grid md:grid-cols-3 gap-6 mt-12 text-left">
       <!-- Season -->
       <div class="bg-navy2 border border-white/10 rounded-2xl overflow-hidden flex flex-col">
-        <img src="img/season1.webp" alt="Season Report — Team Scout Board" class="w-full border-b border-white/10" loading="lazy">
+        <img src="img/season1.webp" alt="Season Report — Team Scout Board" class="w-full" loading="lazy">
+        <!-- page thumbnail strip -->
+        <div class="grid grid-cols-3 gap-px bg-white/10 border-y border-white/10">
+          <img src="img/season5.webp" alt="Awards &amp; Recap" class="w-full bg-navy2" loading="lazy">
+          <img src="img/season2.webp" alt="Hitting Leaderboards" class="w-full bg-navy2" loading="lazy">
+          <img src="img/season4.webp" alt="Pitching Staff" class="w-full bg-navy2" loading="lazy">
+        </div>
         <div class="p-6 flex flex-col flex-1">
           <div class="text-[.66rem] font-display uppercase tracking-[.15em] text-blue-300">Share</div>
           <div class="flex items-baseline gap-2 mt-1"><span class="font-display font-bold text-white text-4xl" data-price="pdf"></span><span class="text-ltblue text-sm">one-time</span></div>
@@ -354,7 +365,13 @@
       <!-- Team Development (featured) -->
       <div class="bg-navy2 border-2 border-green rounded-2xl overflow-hidden flex flex-col relative md:-mt-3 shadow-2xl shadow-green/20">
         <div class="bg-green text-white text-center text-[.66rem] font-display uppercase tracking-[.1em] font-bold py-1.5">★ Most Popular</div>
-        <img src="img/team_dev3.webp" alt="Team Development Report — Top Practice Priorities" class="w-full border-b border-white/10" loading="lazy">
+        <img src="img/team_dev1.webp" alt="Team Development Report — Coach's Executive Summary" class="w-full" loading="lazy">
+        <!-- page thumbnail strip -->
+        <div class="grid grid-cols-3 gap-px bg-white/10 border-y border-white/10">
+          <img src="img/team_dev4.webp" alt="Focus Players" class="w-full bg-navy2" loading="lazy">
+          <img src="img/team_dev6.webp" alt="30-Day Development Plan" class="w-full bg-navy2" loading="lazy">
+          <img src="img/team_dev2.webp" alt="Strengths &amp; Weaknesses" class="w-full bg-navy2" loading="lazy">
+        </div>
         <div class="p-6 flex flex-col flex-1">
           <div class="text-[.66rem] font-display uppercase tracking-[.15em] text-green2">Coach</div>
           <div class="flex items-baseline gap-2 mt-1"><span class="font-display font-bold text-green2 text-4xl" data-price="coach"></span><span class="text-ltblue text-sm">one-time</span></div>
@@ -365,7 +382,13 @@
       </div>
       <!-- Full -->
       <div class="bg-navy2 border border-white/10 rounded-2xl overflow-hidden flex flex-col">
-        <img src="img/roster.webp" alt="Full Dashboard Analyzer — reusable interactive dashboard" class="w-full border-b border-white/10" loading="lazy">
+        <img src="img/roster.webp" alt="Full Dashboard Analyzer — reusable interactive dashboard" class="w-full" loading="lazy">
+        <!-- page thumbnail strip (dashboard + report feel) -->
+        <div class="grid grid-cols-3 gap-px bg-white/10 border-y border-white/10">
+          <img src="img/season1.webp" alt="Team Scout Board" class="w-full bg-navy2" loading="lazy">
+          <img src="img/lineup.webp" alt="Lineup Builder" class="w-full bg-navy2" loading="lazy">
+          <img src="img/pitching.webp" alt="Pitching view" class="w-full bg-navy2" loading="lazy">
+        </div>
         <div class="p-6 flex flex-col flex-1">
           <div class="text-[.66rem] font-display uppercase tracking-[.15em] text-amber-300">Reuse</div>
           <div class="flex items-baseline gap-2 mt-1"><span class="font-display font-bold text-white text-4xl" data-price="full"></span><span class="text-ltblue text-sm">one-time</span></div>
@@ -669,6 +692,16 @@
 
     const tile=(l,v,s)=>'<div class="gtile"><div class="gl">'+esc(l)+'</div><div class="gv">'+esc(v)+'</div><div class="gs">'+esc(s)+'</div></div>';
     const pt=(l,v,arm)=>'<div class="pt'+(arm?' arm':'')+'"><div class="l">'+l+'</div><div class="v">'+v+'</div></div>';
+    // Conditional shading to match the report's green→white→red stat scales (red low → green high).
+    function scaleBg(v, lo, mid, hi){
+      if(v==null||isNaN(v)) return '';
+      const R=[244,199,195], W=[255,255,255], G=[168,213,186]; let c;
+      if(v<=lo) c=R; else if(v>=hi) c=G;
+      else if(v<=mid){ const t=(v-lo)/((mid-lo)||1); c=R.map((x,k)=>Math.round(x+(W[k]-x)*t)); }
+      else { const t=(v-mid)/((hi-mid)||1); c=W.map((x,k)=>Math.round(x+(G[k]-x)*t)); }
+      return 'background:#'+c.map(x=>x.toString(16).padStart(2,'0')).join('');
+    }
+    const cellS=(html,style)=>'<td'+(style?' style="'+style+'"':'')+'>'+html+'</td>';
 
     function render(players){
       const ranked=[...players].filter(p=>p.ops!=null).sort((a,b)=>b.ops-a.ops);
@@ -686,10 +719,13 @@
       const cols=['#','Player','AVG','OBP','OPS','SB'].concat(anyArm?['ERA']:[]);
       $('lbHead').innerHTML='<tr>'+cols.map(c=>'<th>'+c+'</th>').join('')+'</tr>';
       $('lbBody').innerHTML=list.slice(0,8).map((p,i)=>{
-        const tds=['<span class="rk">'+(i+1)+'</span>','#'+esc(p.number)+' '+esc(p.name),
-                   avg3(p.avg),avg3(p.obp),'<span class="ops">'+avg3(p.ops)+'</span>',(p.sb==null?'—':p.sb)];
-        if(anyArm) tds.push(p.era==null?'—':f2(p.era));
-        return '<tr'+(i===0?' class="top"':'')+'>'+tds.map(t=>'<td>'+t+'</td>').join('')+'</tr>';
+        let row=cellS('<span class="rk">'+(i+1)+'</span>')+cellS('#'+esc(p.number)+' '+esc(p.name))
+              +cellS(avg3(p.avg), scaleBg(p.avg,0.15,0.28,0.40))
+              +cellS(avg3(p.obp), scaleBg(p.obp,0.25,0.38,0.52))
+              +cellS('<span class="ops">'+avg3(p.ops)+'</span>', scaleBg(p.ops,0.35,0.70,1.05))
+              +cellS(p.sb==null?'—':p.sb);
+        if(anyArm) row+=cellS(p.era==null?'—':f2(p.era));
+        return '<tr'+(i===0?' class="top"':'')+'>'+row+'</tr>';
       }).join('');
 
       $('pcards').innerHTML=list.slice(0,3).map(p=>{
