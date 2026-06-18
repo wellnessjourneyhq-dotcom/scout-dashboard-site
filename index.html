@@ -3,30 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Scout Dashboard by DugoutData — Turn Your GameChanger Export Into a Coach-Ready Dashboard</title>
-<meta name="description" content="Paste your GameChanger stats export once. Get team views, player cards, leaderboards, and lineup starting points in about two minutes. Excel & Google Sheets. One purchase, no subscription.">
+<title>Scout Dashboard — Turn Your GameChanger Export Into a Coach-Ready Report</title>
+<meta name="description" content="Upload your GameChanger season export and get a polished, coach-ready report in about two minutes — leaderboards, player roles, awards, practice priorities, and a 30-day plan. From $4.99. No subscription.">
 <link rel="canonical" href="https://www.scoutdashboard.com/">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.scoutdashboard.com/">
 <meta property="og:site_name" content="Scout Dashboard by DugoutData">
 <meta property="og:title" content="Scout Dashboard — Your GameChanger Export, Coach-Ready">
-<meta property="og:description" content="174 messy columns in. 10 coach-ready views out. About two minutes.">
-<meta property="og:image" content="https://www.scoutdashboard.com/img/hero.webp">
+<meta property="og:description" content="174 messy columns in. A coach-ready report out. About two minutes.">
+<meta property="og:image" content="https://www.scoutdashboard.com/img/season1.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Scout Dashboard — Your GameChanger Export, Coach-Ready">
-<meta name="twitter:description" content="174 messy columns in. 10 coach-ready views out. About two minutes.">
-<meta name="twitter:image" content="https://www.scoutdashboard.com/img/hero.webp">
+<meta name="twitter:image" content="https://www.scoutdashboard.com/img/season1.png">
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
-  "@type": "Product",
-  "name": "Scout Dashboard",
+  "@context": "https://schema.org", "@type": "Product", "name": "Scout Dashboard",
   "brand": { "@type": "Brand", "name": "DugoutData" },
-  "description": "Turn your GameChanger stats export into coach-ready views — team leaderboard, player cards, and lineup starting points — for baseball and softball coaches. Works in Excel and Google Sheets.",
-  "image": "https://www.scoutdashboard.com/img/hero.webp",
-  "url": "https://www.scoutdashboard.com/",
+  "description": "Turn your GameChanger stats export into coach-ready reports for baseball and softball coaches.",
+  "image": "https://www.scoutdashboard.com/img/season1.png", "url": "https://www.scoutdashboard.com/",
   "offers": [
-    { "@type": "Offer", "name": "Season PDF Report", "price": "4.99", "priceCurrency": "USD", "availability": "https://schema.org/InStock" },
+    { "@type": "Offer", "name": "Season Report", "price": "4.99", "priceCurrency": "USD", "availability": "https://schema.org/InStock" },
     { "@type": "Offer", "name": "Team Development Report", "price": "8.99", "priceCurrency": "USD", "availability": "https://schema.org/InStock" },
     { "@type": "Offer", "name": "Full Dashboard Analyzer", "price": "14.99", "priceCurrency": "USD", "availability": "https://schema.org/InStock" }
   ]
@@ -35,1141 +31,557 @@
 <link rel="icon" href="img/logo.png" type="image/png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<!--
-  ════════════════════════════════════════════════════════════════
-  PRICING — single source of truth in the script at the bottom:
-  const PRICES = { pdf, coach, full }. All three products sell direct
-  on-site (no Etsy). Wire PAY_URL_* when payment is connected.
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  PROOF IMAGES — drop-in replacement, no code edits:
-    img/proof_01_raw_export.webp     → screenshot of the raw GameChanger CSV open in Excel/Sheets
-    img/proof_02_import_tab.webp     → screenshot of the Import tab with the PASTE HERE cell
-    img/proof_03_team_dashboard.webp → screenshot of the Team Scout Board with sample data
-    img/proof_04_player_card.webp    → screenshot of a Player Card
-    img/proof_05_lineup.webp         → screenshot of the Lineup Builder
-  Current files are styled marketing graphics as stand-ins. Overwrite
-  each file with a real screenshot (any size, ~square works best).
+<!-- ════════════════════════════════════════════════════════════════
+     Tailwind via Play CDN (per spec). NOTE for production: the Play CDN
+     is convenient but render-blocking + larger than a built stylesheet.
+     Before heavy paid traffic, consider compiling Tailwind to a static
+     CSS file (see "Next steps"). Brand tokens mirror the report exactly.
+     ════════════════════════════════════════════════════════════════ -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: { extend: {
+      colors: {
+        navy:'#0F2A44', navy2:'#13355A', navy3:'#0A2540', slate2:'#34495E',
+        green:'#16A34A', green2:'#22C55E', greenhl:'#DCFCE7',
+        ltblue:'#9DB2C6', line:'#E5E7EB', ink:'#1F2937', graybg:'#F7F8FA'
+      },
+      fontFamily: { display:['Oswald','Arial','sans-serif'], sans:['Inter','Arial','sans-serif'] }
+    }}
+  };
+</script>
 
-  DEMO VIDEO — when you have a 20-30s screen recording of
-  paste → dashboard filling in, save it as img/demo.mp4 and
-  swap the demo <img> block for the commented <video> tag below it.
+<!-- META / TIKTOK PIXEL BASE CODE GOES HERE (before paid traffic) -->
 
-  ANALYTICS — before paid traffic, paste your Meta Pixel / TikTok
-  Pixel base code where marked near </head>, and keep the outbound
-  click tracking stub at the bottom.
-  ════════════════════════════════════════════════════════════════
--->
-<!-- META PIXEL / TIKTOK PIXEL BASE CODE GOES HERE (before paid traffic) -->
+<!-- ════════════════════════════════════════════════════════════════
+     RETAINED CSS — styles the content the interactive tool GENERATES at
+     runtime (preview tiles, leaderboard table, player cards) and the
+     hidden printable report. These are emitted by JS as fixed class
+     names, so they live here rather than as Tailwind utilities. Do not
+     rename without updating the tool's render functions.
+     ════════════════════════════════════════════════════════════════ -->
 <style>
-  :root{
-    --navy:#0F2A44; --navy2:#13355A; --navy3:#0A1E33;
-    --green:#16A34A; --green2:#22C55E; --greenhl:#DCFCE7;
-    --orange:#F97316; --orange2:#FB923C;
-    --ink:#1F2937; --mut:#6B7280; --line:#E5E7EB;
-    --graybg:#F7F8FA; --ltblue:#9DB2C6; --white:#FFFFFF;
-    --maxw:1120px;
+  html{scroll-behavior:smooth;scroll-padding-top:74px}
+  body{font-family:'Inter',Arial,sans-serif}
+  h1,h2,h3,.font-display{font-family:'Oswald',Arial,sans-serif}
+
+  /* dropzone drag state (JS toggles .drag) */
+  #dropzone.drag{border-color:#16A34A!important;background:#0d2f4d!important}
+
+  /* ── preview: glance stat tiles ── */
+  .glance{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:4px 0 26px}
+  .gtile{background:#0F2A44;border-radius:14px;padding:20px;text-align:center;color:#fff}
+  .gtile .gl{font-size:.72rem;color:#9DB2C6;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:6px}
+  .gtile .gv{font-family:'Oswald',sans-serif;font-size:1.5rem;font-weight:700;color:#22C55E;line-height:1.15}
+  .gtile .gs{font-size:.8rem;color:#9DB2C6;margin-top:4px}
+
+  /* ── preview/report section heads ── */
+  .res-h{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.5px;color:#0F2A44;font-size:1.2rem;margin:8px 0 12px;display:flex;align-items:center;gap:10px}
+  .res-h .tag{background:#DCFCE7;color:#16A34A;font-size:.62rem;font-weight:700;letter-spacing:1px;padding:3px 10px;border-radius:999px;font-family:'Inter',sans-serif}
+
+  /* ── preview/report leaderboard table ── */
+  .lb{background:#fff;border:1px solid #E5E7EB;border-radius:14px;overflow:hidden;box-shadow:0 4px 18px rgba(15,42,68,.06)}
+  .lb table{width:100%;border-collapse:collapse}
+  .lb th{background:#34495E;color:#fff;font-family:'Oswald',sans-serif;font-size:.74rem;letter-spacing:.5px;text-transform:uppercase;padding:11px 12px;text-align:center}
+  .lb th:nth-child(2){text-align:left}
+  .lb td{padding:11px 12px;text-align:center;font-size:.9rem;border-bottom:1px solid #E5E7EB;color:#374151}
+  .lb td:nth-child(2){text-align:left;font-weight:600;color:#1F2937}
+  .lb tr:last-child td{border-bottom:none}
+  .lb tr.top td{background:#DCFCE7}
+  .lb .rk{font-family:'Oswald',sans-serif;font-weight:700;color:#6B7280}
+  .lb .ops{font-weight:700;color:#16A34A}
+
+  /* ── preview/report player cards ── */
+  .pcards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .pcard{background:#fff;border:1px solid #E5E7EB;border-radius:14px;overflow:hidden;box-shadow:0 4px 18px rgba(15,42,68,.06)}
+  .pcard .ph{background:#0F2A44;color:#fff;padding:14px 16px;display:flex;align-items:center;gap:12px}
+  .pcard .pn{width:40px;height:40px;border-radius:50%;background:#16A34A;display:flex;align-items:center;justify-content:center;font-family:'Oswald',sans-serif;font-weight:700;font-size:1.05rem;flex-shrink:0;color:#fff}
+  .pcard .pnm{font-family:'Oswald',sans-serif;font-size:1rem;line-height:1.2;text-transform:uppercase}
+  .pcard .pgp{font-size:.72rem;color:#9DB2C6}
+  .pcard .ptiles{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#E5E7EB}
+  .pcard .pt{background:#fff;padding:11px;text-align:center}
+  .pcard .pt .l{font-size:.66rem;color:#6B7280;text-transform:uppercase;letter-spacing:.5px}
+  .pcard .pt .v{font-family:'Oswald',sans-serif;font-size:1.2rem;font-weight:700;color:#1F2937}
+  .pcard .pt.arm .v{color:#B7791F}
+
+  @media(max-width:640px){
+    .glance,.pcards{grid-template-columns:1fr}
+    .lb th:nth-child(3),.lb td:nth-child(3),.lb th:nth-child(4),.lb td:nth-child(4){display:none}
   }
-  *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth;scroll-padding-top:78px;-webkit-text-size-adjust:100%}
-  body{font-family:'Inter',Arial,sans-serif;color:var(--ink);background:var(--navy3);line-height:1.6;overflow-x:hidden}
-  h1,h2,h3,.btn,.eyebrow{font-family:'Oswald',Arial,sans-serif;text-transform:uppercase;letter-spacing:.5px}
-  img{max-width:100%;display:block}
-  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
-  section{padding:84px 0}
 
-  /* ───── Buttons ───── */
-  .btn{display:inline-block;background:var(--orange);color:#fff;text-decoration:none;
-       font-weight:700;font-size:1.05rem;padding:18px 40px;border-radius:10px;
-       transition:transform .15s,background .15s,box-shadow .15s;
-       box-shadow:0 6px 24px rgba(249,115,22,.4)}
-  .btn:hover{background:var(--orange2);transform:translateY(-2px);box-shadow:0 10px 30px rgba(251,146,60,.5)}
-  .btn.big{font-size:1.25rem;padding:22px 52px}
-  .btn-sub{display:block;margin-top:10px;font-family:'Inter',Arial,sans-serif;font-size:.85rem;
-           color:var(--ltblue);text-transform:none;letter-spacing:0}
-  .btn-ghost{display:inline-block;color:var(--green2);text-decoration:none;font-weight:600;
-             font-size:1rem;padding:18px 28px;border:2px solid rgba(34,197,94,.5);border-radius:10px;
-             font-family:'Oswald',Arial,sans-serif;text-transform:uppercase;letter-spacing:.5px;
-             transition:border-color .15s,background .15s}
-  .btn-ghost:hover{border-color:var(--green2);background:rgba(34,197,94,.08)}
-  .cta-block{text-align:center;margin-top:54px}
-
-  /* ───── Header ───── */
-  header{position:sticky;top:0;z-index:50;background:rgba(10,30,51,.94);backdrop-filter:blur(8px);
-         border-bottom:1px solid rgba(157,178,198,.15)}
-  .nav{display:flex;align-items:center;justify-content:space-between;padding:12px 24px;max-width:var(--maxw);margin:0 auto}
-  .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
-  .brand img{height:40px;width:auto}
-  .brand .bt{line-height:1.15}
-  .brand .bt b{display:block;font-family:'Oswald',Arial,sans-serif;font-weight:700;font-size:1.25rem;color:#fff;letter-spacing:.5px;text-transform:uppercase}
-  .brand .bt span{font-size:.72rem;color:var(--ltblue);letter-spacing:1.5px;text-transform:uppercase}
-  .nav .btn{padding:11px 24px;font-size:.95rem;box-shadow:none}
-
-  /* ───── Hero ───── */
-  .hero{background:radial-gradient(ellipse at 50% -10%, #1A4A7A 0%, var(--navy) 45%, var(--navy3) 100%);
-        padding:76px 0 90px;position:relative;overflow:hidden}
-  .hero::before{content:"";position:absolute;inset:0;pointer-events:none;
-        background:
-          radial-gradient(circle at 12% 8%, rgba(255,255,255,.10) 0, transparent 6%),
-          radial-gradient(circle at 88% 8%, rgba(255,255,255,.10) 0, transparent 6%),
-          radial-gradient(circle at 30% 4%, rgba(255,255,255,.07) 0, transparent 4%),
-          radial-gradient(circle at 70% 4%, rgba(255,255,255,.07) 0, transparent 4%)}
-  .hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;position:relative}
-  .badge{display:inline-flex;align-items:center;gap:8px;background:rgba(34,197,94,.12);
-         border:1px solid rgba(34,197,94,.4);color:var(--green2);font-weight:600;font-size:.85rem;
-         padding:7px 16px;border-radius:999px;margin-bottom:22px;
-         font-family:'Oswald',Arial,sans-serif;text-transform:uppercase;letter-spacing:1.5px}
-  .hero h1{font-size:3.3rem;line-height:1.08;color:#fff;font-weight:700;margin-bottom:20px}
-  .hero h1 em{color:var(--green2);font-style:normal}
-  .hero .sub{font-size:1.22rem;color:var(--ltblue);margin-bottom:32px;max-width:540px}
-  .hero .sub b{color:#fff}
-  .cta-row{display:flex;gap:16px;flex-wrap:wrap;align-items:center;margin-bottom:36px}
-  .hero-img{border-radius:14px;box-shadow:0 30px 80px rgba(0,0,0,.55);border:1px solid rgba(157,178,198,.2)}
-  .stats{display:flex;border-top:1px solid rgba(157,178,198,.18);padding-top:26px;max-width:560px}
-  .stat{flex:1;padding-right:18px}
-  .stat .n{font-family:'Oswald',Arial,sans-serif;font-size:2rem;font-weight:700;color:var(--green2)}
-  .stat .l{font-size:.78rem;color:var(--ltblue);text-transform:uppercase;letter-spacing:1px}
-
-  /* ───── Trust strip ───── */
-  .trust{background:var(--navy3);border-top:1px solid rgba(157,178,198,.12);border-bottom:1px solid rgba(157,178,198,.12);padding:18px 0}
-  .trust .wrap{display:flex;justify-content:center;gap:42px;flex-wrap:wrap}
-  .trust span{color:var(--ltblue);font-size:.95rem;display:flex;align-items:center;gap:9px;font-weight:500}
-  .trust span::before{content:"✓";color:var(--green2);font-weight:700}
-
-  /* ───── Shared ───── */
-  .eyebrow{color:var(--green);font-size:.95rem;font-weight:600;letter-spacing:2.5px;margin-bottom:12px}
-  h2{font-size:2.45rem;line-height:1.15;font-weight:700;margin-bottom:16px}
-  .lead{font-size:1.13rem;color:var(--mut);max-width:700px}
-  .center{text-align:center}
-  .center .lead{margin:0 auto}
-  .light{background:var(--graybg);color:var(--ink)}
-  .light h2{color:var(--navy)}
-  .dark{background:linear-gradient(180deg,var(--navy) 0%,var(--navy3) 100%);color:#fff}
-  .dark h2{color:#fff}
-  .dark .lead{color:var(--ltblue)}
-  .dark .eyebrow{color:var(--green2)}
-
-  /* ───── Problem ───── */
-  .pains{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
-  .pain{background:#fff;border:1px solid var(--line);border-radius:14px;padding:32px 28px;
-        box-shadow:0 4px 18px rgba(15,42,68,.06);text-align:left}
-  .pain .x{width:44px;height:44px;border-radius:10px;background:#FEECEC;color:#C0392B;
-           display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:700;margin-bottom:18px}
-  .pain h3{font-size:1.15rem;color:var(--navy);margin-bottom:8px}
-  .pain p{color:var(--mut);font-size:.97rem}
-  .empathy{margin:44px auto 0;max-width:720px;background:#fff;border-left:4px solid var(--green);
-           padding:24px 30px;border-radius:0 12px 12px 0;text-align:left;color:var(--ink);
-           font-size:1.08rem;box-shadow:0 4px 18px rgba(15,42,68,.06)}
-
-  /* ───── Before/After ───── */
-  .ba{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:48px}
-  .ba-col{border-radius:16px;padding:34px 32px}
-  .ba-before{background:rgba(192,57,43,.08);border:1px solid rgba(192,57,43,.25)}
-  .ba-after{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.3)}
-  .ba-col h3{font-size:1.3rem;margin-bottom:18px}
-  .ba-before h3{color:#E07B6F}
-  .ba-after h3{color:var(--green2)}
-  .ba-col ul{list-style:none}
-  .ba-col li{padding:8px 0 8px 32px;position:relative;color:var(--ltblue);font-size:1rem}
-  .ba-before li::before{content:"×";position:absolute;left:0;top:6px;color:#E07B6F;font-weight:700;font-size:1.1rem}
-  .ba-after li::before{content:"✓";position:absolute;left:0;top:6px;color:var(--green2);font-weight:700}
-  .ba-after b{color:#fff}
-  .ba-img{margin:44px auto 0;max-width:860px}
-  .ba-img img{border-radius:14px;box-shadow:0 24px 64px rgba(0,0,0,.5);border:1px solid rgba(157,178,198,.2)}
-  .ba-cap{text-align:center;color:var(--ltblue);font-size:.9rem;margin-top:14px}
-
-  /* ───── Proof ───── */
-  .proof-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:28px;margin-top:52px}
-  .proof{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;
-         box-shadow:0 6px 24px rgba(15,42,68,.08)}
-  .proof img{width:100%;border-bottom:1px solid var(--line)}
-  .proof .pbody{padding:22px 26px}
-  .proof .ptag{display:inline-block;background:var(--greenhl);color:var(--green);font-size:.72rem;
-        font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 12px;border-radius:999px;
-        margin-bottom:10px;font-family:'Oswald',Arial,sans-serif}
-  .proof h3{font-size:1.15rem;color:var(--navy);margin-bottom:6px}
-  .proof p{color:var(--mut);font-size:.95rem}
-  .proof.wide{grid-column:1/-1}
-  .demo-note{margin-top:14px;font-size:.85rem;color:var(--mut);font-style:italic}
-
-  /* ───── Steps ───── */
-  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:48px}
-  .step{background:var(--navy2);border:1px solid rgba(157,178,198,.18);border-radius:14px;padding:36px 30px;text-align:center}
-  .step .num{width:58px;height:58px;border-radius:50%;background:rgba(34,197,94,.14);color:var(--green2);
-        font-family:'Oswald',Arial,sans-serif;font-size:1.7rem;font-weight:700;border:1px solid rgba(34,197,94,.4);
-        display:flex;align-items:center;justify-content:center;margin:0 auto 20px}
-  .step h3{font-size:1.3rem;color:#fff;margin-bottom:8px}
-  .step p{color:var(--ltblue);font-size:.97rem}
-  .steps-note{text-align:center;margin-top:34px;color:var(--ltblue);font-size:1.05rem}
-  .steps-note b{color:#fff}
-
-  /* ───── Features ───── */
-  .features{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:52px}
-  .feature{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;
-           transition:transform .2s,box-shadow .2s;box-shadow:0 4px 18px rgba(15,42,68,.06)}
-  .feature:hover{transform:translateY(-4px);box-shadow:0 18px 44px rgba(15,42,68,.14)}
-  .feature img{width:100%}
-  .feature .fbody{padding:26px 28px 30px}
-  .feature h3{color:var(--navy);font-size:1.22rem;margin-bottom:8px}
-  .feature h3 span{color:var(--green)}
-  .feature p{color:var(--mut);font-size:.96rem}
-  .feature .fb{margin-top:10px;font-size:.92rem;color:var(--navy);font-weight:600}
-  .feature .fb::before{content:"→ ";color:var(--green)}
-
-  /* ───── Offer ───── */
-  .offer-box{max-width:880px;margin:52px auto 0;background:var(--navy2);border:1px solid rgba(34,197,94,.35);
-             border-radius:20px;overflow:hidden;box-shadow:0 24px 70px rgba(0,0,0,.45)}
-  .offer-head{background:rgba(34,197,94,.12);padding:26px 40px;border-bottom:1px solid rgba(34,197,94,.25)}
-  .offer-head h3{color:#fff;font-size:1.5rem}
-  .offer-head p{color:var(--ltblue);font-size:.95rem}
-  .offer-body{padding:36px 40px}
-  .offer-body ul{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:6px 28px}
-  .offer-body li{padding:10px 0 10px 36px;position:relative;color:#fff;font-size:1rem}
-  .offer-body li::before{content:"✓";position:absolute;left:0;top:9px;width:24px;height:24px;
-        background:rgba(34,197,94,.15);color:var(--green2);border-radius:50%;
-        display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:700}
-  .offer-body li small{display:block;color:var(--ltblue);font-size:.84rem;padding-top:2px}
-  .offer-price{display:flex;align-items:center;justify-content:center;gap:22px;margin:30px 0 6px;flex-wrap:wrap}
-  .offer-price .was{color:var(--ltblue);font-size:1.4rem;text-decoration:line-through}
-  .offer-price .now{font-family:'Oswald',Arial,sans-serif;font-size:3.4rem;font-weight:700;color:var(--green2)}
-  .offer-price .tag{background:var(--orange);color:#fff;font-family:'Oswald',Arial,sans-serif;
-        font-size:.85rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;
-        padding:6px 14px;border-radius:999px}
-  .offer-note{text-align:center;color:var(--ltblue);font-size:.95rem;margin-bottom:26px}
-  .offer-cta{text-align:center;padding-bottom:8px}
-
-  /* ───── Guarantee ───── */
-  .guarantee{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
-  .g-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:36px;
-          box-shadow:0 4px 18px rgba(15,42,68,.06)}
-  .g-card .gi{width:52px;height:52px;border-radius:12px;background:var(--greenhl);color:var(--green);
-          display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:700;margin-bottom:18px}
-  .g-card h3{font-size:1.25rem;color:var(--navy);margin-bottom:10px}
-  .g-card p{color:var(--mut);font-size:1rem}
-  .g-card p b{color:var(--navy)}
-
-  /* ───── Founder ───── */
-  .founder{max-width:760px;margin:0 auto;text-align:center}
-  .founder blockquote{font-size:1.3rem;line-height:1.65;color:#fff;margin:28px 0;font-style:italic}
-  .founder .sig{color:var(--green2);font-family:'Oswald',Arial,sans-serif;font-size:1.1rem;letter-spacing:1px;text-transform:uppercase}
-  .founder .role{color:var(--ltblue);font-size:.9rem}
-
-  /* ───── FAQ ───── */
-  .faq{max-width:780px;margin:48px auto 0}
-  details{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:14px;overflow:hidden}
-  summary{cursor:pointer;padding:20px 26px;font-weight:600;color:var(--navy);font-size:1.02rem;
-          list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px}
-  summary::-webkit-details-marker{display:none}
-  summary::after{content:"+";font-size:1.5rem;color:var(--green);font-weight:400;transition:transform .2s;flex-shrink:0}
-  details[open] summary::after{transform:rotate(45deg)}
-  details p{padding:0 26px 22px;color:var(--mut)}
-
-  /* ───── Tripwire ($4.99 report) ───── */
-  .tw-or{margin:30px 0 18px;color:var(--mut);font-size:.92rem;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
-  .tw-card{display:grid;grid-template-columns:1.4fr 1fr;gap:0;background:#fff;border:2px solid var(--green);
-           border-radius:16px;overflow:hidden;box-shadow:0 10px 36px rgba(22,163,74,.14);text-align:left}
-  .tw-left{padding:30px 32px}
-  .tw-left .tw-price{font-family:'Oswald',Arial,sans-serif;font-size:2.2rem;font-weight:700;color:var(--green);line-height:1}
-  .tw-left .tw-price span{font-size:.9rem;color:var(--mut);font-weight:600;letter-spacing:.5px}
-  .tw-left h3{font-size:1.3rem;color:var(--navy);margin:8px 0 8px}
-  .tw-left p{color:var(--mut);font-size:.97rem;margin-bottom:14px}
-  .tw-note{background:var(--graybg);border-radius:10px;padding:12px 16px;font-size:.88rem;color:var(--ink)}
-  .tw-note b{color:var(--navy)}
-  .tw-right{background:var(--navy);padding:30px 28px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
-  .tw-right .btn{width:100%}
-  .tw-fine{color:var(--ltblue);font-size:.8rem;margin-top:12px}
-  .unlock{width:100%;margin-top:14px}
-  .unlock p{color:var(--ltblue);font-size:.85rem;margin-bottom:8px}
-  .unlock input{width:100%;padding:12px 14px;border-radius:8px;border:1px solid var(--ltblue);font-size:1rem;text-align:center;text-transform:uppercase;margin-bottom:8px}
-  .unlock .ubtn{width:100%;background:var(--green);color:#fff;border:none;font-family:'Oswald',Arial,sans-serif;
-        text-transform:uppercase;letter-spacing:.5px;font-weight:700;padding:13px;border-radius:8px;cursor:pointer}
-  .unlock .uerr{color:#FCA5A5;font-size:.82rem;margin-top:8px;min-height:1em}
-
-  /* ───── 3-tier offer ───── */
-  .tiers-head{font-family:'Oswald',Arial,sans-serif;text-transform:uppercase;letter-spacing:.5px;color:var(--navy);
-        font-size:1.4rem;text-align:center;margin:34px auto 22px;max-width:640px;line-height:1.2}
-  .tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;text-align:left}
-  .tier{background:#fff;border:1px solid var(--line);border-radius:16px;padding:28px 24px;display:flex;
-        flex-direction:column;box-shadow:0 4px 18px rgba(15,42,68,.06)}
-  .tier.feat{border:2px solid var(--green);box-shadow:0 16px 44px rgba(22,163,74,.18);position:relative}
-  .tier-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--green);color:#fff;
-        font-family:'Oswald',Arial,sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:.7rem;font-weight:700;
-        padding:5px 16px;border-radius:99px;white-space:nowrap}
-  .tier-price{font-family:'Oswald',Arial,sans-serif;font-size:2.5rem;font-weight:700;color:var(--navy);line-height:1}
-  .tier.feat .tier-price{color:var(--green)}
-  .tier-name{font-family:'Oswald',Arial,sans-serif;text-transform:uppercase;letter-spacing:.5px;color:var(--navy);
-        font-size:1.05rem;margin:4px 0 12px}
-  .tier-desc{color:var(--mut);font-size:.92rem;margin-bottom:16px}
-  .tier-feat{list-style:none;margin-bottom:20px;flex:1}
-  .tier-feat li{padding:6px 0 6px 26px;position:relative;font-size:.9rem;color:var(--ink)}
-  .tier-feat li::before{content:"✓";position:absolute;left:0;color:var(--green);font-weight:700}
-  .tier-feat li.no{color:var(--mut)}
-  .tier-feat li.no::before{content:"–";color:var(--mut)}
-  .tier-btn{display:block;width:100%;text-align:center;background:var(--navy);color:#fff;border:none;cursor:pointer;
-        font-family:'Oswald',Arial,sans-serif;text-transform:uppercase;letter-spacing:.5px;font-weight:700;font-size:1rem;
-        padding:15px;border-radius:10px;text-decoration:none;transition:transform .15s,background .15s}
-  .tier-btn:hover{transform:translateY(-2px);background:var(--navy2)}
-  .tier-btn.primary{background:var(--orange);box-shadow:0 6px 22px rgba(249,115,22,.35)}
-  .tier-btn.primary:hover{background:var(--orange2)}
-  .tier-fine{color:var(--mut);font-size:.78rem;text-align:center;margin-top:10px}
-  .tier .unlock{margin-top:14px}
-  .tier .unlock p{color:var(--mut);font-size:.82rem}
-  .tier .unlock input{border-color:var(--line)}
-  .tier .unlock .uerr{color:#C0392B}
-  .tiers-priv{text-align:center;color:var(--mut);font-size:.85rem;margin-top:20px}
-
-  /* ───── Printable report (screen-hidden; only this prints) ───── */
+  /* ── hidden printable report (client-side $4.99 fallback; only this prints) ── */
   #reportDoc{display:none}
   @media print{
-    @page{margin:0.5in}
-    body{background:#fff!important;padding:0!important}
+    @page{margin:.5in}
+    body{background:#fff!important}
     body > *:not(#reportDoc){display:none!important}
     #reportDoc{display:block!important}
   }
-  .rep-head{background:var(--navy);color:#fff;padding:24px 28px;border-radius:12px;margin-bottom:22px}
-  .rep-head .rk{color:var(--green2);font-family:'Oswald',Arial,sans-serif;letter-spacing:2px;font-size:.8rem;text-transform:uppercase}
-  .rep-head h1{font-family:'Oswald',Arial,sans-serif;font-size:1.8rem;text-transform:uppercase;margin:4px 0}
-  .rep-head .rsub{color:var(--ltblue);font-size:.9rem}
-  .rep-sec{font-family:'Oswald',Arial,sans-serif;text-transform:uppercase;letter-spacing:.5px;color:var(--navy);font-size:1.2rem;margin:18px 0 10px}
-  .rep-foot{margin-top:18px;border-top:1px solid var(--line);padding-top:10px;color:var(--mut);font-size:.75rem;text-align:center}
-
-  /* ───── Final CTA ───── */
-  .final{background:radial-gradient(ellipse at 50% 120%, #1A4A7A 0%, var(--navy3) 70%);text-align:center}
-  .final h2{font-size:2.8rem;max-width:820px;margin:0 auto 18px}
-  .final h2 em{color:var(--green2);font-style:normal}
-  .final .lead{margin:0 auto 34px}
-
-  /* ───── Footer ───── */
-  footer{background:var(--navy3);border-top:1px solid rgba(157,178,198,.12);padding:36px 0;text-align:center}
-  footer p{color:var(--ltblue);font-size:.85rem;margin-bottom:6px}
-  footer .flinks{margin:10px 0 14px}
-  footer .flinks a{color:var(--green2);text-decoration:none;font-size:.85rem}
-  footer .flinks a:hover{text-decoration:underline}
-  footer .dis{color:#5A7088;font-size:.78rem;max-width:640px;margin:0 auto}
-
-  /* ───── Mobile sticky CTA ───── */
-  .mobile-cta{display:none;position:fixed;bottom:0;left:0;right:0;z-index:60;
-              background:rgba(10,30,51,.97);border-top:1px solid rgba(249,115,22,.5);padding:12px 16px}
-  .mobile-cta .btn{width:100%;text-align:center;padding:15px;font-size:1.05rem}
-
-  /* ───── Interactive Try-It Tool ───── */
-  .try-wrap{max-width:920px;margin:44px auto 0}
-  .dropzone{background:#fff;border:2.5px dashed var(--ltblue);border-radius:18px;padding:48px 36px;
-            text-align:center;transition:border-color .15s,background .15s,box-shadow .15s;cursor:pointer}
-  .dropzone:hover,.dropzone.drag{border-color:var(--green);background:#fafffb;box-shadow:0 8px 30px rgba(22,163,74,.12)}
-  .dropzone .dz-ic{font-size:2.6rem;margin-bottom:10px}
-  .dropzone h3{font-size:1.35rem;color:var(--navy);margin-bottom:8px}
-  .dropzone p{color:var(--mut);font-size:1rem;margin-bottom:20px}
-  .dz-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
-  .dz-pick{display:inline-block;background:var(--orange);color:#fff;font-family:'Oswald',Arial,sans-serif;
-           text-transform:uppercase;letter-spacing:.5px;font-weight:700;padding:15px 32px;border-radius:10px;
-           cursor:pointer;transition:background .15s,transform .15s;box-shadow:0 6px 22px rgba(249,115,22,.35)}
-  .dz-pick:hover{background:var(--orange2);transform:translateY(-2px)}
-  .dz-sample{display:inline-block;background:transparent;color:var(--navy);border:2px solid var(--line);
-             font-family:'Oswald',Arial,sans-serif;text-transform:uppercase;letter-spacing:.5px;font-weight:600;
-             padding:13px 28px;border-radius:10px;cursor:pointer;transition:border-color .15s,background .15s}
-  .dz-sample:hover{border-color:var(--green);background:#f3fbf5}
-  .dz-meta{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:20px}
-  .dz-meta input{flex:1;min-width:150px;max-width:220px;padding:11px 14px;border:1px solid var(--line);border-radius:8px;font-size:.95rem;font-family:'Inter',Arial,sans-serif}
-  .dz-meta input:focus{outline:none;border-color:var(--green)}
-  .dz-meta-note{margin-top:8px;font-size:.8rem;color:var(--mut)}
-  .review{margin:14px 0 22px;padding:18px 20px 8px;background:var(--graybg,#F7F8FA);border:1px solid var(--line);border-radius:12px}
-  .review .res-h{margin:0}
-  .review-note{font-size:.85rem;color:var(--mut);margin:6px 0 4px}
-  .review .dz-meta{justify-content:flex-start;margin-top:12px}
-  .privacy-badge{display:inline-flex;align-items:center;gap:9px;margin-top:22px;background:var(--greenhl);
-        color:#0f6b35;font-size:.9rem;font-weight:600;padding:9px 18px;border-radius:999px}
-  .privacy-badge::before{content:"🔒";font-size:1rem}
-  .try-error{display:none;margin-top:20px;background:#FEECEC;border:1px solid #f5c2bd;color:#9b2c20;
-             border-radius:12px;padding:18px 22px;font-size:.97rem;text-align:left}
-  .try-results{display:none;margin-top:36px;text-align:left}
-  .glance{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:28px}
-  .gtile{background:var(--navy);border-radius:14px;padding:24px;text-align:center;color:#fff}
-  .gtile .gl{font-size:.78rem;color:var(--ltblue);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:8px}
-  .gtile .gv{font-family:'Oswald',Arial,sans-serif;font-size:1.5rem;font-weight:700;color:var(--green2);line-height:1.15}
-  .gtile .gs{font-size:.82rem;color:var(--ltblue);margin-top:4px}
-  .res-h{font-family:'Oswald',Arial,sans-serif;text-transform:uppercase;letter-spacing:.5px;color:var(--navy);
-         font-size:1.3rem;margin:6px 0 14px;display:flex;align-items:center;gap:10px}
-  .res-h .tag{background:var(--greenhl);color:var(--green);font-size:.66rem;font-weight:700;letter-spacing:1px;
-         padding:3px 10px;border-radius:999px}
-  .lb{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 4px 18px rgba(15,42,68,.06)}
-  .lb table{width:100%;border-collapse:collapse}
-  .lb th{background:var(--slate,#34495E);background:#34495E;color:#fff;font-family:'Oswald',Arial,sans-serif;
-         font-size:.8rem;letter-spacing:.5px;text-transform:uppercase;padding:13px 14px;text-align:center}
-  .lb th:nth-child(2){text-align:left}
-  .lb td{padding:12px 14px;text-align:center;font-size:.95rem;border-bottom:1px solid var(--line);color:#374151}
-  .lb td:nth-child(2){text-align:left;font-weight:600;color:var(--ink)}
-  .lb tr:last-child td{border-bottom:none}
-  .lb tr.top td{background:var(--greenhl)}
-  .lb .rk{font-family:'Oswald',Arial,sans-serif;font-weight:700;color:var(--mut)}
-  .lb .ops{font-weight:700;color:var(--green)}
-  .pcards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:28px}
-  .pcard{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 4px 18px rgba(15,42,68,.06)}
-  .pcard .ph{background:var(--navy);color:#fff;padding:16px 18px;display:flex;align-items:center;gap:12px}
-  .pcard .pn{width:42px;height:42px;border-radius:50%;background:var(--green);display:flex;align-items:center;
-        justify-content:center;font-family:'Oswald',Arial,sans-serif;font-weight:700;font-size:1.1rem;flex-shrink:0}
-  .pcard .pnm{font-family:'Oswald',Arial,sans-serif;font-size:1.05rem;line-height:1.2;text-transform:uppercase}
-  .pcard .pgp{font-size:.74rem;color:var(--ltblue)}
-  .pcard .ptiles{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line)}
-  .pcard .pt{background:#fff;padding:12px;text-align:center}
-  .pcard .pt .l{font-size:.68rem;color:var(--mut);text-transform:uppercase;letter-spacing:.5px}
-  .pcard .pt .v{font-family:'Oswald',Arial,sans-serif;font-size:1.25rem;font-weight:700;color:var(--ink)}
-  .pcard .pt.arm .v{color:#B7791F}
-  .locked{position:relative;margin-top:32px;border-radius:16px;overflow:hidden;border:1px solid var(--line)}
-  .locked .blur{filter:blur(6px);pointer-events:none;opacity:.55;display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:22px;background:#fff}
-  .locked .blur .bk{height:120px;background:linear-gradient(135deg,#dbe4ec,#eef3f7);border-radius:10px}
-  .locked .lockover{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
-        text-align:center;background:rgba(10,30,51,.82);color:#fff;padding:30px}
-  .locked .lockover .li{font-size:2rem;margin-bottom:10px}
-  .locked .lockover h3{font-size:1.45rem;color:#fff;margin-bottom:10px;max-width:520px}
-  .locked .lockover p{color:var(--ltblue);max-width:520px;margin-bottom:22px}
-  .locked .lockover .chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:24px}
-  .locked .lockover .chip{background:rgba(255,255,255,.1);border:1px solid rgba(157,178,198,.3);
-        color:#fff;font-size:.82rem;padding:6px 14px;border-radius:999px}
-  .try-again{display:inline-block;margin-top:22px;color:var(--mut);font-size:.9rem;text-decoration:underline;cursor:pointer;background:none;border:none}
-
-  /* ═══════════ RESPONSIVE LADDER ═══════════ */
-
-  /* ── Tablet landscape: ease the hero, keep editorial two-up layouts ── */
-  @media(max-width:1024px){
-    :root{--maxw:960px}
-    .hero h1{font-size:2.8rem}
-    .hero .wrap{gap:40px}
-    section{padding:72px 0}
-  }
-
-  /* ── Tablet portrait: stack the hero, cards go two-up (not stretched single col) ── */
-  @media(max-width:880px){
-    .hero .wrap{grid-template-columns:1fr;gap:32px}
-    .hero .sub{max-width:none}
-    .ba,.offer-body ul,.tw-card,.tiers{grid-template-columns:1fr}
-    .pains,.guarantee,.features,.proof-grid,.steps{grid-template-columns:repeat(2,1fr)}
-    .proof.wide{grid-column:1/-1}
-    h2{font-size:2.1rem}
-    .final h2{font-size:2.3rem}
-    section{padding:64px 0}
-    /* nav collapses to logo + sticky CTA */
-    .nav .navlinks,.nav-right .btn{display:none}
-    .mobile-cta{display:block}
-    body{padding-bottom:76px}
-  }
-
-  /* ── Phones: single column, full-width tap targets, tuned type & spacing ── */
-  @media(max-width:600px){
-    .wrap{padding:0 18px}
-    section{padding:48px 0}
-    h2{font-size:1.75rem}
-    .lead{font-size:1.05rem}
-    .eyebrow{font-size:.82rem;letter-spacing:1.8px}
-
-    /* hero */
-    .hero{padding:54px 0 60px}
-    .hero h1{font-size:2.05rem}
-    .hero .sub{font-size:1.08rem;margin-bottom:26px}
-    .cta-row{flex-direction:column;align-items:stretch;gap:14px;margin-bottom:30px}
-    .cta-row>div{width:100%}
-    .stats{flex-wrap:wrap;gap:16px 0;max-width:none;padding-top:22px}
-    .stat{flex:1 1 44%;padding-right:0}
-    .stat .n{font-size:1.7rem}
-
-    /* full-width, easy-to-tap CTAs everywhere */
-    .btn{display:block;width:100%;text-align:center;padding:16px 22px}
-    .btn.big{font-size:1.1rem;padding:17px 22px}
-    .btn-ghost{display:block;width:100%;text-align:center;padding:15px 22px}
-    .final .btn-ghost{margin-left:0!important;margin-top:14px}
-
-    /* every card grid to one column */
-    .pains,.steps,.features,.guarantee,.proof-grid,.glance,.pcards{grid-template-columns:1fr}
-
-    /* trim heavy inner paddings so content breathes */
-    .pain,.g-card,.ba-col{padding:26px 22px}
-    .offer-head{padding:22px 24px}
-    .offer-body{padding:26px 22px}
-    .tw-left,.tw-right{padding:24px 22px}
-    .empathy{padding:20px 22px;font-size:1rem}
-    .feature .fbody{padding:22px 22px 26px}
-    .offer-price .now{font-size:2.8rem}
-    .final h2{font-size:1.95rem}
-    .tiers-head{font-size:1.2rem}
-
-    /* leaderboard: drop the deepest stat cols on small screens */
-    .lb th:nth-child(3),.lb td:nth-child(3),
-    .lb th:nth-child(4),.lb td:nth-child(4){display:none}
-
-    /* comparison table: freeze the feature column, swipe the products */
-    .cmp-hint{display:block}
-    .cmp-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
-    .cmp{min-width:540px;font-size:.9rem}
-    .cmp th,.cmp td{padding:11px 12px}
-    .cmp thead th:first-child,.cmp tbody th{position:sticky;left:0;z-index:1}
-    .cmp thead th:first-child{background:var(--navy)}
-    .cmp tbody th{box-shadow:1px 0 0 var(--line)}
-
-    .mobile-cta{display:block}
-    body{padding-bottom:74px}
-    .nav .navlinks,.nav-right .btn{display:none}
-  }
-
-  /* ── Small phones: tighten type and chrome ── */
-  @media(max-width:400px){
-    .wrap{padding:0 14px}
-    .hero h1{font-size:1.85rem}
-    h2{font-size:1.6rem}
-    .brand .bt b{font-size:1.1rem}
-    .brand .bt span{font-size:.66rem}
-    .brand img{height:34px}
-    .stat .n{font-size:1.5rem}
-    .offer-price .now{font-size:2.4rem}
-    .res-h{font-size:1.15rem}
-  }
-
-  /* ── nav links ── */
-  .navlinks{display:flex;gap:26px;align-items:center}
-  .navlinks a{color:var(--navy);text-decoration:none;font-weight:600;font-size:.95rem}
-  .navlinks a:hover{color:var(--green)}
-  .nav-right{display:flex;gap:18px;align-items:center}
-
-  /* ── product purpose badge (Share / Coach / Reuse) ── */
-  .purpose{display:inline-block;font-family:'Oswald',Arial,sans-serif;text-transform:uppercase;letter-spacing:1.5px;
-    font-size:.72rem;font-weight:600;padding:4px 12px;border-radius:999px;margin-bottom:12px}
-  .purpose.share{background:#EFF6FF;color:#13355A}
-  .purpose.coach{background:#DCFCE7;color:#166534}
-  .purpose.reuse{background:#FFF7E6;color:#92400E}
-  .tier-fine.etsy{color:var(--mut);font-size:.8rem;margin-top:8px}
-
-  /* ── comparison table ── */
-  .cmp-wrap{margin:30px auto 0;max-width:980px}
-  .cmp{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;font-size:.95rem}
-  .cmp th,.cmp td{padding:13px 14px;text-align:center;border-bottom:1px solid var(--line)}
-  .cmp thead th{background:var(--navy);color:#fff;font-family:'Oswald',Arial,sans-serif;text-transform:uppercase;letter-spacing:.5px;font-size:.82rem}
-  .cmp thead th .pp{display:block;font-size:.68rem;color:var(--green2);letter-spacing:1.5px;margin-top:3px}
-  .cmp tbody th{text-align:left;font-weight:600;color:var(--navy);background:#F7F8FA}
-  .cmp td.y{color:var(--green);font-weight:800}
-  .cmp td.n{color:#CBD5E1}
-  .cmp tbody tr:last-child td,.cmp tbody tr:last-child th{border-bottom:0;font-weight:700;color:var(--navy)}
-  .cmp .col-coach{background:rgba(22,163,74,.06)}
-  .cmp-hint{display:none;color:var(--ltblue);font-size:.85rem;margin:0 0 12px;font-weight:600;letter-spacing:.5px}
+  .rep-head{background:#0F2A44;color:#fff;padding:24px 28px;border-radius:12px;margin-bottom:22px}
+  .rep-head .rk{color:#22C55E;font-family:'Oswald',sans-serif;letter-spacing:2px;font-size:.8rem;text-transform:uppercase}
+  .rep-head h1{font-family:'Oswald',sans-serif;font-size:1.8rem;text-transform:uppercase;margin:4px 0}
+  .rep-head .rsub{color:#9DB2C6;font-size:.9rem}
+  .rep-sec{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.5px;color:#0F2A44;font-size:1.2rem;margin:18px 0 10px}
+  .rep-foot{margin-top:18px;border-top:1px solid #E5E7EB;padding-top:10px;color:#6B7280;font-size:.75rem;text-align:center}
 </style>
 </head>
-<body>
 
-<!-- ════════ HEADER ════════ -->
-<header>
-  <div class="nav">
-    <a class="brand" href="#top">
-      <img src="img/logo.png" alt="DugoutData logo">
-      <span class="bt"><b>Scout Dashboard</b><span>by DugoutData</span></span>
+<body class="bg-navy3 text-white font-sans antialiased">
+
+<!-- ════════════════ STICKY NAV ════════════════ -->
+<header class="sticky top-0 z-50 bg-navy3/95 backdrop-blur border-b border-white/10">
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 h-[58px] flex items-center justify-between">
+    <a href="#top" class="flex items-center gap-2.5">
+      <img src="img/logo.png" alt="DugoutData" class="h-9 w-auto">
+      <span class="leading-tight">
+        <span class="block font-display font-bold tracking-wide text-white text-[1.05rem]">SCOUT DASHBOARD</span>
+        <span class="block text-[.62rem] tracking-[.15em] text-ltblue uppercase">by DugoutData</span>
+      </span>
     </a>
-    <div class="nav-right">
-      <nav class="navlinks">
-        <a href="#how">How It Works</a>
-        <a href="#products">Products</a>
-        <a href="#faq">FAQ</a>
-      </nav>
-      <a class="btn" href="#demo">Try It Free</a>
+    <div class="hidden md:flex items-center gap-7 text-sm font-semibold text-ltblue">
+      <a href="#pricing" class="hover:text-white">Pricing</a>
+      <a href="#gallery" class="hover:text-white">Samples</a>
+      <a href="#how" class="hover:text-white">How It Works</a>
+      <a href="#faq" class="hover:text-white">FAQ</a>
+      <a href="#demo" class="bg-green hover:bg-green2 text-white font-display uppercase tracking-wide px-5 py-2.5 rounded-lg shadow-lg shadow-green/30">Try It Free</a>
     </div>
+    <!-- mobile hamburger -->
+    <button id="navToggle" class="md:hidden p-2 -mr-2 text-white" aria-label="Menu">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </nav>
+  <!-- mobile menu (toggled) -->
+  <div id="navMenu" class="md:hidden hidden border-t border-white/10 bg-navy3 px-4 py-3 space-y-1">
+    <a href="#pricing" class="block py-2 text-ltblue font-semibold">Pricing</a>
+    <a href="#gallery" class="block py-2 text-ltblue font-semibold">Samples</a>
+    <a href="#how" class="block py-2 text-ltblue font-semibold">How It Works</a>
+    <a href="#faq" class="block py-2 text-ltblue font-semibold">FAQ</a>
+    <a href="#demo" class="block mt-2 text-center bg-green text-white font-display uppercase tracking-wide px-5 py-3 rounded-lg">Try It Free</a>
   </div>
 </header>
 
-<!-- ════════ HERO ════════ -->
-<section class="hero" id="top" style="padding-top:76px">
-  <div class="wrap">
+<!-- ════════════════ HERO ════════════════ -->
+<section id="top" class="relative overflow-hidden">
+  <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_-10%,#1A4A7A_0%,#0F2A44_45%,#0A2540_100%)]"></div>
+  <div class="relative max-w-6xl mx-auto px-4 sm:px-6 pt-14 pb-12 grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
     <div>
-      <div class="badge">For Baseball &amp; Softball Coaches</div>
-      <h1>Your GameChanger Export, <em>Finally Coach-Ready</em></h1>
-      <p class="sub">Upload your GameChanger stats and turn the raw export into a polished <b>season report</b>, a full <b>team development report</b>, or a reusable <b>dashboard</b> — in minutes.</p>
-      <div class="cta-row">
-        <div>
-          <a class="btn big" href="#demo">Try It Free With My Export</a>
-          <span class="btn-sub">No sign-up to preview · Baseball &amp; softball · Built for GameChanger exports</span>
-        </div>
-        <a class="btn-ghost" href="#proof">See Sample Outputs</a>
+      <span class="inline-flex items-center gap-2 bg-green/10 border border-green/40 text-green2 font-display uppercase tracking-[.12em] text-[.72rem] font-semibold px-4 py-1.5 rounded-full mb-5">For Baseball &amp; Softball Coaches</span>
+      <h1 class="font-display font-bold text-white leading-[1.05] text-[2.1rem] sm:text-5xl">
+        Your GameChanger Export,<br><span class="text-green2">Finally Coach-Ready</span>
+      </h1>
+      <p class="mt-5 text-ltblue text-lg max-w-xl">
+        Upload your season stats and get a polished, <b class="text-white">coach-ready report</b> in about two minutes — leaderboards, player roles, awards, practice priorities, and a 30-day plan.
+      </p>
+      <div class="mt-7 flex flex-col sm:flex-row gap-3">
+        <a href="#demo" class="bg-green hover:bg-green2 text-white text-center font-display uppercase tracking-wide text-lg px-8 py-4 rounded-xl shadow-xl shadow-green/30 transition">Try It Free With My Export</a>
+        <a href="#gallery" class="border-2 border-green2/50 hover:border-green2 hover:bg-green2/10 text-green2 text-center font-display uppercase tracking-wide px-7 py-4 rounded-xl transition">See Sample Output</a>
       </div>
-      <div class="stats">
-        <div class="stat"><div class="n">Share</div><div class="l">Season PDF Report</div></div>
-        <div class="stat"><div class="n">Coach</div><div class="l">Team Development Report</div></div>
-        <div class="stat"><div class="n">Reuse</div><div class="l">Full Analyzer</div></div>
-        <div class="stat"><div class="n">2 min</div><div class="l">From Export to File</div></div>
+      <div class="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-ltblue">
+        <span class="flex items-center gap-2"><span class="text-green2">✓</span> Free preview — no sign-up</span>
+        <span class="flex items-center gap-2"><span class="text-green2">✓</span> From $4.99 · no subscription</span>
       </div>
     </div>
-    <div>
-      <img class="hero-img" src="img/hero.webp" alt="Scout Dashboard — GameChanger export transformed into a coach dashboard with roster, lineup, pitching and player card views">
+    <!-- HERO IMAGE: real Season Report page (swap: img/season1.png) -->
+    <div class="relative">
+      <div class="absolute -inset-3 bg-green2/10 blur-2xl rounded-3xl"></div>
+      <img src="img/season1.png" alt="Scout Dashboard Team Scout Board — every player ranked with roles and coaching notes"
+           class="relative rounded-xl border border-white/15 shadow-2xl shadow-black/50 w-full" loading="eager">
+      <div class="relative mt-3 text-center text-[.8rem] text-ltblue">Real output — a coach-ready Team Scout Board from one export.</div>
     </div>
   </div>
 </section>
 
-<!-- ════════ TRUST STRIP ════════ -->
-<div class="trust">
-  <div class="wrap">
-    <span>Free preview — no sign-up</span>
-    <span>Excel &amp; Google Sheets-friendly</span>
-    <span>No subscription, ever</span>
-    <span>Personal support from the builder</span>
+<!-- ════════════════ TRUST STRIP ════════════════ -->
+<div class="bg-navy3 border-y border-white/10">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex flex-wrap justify-center gap-x-8 gap-y-2 text-sm text-ltblue">
+    <span class="flex items-center gap-2"><span class="text-green2 font-bold">✓</span> Works with standard GameChanger exports</span>
+    <span class="flex items-center gap-2"><span class="text-green2 font-bold">✓</span> Baseball &amp; softball</span>
+    <span class="flex items-center gap-2"><span class="text-green2 font-bold">✓</span> Private — never sold or shared</span>
+    <span class="flex items-center gap-2"><span class="text-green2 font-bold">✓</span> Personal support from the builder</span>
   </div>
 </div>
 
-<!-- ════════ PROBLEM ════════ -->
-<section class="light">
-  <div class="wrap center">
-    <div class="eyebrow">Sound Familiar?</div>
-    <h2>You Don't Have a Stats Problem.<br>You Have an Export Problem.</h2>
-    <p class="lead">GameChanger captures everything — every at-bat, every pitch, every putout. Then it hands you a 174-column spreadsheet and wishes you luck.</p>
-    <div class="pains">
-      <div class="pain">
-        <div class="x">×</div>
-        <h3>The Good Stats Are Buried</h3>
-        <p>The numbers that actually inform a lineup — on-base, quality at-bats, contact rate — sit past column 30, mixed in with stats you'll never use.</p>
-      </div>
-      <div class="pain">
-        <div class="x">×</div>
-        <h3>You Don't Have Spreadsheet Night</h3>
-        <p>Between work, practice, and games, nobody has an evening to sort columns and build formulas. So the export sits unopened.</p>
-      </div>
-      <div class="pain">
-        <div class="x">×</div>
-        <h3>Raw Numbers Aren't Decisions</h3>
-        <p>A wall of stats doesn't tell you who's earned the leadoff spot or what to drill on Tuesday. Someone has to organize it first.</p>
-      </div>
-    </div>
-    <div class="empathy">
-      If you've ever downloaded the season export, scrolled right for thirty seconds, and closed it — this was built for you. The data you need is in there. It's just not organized for a coach. Yet.
-    </div>
-  </div>
-</section>
+<!-- ════════════════ LIVE TOOL: UPLOAD + INSTANT PREVIEW ════════════════
+     The interactive tool is the #1 conversion driver. The dropzone (STAGE 1)
+     and the live preview + product picker (STAGE 2) are PRESERVED VERBATIM
+     from the working site — same element IDs the tool's JS depends on. -->
+<section id="demo" class="bg-graybg text-ink py-16 sm:py-20">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 text-center">
+    <div class="text-green font-display uppercase tracking-[.2em] text-sm font-semibold">See It In Action</div>
+    <h2 class="font-display font-bold text-navy text-3xl sm:text-4xl mt-2">Try It Free — With Your Own Team</h2>
+    <p class="text-ink/60 text-lg max-w-2xl mx-auto mt-3">Drop in your GameChanger export and watch your real roster turn into coach-ready views, right here. No purchase, no sign-up.</p>
 
-<!-- ════════ BEFORE / AFTER ════════ -->
-<section class="dark">
-  <div class="wrap center">
-    <div class="eyebrow">The Transformation</div>
-    <h2>From Stat Dump to Coach-Ready</h2>
-    <div class="ba">
-      <div class="ba-col ba-before">
-        <h3>Before: The Raw Export</h3>
-        <ul>
-          <li>174 columns across batting, pitching, and fielding</li>
-          <li>Manual sorting for every question</li>
-          <li>Trends you only spot when it's too late</li>
-          <li>Lineup built on memory and gut feel</li>
-          <li>Rebuild the whole thing every week</li>
-        </ul>
-      </div>
-      <div class="ba-col ba-after">
-        <h3>After: Scout Dashboard</h3>
-        <ul>
-          <li><b>Team view</b> — every player ranked and role-tagged</li>
-          <li><b>Player cards</b> — one clean page per kid</li>
-          <li><b>Leaderboards</b> — hitting, pitching, fielding</li>
-          <li><b>Lineup starting points</b> — backed by the numbers</li>
-          <li><b>Re-paste anytime</b> — fresh views in seconds</li>
-        </ul>
-      </div>
-    </div>
-    <div class="ba-img">
-      <img src="img/before_after.webp" alt="Side by side: raw 174-column GameChanger export on the left, organized Scout Dashboard views on the right">
-      <p class="ba-cap">Same data. Same two minutes. A very different Tuesday night.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ════════ SEE IT IN ACTION — INTERACTIVE ════════ -->
-<section class="light" id="demo">
-  <div class="wrap center">
-    <div class="eyebrow">See It In Action</div>
-    <h2>Try It Free — With Your Own Team</h2>
-    <p class="lead">Drop in your GameChanger export and watch your real roster turn into coach-ready views, right here. No purchase, no sign-up.</p>
-
-    <div class="try-wrap">
-      <!-- STAGE 1: dropzone -->
-      <div id="dropzone" class="dropzone">
-        <div class="dz-ic">⚾</div>
-        <h3>Upload Your GameChanger Export</h3>
-        <p>Drag your stats <b>.csv</b> here, or pick it from your device.</p>
-        <div class="dz-actions">
-          <label class="dz-pick" for="csvfile">Choose My Export</label>
-          <input id="csvfile" type="file" accept=".csv,text/csv" style="display:none">
-          <button id="sampleBtn" class="dz-sample" type="button">No file handy? Try a sample team</button>
+    <div class="mt-10 text-left">
+      <!-- STAGE 1: dropzone (IDs preserved) -->
+      <div id="dropzone" class="bg-navy3 border-[2.5px] border-dashed border-ltblue/60 rounded-3xl px-6 py-12 text-center cursor-pointer transition hover:border-green">
+        <div class="text-5xl mb-3">⚾</div>
+        <h3 class="font-display font-bold text-white text-2xl">Upload Your GameChanger Export</h3>
+        <p class="text-ltblue mt-2">Drag your stats <b class="text-white">.csv</b> here, or pick it from your device.</p>
+        <div class="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
+          <label class="dz-pick inline-block bg-green hover:bg-green2 text-white font-display uppercase tracking-wide px-8 py-4 rounded-xl cursor-pointer shadow-lg shadow-green/30 transition" for="csvfile">Choose My Export</label>
+          <input id="csvfile" type="file" accept=".csv,text/csv" class="hidden">
+          <button id="sampleBtn" class="bg-white/5 border border-white/20 hover:border-green2 text-white font-display uppercase tracking-wide px-7 py-4 rounded-xl transition" type="button">No file handy? Try a sample team</button>
         </div>
-        <div class="dz-meta">
-          <input id="metaTeam" type="text" placeholder="Team name" autocomplete="off">
-          <input id="metaSeason" type="text" placeholder="Season (e.g. Summer 2026)" autocomplete="off">
-          <input id="metaRecord" type="text" placeholder="Record (e.g. 21-2)" autocomplete="off">
+        <div class="dz-meta mt-6 flex flex-col sm:flex-row gap-2.5 justify-center max-w-xl mx-auto">
+          <input id="metaTeam" type="text" placeholder="Team name" autocomplete="off" class="flex-1 bg-white/5 border border-white/15 rounded-lg px-3.5 py-3 text-white placeholder-ltblue/60 text-sm focus:outline-none focus:border-green">
+          <input id="metaSeason" type="text" placeholder="Season (e.g. Summer 2026)" autocomplete="off" class="flex-1 bg-white/5 border border-white/15 rounded-lg px-3.5 py-3 text-white placeholder-ltblue/60 text-sm focus:outline-none focus:border-green">
+          <input id="metaRecord" type="text" placeholder="Record (e.g. 21-2)" autocomplete="off" class="flex-1 bg-white/5 border border-white/15 rounded-lg px-3.5 py-3 text-white placeholder-ltblue/60 text-sm focus:outline-none focus:border-green">
         </div>
-        <div class="dz-meta-note">Optional — appears on your purchased report &amp; workbook.</div>
-        <div class="privacy-badge">Your stats are used only to build your dashboard — never sold, never shared.</div>
-        <div id="tryError" class="try-error"></div>
+        <div class="text-ltblue/70 text-xs mt-2">Optional — appears on your purchased report.</div>
+        <div class="inline-flex items-center gap-2 mt-5 bg-greenhl text-green-800 text-sm font-semibold px-4 py-2 rounded-full"><span>🔒</span> Your stats are used only to build your report — never sold, never shared.</div>
+        <div id="tryError" class="hidden mt-5 bg-red-50 border border-red-200 text-red-800 rounded-xl px-5 py-4 text-sm text-left"></div>
       </div>
 
-      <!-- STAGE 2: results (revealed after parse) -->
-      <div id="tryResults" class="try-results">
-        <!-- STEP: confirm team details first (so they're never lost; stamped on your files) -->
-        <div class="review" id="reviewBox">
-          <div class="res-h">Confirm your team details <span class="tag">step 1 of 2</span></div>
-          <p class="review-note">Add or edit these now — they're stamped on the title and header of every report you generate. Optional, but recommended.</p>
-          <div class="dz-meta">
-            <input id="metaTeam2" type="text" placeholder="Team name" autocomplete="off">
-            <input id="metaSeason2" type="text" placeholder="Season (e.g. Summer 2026)" autocomplete="off">
-            <input id="metaRecord2" type="text" placeholder="Record (e.g. 21-2)" autocomplete="off">
+      <!-- STAGE 2: results (revealed by JS — keep style=display:none) -->
+      <div id="tryResults" style="display:none" class="mt-9">
+        <!-- confirm team details -->
+        <div id="reviewBox" class="bg-white border border-line rounded-2xl p-5 mb-6">
+          <div class="res-h" style="margin-top:0">Confirm your team details <span class="tag">step 1 of 2</span></div>
+          <p class="text-ink/60 text-sm mb-3">Add or edit these now — they're stamped on the title and header of every report you generate. Optional, but recommended.</p>
+          <div class="flex flex-col sm:flex-row gap-2.5">
+            <input id="metaTeam2" type="text" placeholder="Team name" autocomplete="off" class="flex-1 border border-line rounded-lg px-3.5 py-3 text-sm focus:outline-none focus:border-green">
+            <input id="metaSeason2" type="text" placeholder="Season (e.g. Summer 2026)" autocomplete="off" class="flex-1 border border-line rounded-lg px-3.5 py-3 text-sm focus:outline-none focus:border-green">
+            <input id="metaRecord2" type="text" placeholder="Record (e.g. 21-2)" autocomplete="off" class="flex-1 border border-line rounded-lg px-3.5 py-3 text-sm focus:outline-none focus:border-green">
           </div>
         </div>
 
-        <!-- STEP: free preview of the real team -->
+        <!-- live preview (filled by JS) -->
         <div class="glance" id="glance"></div>
-
         <div class="res-h">Team Leaderboard <span class="tag">Your Data</span></div>
         <div class="lb"><table><thead id="lbHead"></thead><tbody id="lbBody"></tbody></table></div>
-
         <div class="res-h" style="margin-top:30px">Top 3 Player Cards <span class="tag">Your Data</span></div>
         <div class="pcards" id="pcards"></div>
 
-        <!-- STEP: choose a product (built from the upload above) -->
-        <h3 id="lockHeadline" class="tiers-head">Now take your team with you — choose your product:</h3>
-        <div class="tiers" id="products">
+        <!-- product picker (built from the upload above) -->
+        <h3 id="lockHeadline" class="font-display uppercase tracking-wide text-navy text-xl text-center mt-10 mb-6">Now take your team with you — choose your product:</h3>
+        <div class="grid md:grid-cols-3 gap-5" id="products">
 
-          <!-- PDF report — Share -->
-          <div class="tier">
-            <span class="purpose share">Best for sharing</span>
-            <div class="tier-price" data-price="pdf"></div>
-            <div class="tier-name">Season PDF Report</div>
-            <p class="tier-desc">A polished 5-page report from your export — great for coaches, parents, players, and end-of-season recaps.</p>
-            <ul class="tier-feat">
-              <li>Team Scout Board + leaderboards</li>
-              <li>Pitching staff + season awards</li>
-              <li>Shareable, printable PDF</li>
+          <!-- Season Report -->
+          <div class="bg-white border border-line rounded-2xl p-6 flex flex-col shadow-sm">
+            <span class="self-start text-[.66rem] font-display uppercase tracking-[.15em] font-semibold bg-blue-50 text-navy2 px-3 py-1 rounded-full">Best for sharing</span>
+            <div class="font-display font-bold text-navy text-4xl mt-3" data-price="pdf"></div>
+            <div class="font-display uppercase tracking-wide text-navy mt-1">Season Report</div>
+            <p class="text-ink/60 text-sm mt-2">A polished 6-page PDF from your export — great for coaches, parents, players, and end-of-season recaps.</p>
+            <ul class="text-sm text-ink space-y-1.5 mt-3 mb-4 flex-1">
+              <li>✓ Cover + Team Scout Board + leaderboards</li>
+              <li>✓ Pitching staff + season awards</li>
+              <li>✓ Shareable, printable PDF</li>
             </ul>
-            <button id="reportBtn" class="tier-btn" type="button" data-cta="pdf">Generate PDF Report</button>
-            <div class="tier-fine">Finished PDF · share &amp; print · not editable</div>
-            <div id="unlockArea" class="unlock" style="display:none">
-              <p>Paste the unlock code from your receipt:</p>
-              <input id="unlockInput" type="text" placeholder="Unlock code" autocomplete="off">
-              <button id="unlockBtn" class="ubtn" type="button">Unlock &amp; Download PDF</button>
-              <div id="unlockErr" class="uerr"></div>
+            <button id="reportBtn" type="button" data-cta="pdf" class="w-full bg-navy hover:bg-navy2 text-white font-display uppercase tracking-wide py-3.5 rounded-xl transition">Generate PDF Report</button>
+            <div class="text-ink/50 text-xs text-center mt-2">Finished PDF · share &amp; print · not editable</div>
+            <div id="unlockArea" style="display:none" class="mt-3">
+              <p class="text-ink/60 text-xs mb-2">Paste the unlock code from your receipt:</p>
+              <input id="unlockInput" type="text" placeholder="Unlock code" autocomplete="off" class="w-full border border-line rounded-lg px-3 py-2.5 text-center uppercase text-sm mb-2 focus:outline-none focus:border-green">
+              <button id="unlockBtn" type="button" class="w-full bg-green hover:bg-green2 text-white font-display uppercase tracking-wide py-3 rounded-lg">Unlock &amp; Download PDF</button>
+              <div id="unlockErr" class="text-red-600 text-xs mt-2 min-h-[1em]"></div>
             </div>
           </div>
 
-          <!-- Team Development Report — Coach (recommended) -->
-          <div class="tier feat">
-            <div class="tier-badge">Most popular with coaches</div>
-            <span class="purpose coach">Best for coaching</span>
-            <div class="tier-price" data-price="coach"></div>
-            <div class="tier-name">Team Development Report</div>
-            <p class="tier-desc">Everything in the Season Report plus a full coaching analysis of your export — strengths &amp; weaknesses, top practice priorities, focus players, and a 30-day plan.</p>
-            <ul class="tier-feat">
-              <li>The complete Season Report (Scout Board, leaderboards, pitching, awards)</li>
-              <li>Coach's executive summary + strengths &amp; weaknesses</li>
-              <li>Top practice priorities — with drills and the players affected</li>
-              <li><b>Focus players, lineup &amp; pitching notes, 30-day plan</b></li>
+          <!-- Team Development Report (featured) -->
+          <div class="bg-white border-2 border-green rounded-2xl p-6 flex flex-col shadow-xl shadow-green/15 relative md:-mt-3">
+            <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-green text-white text-[.66rem] font-display uppercase tracking-[.1em] font-bold px-4 py-1 rounded-full whitespace-nowrap">Most popular with coaches</span>
+            <span class="self-start text-[.66rem] font-display uppercase tracking-[.15em] font-semibold bg-greenhl text-green-800 px-3 py-1 rounded-full mt-1">Best for coaching</span>
+            <div class="font-display font-bold text-green text-4xl mt-3" data-price="coach"></div>
+            <div class="font-display uppercase tracking-wide text-navy mt-1">Team Development Report</div>
+            <p class="text-ink/60 text-sm mt-2">Everything in the Season Report plus a full coaching analysis — strengths &amp; weaknesses, top practice priorities, focus players, and a 30-day plan.</p>
+            <ul class="text-sm text-ink space-y-1.5 mt-3 mb-4 flex-1">
+              <li>✓ The complete Season Report (12 pages total)</li>
+              <li>✓ Coach's executive summary + strengths &amp; weaknesses</li>
+              <li>✓ Top practice priorities — with drills + players</li>
+              <li>✓ <b>Focus players, lineup &amp; pitching notes, 30-day plan</b></li>
             </ul>
-            <button id="wbBtn" class="tier-btn primary" type="button" data-cta="devreport">Generate Team Development Report</button>
-            <div class="tier-fine">Polished multi-page PDF · share &amp; print · built from this export</div>
-            <div id="wbUnlock" class="unlock" style="display:none">
-              <p>Paste the unlock code from your receipt:</p>
-              <input id="wbInput" type="text" placeholder="Unlock code" autocomplete="off">
-              <button id="wbUnlockBtn" class="ubtn" type="button">Unlock &amp; Download Report</button>
-              <div id="wbErr" class="uerr"></div>
+            <button id="wbBtn" type="button" data-cta="devreport" class="w-full bg-green hover:bg-green2 text-white font-display uppercase tracking-wide py-3.5 rounded-xl shadow-lg shadow-green/30 transition">Generate Team Development Report</button>
+            <div class="text-ink/50 text-xs text-center mt-2">Polished multi-page PDF · share &amp; print</div>
+            <div id="wbUnlock" style="display:none" class="mt-3">
+              <p class="text-ink/60 text-xs mb-2">Paste the unlock code from your receipt:</p>
+              <input id="wbInput" type="text" placeholder="Unlock code" autocomplete="off" class="w-full border border-line rounded-lg px-3 py-2.5 text-center uppercase text-sm mb-2 focus:outline-none focus:border-green">
+              <button id="wbUnlockBtn" type="button" class="w-full bg-green hover:bg-green2 text-white font-display uppercase tracking-wide py-3 rounded-lg">Unlock &amp; Download Report</button>
+              <div id="wbErr" class="text-red-600 text-xs mt-2 min-h-[1em]"></div>
             </div>
           </div>
 
-          <!-- Full Dashboard Analyzer — Reuse -->
-          <div class="tier">
-            <span class="purpose reuse">Best for full-season use</span>
-            <div class="tier-price" data-price="full"></div>
-            <div class="tier-name">Full Dashboard Analyzer</div>
-            <p class="tier-desc">The reusable full product. Import new GameChanger exports all season and regenerate the dashboards as your team changes.</p>
-            <ul class="tier-feat">
-              <li><b>Reusable — import new exports anytime</b></li>
-              <li>Dynamic dashboards + overrides</li>
-              <li>Lineup, pitching, practice, awards</li>
-              <li>Excel &amp; Google Sheets</li>
+          <!-- Full Dashboard Analyzer -->
+          <div class="bg-white border border-line rounded-2xl p-6 flex flex-col shadow-sm">
+            <span class="self-start text-[.66rem] font-display uppercase tracking-[.15em] font-semibold bg-amber-50 text-amber-700 px-3 py-1 rounded-full">Best for full-season use</span>
+            <div class="font-display font-bold text-navy text-4xl mt-3" data-price="full"></div>
+            <div class="font-display uppercase tracking-wide text-navy mt-1">Full Dashboard Analyzer</div>
+            <p class="text-ink/60 text-sm mt-2">The reusable product. Import new GameChanger exports all season and regenerate the dashboards as your team changes.</p>
+            <ul class="text-sm text-ink space-y-1.5 mt-3 mb-4 flex-1">
+              <li>✓ <b>Reusable — import new exports anytime</b></li>
+              <li>✓ Dynamic dashboards + overrides</li>
+              <li>✓ Lineup, pitching, practice, awards</li>
+              <li>✓ Excel &amp; Google Sheets</li>
             </ul>
-            <a class="tier-btn" href="#offer" data-cta="full">Get Full Analyzer</a>
-            <div class="tier-fine">Instant download · Excel &amp; Google Sheets</div>
+            <a href="#offer" data-cta="full" class="block w-full text-center bg-navy hover:bg-navy2 text-white font-display uppercase tracking-wide py-3.5 rounded-xl transition">Get Full Analyzer</a>
+            <div class="text-ink/50 text-xs text-center mt-2">Instant download · Excel &amp; Google Sheets</div>
           </div>
-
         </div>
-        <p class="tiers-priv">Your stats are used only to build your files — never sold, never shared.</p>
-
-        <div style="text-align:center;margin-top:26px">
-          <button id="shareBtn" class="try-again" type="button" style="margin-right:20px">📋 Share this free tool with a coach</button>
-          <button id="tryAgain" class="try-again" type="button">↻ Try a different export</button>
+        <p class="text-center text-ink/50 text-sm mt-5">Your stats are used only to build your files — never sold, never shared.</p>
+        <div class="text-center mt-6">
+          <button id="shareBtn" type="button" class="text-ink/50 text-sm underline mr-5">📋 Share this free tool with a coach</button>
+          <button id="tryAgain" type="button" class="text-ink/50 text-sm underline">↻ Try a different export</button>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ════════ COMPARISON TABLE ════════ -->
-<section class="dark" id="compare">
-  <div class="wrap center">
-    <div class="eyebrow">Which One Is Right for You?</div>
-    <h2>Share. Coach. Reuse.</h2>
-    <p class="lead">All three start from the same free preview of your real team. Pick the one that matches what you need to do.</p>
-    <p class="cmp-hint">← Swipe the table to compare all three →</p>
-    <div class="cmp-wrap">
-      <table class="cmp">
+<!-- ════════════════ PRICING CARDS (always visible) ════════════════
+     Marketing pricing cards with real screenshots. CTAs scroll to the free
+     tool (#demo), where the buyer uploads and the functional generate/unlock
+     buttons live. IMAGE SWAP: Season=season1.png, Team Dev=team_dev3.png,
+     Full=img/roster.webp (dashboard view). -->
+<section id="pricing" class="bg-navy3 py-16 sm:py-20">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 text-center">
+    <div class="text-green2 font-display uppercase tracking-[.2em] text-sm font-semibold">Pricing</div>
+    <h2 class="font-display font-bold text-white text-3xl sm:text-4xl mt-2">Three Ways to Use Your Stats</h2>
+    <p class="text-ltblue text-lg max-w-2xl mx-auto mt-3">All three start from the same free preview of your real team. Pick what you need to do — share it, coach from it, or reuse it all season.</p>
+
+    <div class="grid md:grid-cols-3 gap-6 mt-12 text-left">
+      <!-- Season -->
+      <div class="bg-navy2 border border-white/10 rounded-2xl overflow-hidden flex flex-col">
+        <img src="img/season1.png" alt="Season Report — Team Scout Board" class="w-full border-b border-white/10" loading="lazy">
+        <div class="p-6 flex flex-col flex-1">
+          <div class="text-[.66rem] font-display uppercase tracking-[.15em] text-blue-300">Share</div>
+          <div class="flex items-baseline gap-2 mt-1"><span class="font-display font-bold text-white text-4xl" data-price="pdf"></span><span class="text-ltblue text-sm">one-time</span></div>
+          <div class="font-display uppercase tracking-wide text-white mt-1">Season Report</div>
+          <p class="text-ltblue text-sm mt-2 flex-1">A polished 6-page PDF — Team Scout Board, leaderboards, pitching staff, and season awards. Perfect to share with parents and players.</p>
+          <a href="#demo" class="mt-5 block text-center bg-white/10 hover:bg-white/15 border border-white/15 text-white font-display uppercase tracking-wide py-3 rounded-xl transition">Start Free Preview</a>
+        </div>
+      </div>
+      <!-- Team Development (featured) -->
+      <div class="bg-navy2 border-2 border-green rounded-2xl overflow-hidden flex flex-col relative md:-mt-3 shadow-2xl shadow-green/20">
+        <div class="bg-green text-white text-center text-[.66rem] font-display uppercase tracking-[.1em] font-bold py-1.5">★ Most Popular</div>
+        <img src="img/team_dev3.png" alt="Team Development Report — Top Practice Priorities" class="w-full border-b border-white/10" loading="lazy">
+        <div class="p-6 flex flex-col flex-1">
+          <div class="text-[.66rem] font-display uppercase tracking-[.15em] text-green2">Coach</div>
+          <div class="flex items-baseline gap-2 mt-1"><span class="font-display font-bold text-green2 text-4xl" data-price="coach"></span><span class="text-ltblue text-sm">one-time</span></div>
+          <div class="font-display uppercase tracking-wide text-white mt-1">Team Development Report</div>
+          <p class="text-ltblue text-sm mt-2 flex-1">Everything in the Season Report (12 pages total) plus the coaching analysis: strengths &amp; weaknesses, practice priorities with drills, focus players, lineup &amp; pitching notes, and a 30-day plan.</p>
+          <a href="#demo" class="mt-5 block text-center bg-green hover:bg-green2 text-white font-display uppercase tracking-wide py-3 rounded-xl shadow-lg shadow-green/30 transition">Start Free Preview</a>
+        </div>
+      </div>
+      <!-- Full -->
+      <div class="bg-navy2 border border-white/10 rounded-2xl overflow-hidden flex flex-col">
+        <img src="img/roster.webp" alt="Full Dashboard Analyzer — reusable interactive dashboard" class="w-full border-b border-white/10" loading="lazy">
+        <div class="p-6 flex flex-col flex-1">
+          <div class="text-[.66rem] font-display uppercase tracking-[.15em] text-amber-300">Reuse</div>
+          <div class="flex items-baseline gap-2 mt-1"><span class="font-display font-bold text-white text-4xl" data-price="full"></span><span class="text-ltblue text-sm">one-time</span></div>
+          <div class="font-display uppercase tracking-wide text-white mt-1">Full Dashboard Analyzer</div>
+          <p class="text-ltblue text-sm mt-2 flex-1">The reusable Excel &amp; Google Sheets product. Import new exports all season and the dashboards rebuild — lineup, pitching, practice, and awards.</p>
+          <a href="#offer" class="mt-5 block text-center bg-white/10 hover:bg-white/15 border border-white/15 text-white font-display uppercase tracking-wide py-3 rounded-xl transition">Learn More</a>
+        </div>
+      </div>
+    </div>
+    <p class="text-ltblue/70 text-sm mt-6">One-time purchase · no subscription · baseball &amp; softball</p>
+  </div>
+</section>
+
+<!-- ════════════════ TRANSFORMATION (before → after) ════════════════ -->
+<section class="bg-white text-ink py-16 sm:py-20">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 text-center">
+    <div class="text-green font-display uppercase tracking-[.2em] text-sm font-semibold">The Transformation</div>
+    <h2 class="font-display font-bold text-navy text-3xl sm:text-4xl mt-2">From Stat Dump to Coach-Ready</h2>
+    <div class="grid md:grid-cols-2 gap-6 mt-10 items-center text-left">
+      <!-- BEFORE: raw export (CSS mock — no image needed) -->
+      <div class="min-w-0">
+        <div class="text-xs font-display uppercase tracking-widest text-red-400 mb-2">Before — the raw export</div>
+        <div class="rounded-xl border border-line bg-graybg p-4 overflow-hidden">
+          <div class="font-mono text-[.6rem] leading-relaxed text-ink/50 whitespace-nowrap overflow-hidden">
+            Number,Last,First,GP,PA,AB,AVG,OBP,OPS,SLG,H,RBI,R,BB,SO,SB,QAB%,...<br>
+            4,Maloney,Ryan,23,73,64,.516,.575,1.560,.984,33,31,...,52.05,...<br>
+            14,Fariello,Hunter,23,68,61,.377,.441,1.244,.803,...<br>
+            12,Rich,Brian,22,60,49,.388,.500,1.214,.714,...<br>
+            <span class="text-ink/30">…174 columns across batting, pitching &amp; fielding…</span>
+          </div>
+        </div>
+        <p class="text-ink/50 text-sm mt-3">174 columns. Manual sorting for every question. The export sits unopened.</p>
+      </div>
+      <!-- AFTER: real report page -->
+      <div class="min-w-0">
+        <div class="text-xs font-display uppercase tracking-widest text-green mb-2">After — Scout Dashboard</div>
+        <img src="img/season1.png" alt="Organized Team Scout Board" class="rounded-xl border border-line shadow-xl shadow-navy/10 w-full" loading="lazy">
+        <p class="text-ink/50 text-sm mt-3">Same data, same two minutes — every player ranked, role-tagged, and coach-ready.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ PROOF GALLERY (all screenshots) ════════════════
+     IMAGE SWAP: season1–5.png (Season Report pages) + team_dev1–6.png
+     (Team Development Report pages). All are real rendered report pages. -->
+<section id="gallery" class="bg-navy3 py-16 sm:py-20">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 text-center">
+    <div class="text-green2 font-display uppercase tracking-[.2em] text-sm font-semibold">Sample Output</div>
+    <h2 class="font-display font-bold text-white text-3xl sm:text-4xl mt-2">See Exactly What You'll Get</h2>
+    <p class="text-ltblue text-lg max-w-2xl mx-auto mt-3">Real pages from a real season export. Your own roster fills these same views automatically.</p>
+
+    <h3 class="text-left font-display uppercase tracking-wide text-green2 text-sm mt-10 mb-4">Season Report — 6 pages</h3>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <figure class="bg-navy2 border border-white/10 rounded-xl overflow-hidden"><img src="img/season1.png" loading="lazy" alt="Team Scout Board" class="w-full"><figcaption class="text-ltblue text-xs py-2.5 px-3">Team Scout Board</figcaption></figure>
+      <figure class="bg-navy2 border border-white/10 rounded-xl overflow-hidden"><img src="img/season2.png" loading="lazy" alt="Hitting Leaderboards" class="w-full"><figcaption class="text-ltblue text-xs py-2.5 px-3">Hitting Leaderboards</figcaption></figure>
+      <figure class="bg-navy2 border border-white/10 rounded-xl overflow-hidden"><img src="img/season3.png" loading="lazy" alt="Pitching &amp; Defense Leaderboards" class="w-full"><figcaption class="text-ltblue text-xs py-2.5 px-3">Pitching &amp; Defense Leaderboards</figcaption></figure>
+      <figure class="bg-navy2 border border-white/10 rounded-xl overflow-hidden"><img src="img/season4.png" loading="lazy" alt="Pitching Staff" class="w-full"><figcaption class="text-ltblue text-xs py-2.5 px-3">Pitching Staff</figcaption></figure>
+      <figure class="bg-navy2 border border-white/10 rounded-xl overflow-hidden"><img src="img/season5.png" loading="lazy" alt="Awards &amp; Season Recap" class="w-full"><figcaption class="text-ltblue text-xs py-2.5 px-3">Awards &amp; Season Recap</figcaption></figure>
+      <figure class="bg-navy2 border border-white/10 rounded-xl overflow-hidden"><img src="img/report_cover.png" loading="lazy" alt="Report cover" class="w-full"><figcaption class="text-ltblue text-xs py-2.5 px-3">Premium cover page</figcaption></figure>
+    </div>
+
+    <h3 class="text-left font-display uppercase tracking-wide text-green2 text-sm mt-12 mb-4">Team Development Report — adds 6 analysis pages</h3>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <figure class="bg-navy2 border border-white/10 rounded-xl overflow-hidden"><img src="img/team_dev1.png" loading="lazy" alt="Coach's Executive Summary" class="w-full"><figcaption class="text-ltblue text-xs py-2.5 px-3">Coach's Executive Summary</figcaption></figure>
+      <figure class="bg-navy2 border border-white/10 rounded-xl overflow-hidden"><img src="img/team_dev2.png" loading="lazy" alt="Team Strengths &amp; Weaknesses" class="w-full"><figcaption class="text-ltblue text-xs py-2.5 px-3">Team Strengths &amp; Weaknesses</figcaption></figure>
+      <figure class="bg-navy2 border border-white/10 rounded-xl overflow-hidden"><img src="img/team_dev3.png" loading="lazy" alt="Top Practice Priorities" class="w-full"><figcaption class="text-ltblue text-xs py-2.5 px-3">Top Practice Priorities</figcaption></figure>
+      <figure class="bg-navy2 border border-white/10 rounded-xl overflow-hidden"><img src="img/team_dev4.png" loading="lazy" alt="Focus Players" class="w-full"><figcaption class="text-ltblue text-xs py-2.5 px-3">Focus Players</figcaption></figure>
+      <figure class="bg-navy2 border border-white/10 rounded-xl overflow-hidden"><img src="img/team_dev5.png" loading="lazy" alt="Lineup &amp; Pitching Notes" class="w-full"><figcaption class="text-ltblue text-xs py-2.5 px-3">Lineup &amp; Pitching Notes</figcaption></figure>
+      <figure class="bg-navy2 border border-white/10 rounded-xl overflow-hidden"><img src="img/team_dev6.png" loading="lazy" alt="30-Day Development Plan" class="w-full"><figcaption class="text-ltblue text-xs py-2.5 px-3">30-Day Development Plan</figcaption></figure>
+    </div>
+    <div class="mt-10"><a href="#demo" class="inline-block bg-green hover:bg-green2 text-white font-display uppercase tracking-wide text-lg px-8 py-4 rounded-xl shadow-xl shadow-green/30">Try It Free With My Export</a></div>
+  </div>
+</section>
+
+<!-- ════════════════ COMPARISON TABLE ════════════════ -->
+<section class="bg-white text-ink py-16 sm:py-20">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6">
+    <div class="text-center">
+      <div class="text-green font-display uppercase tracking-[.2em] text-sm font-semibold">Compare</div>
+      <h2 class="font-display font-bold text-navy text-3xl sm:text-4xl mt-2">Share. Coach. Reuse.</h2>
+    </div>
+    <p class="text-ltblue/90 text-center text-sm mt-3 md:hidden">← Swipe the table to compare all three →</p>
+    <div class="mt-8 overflow-x-auto">
+      <table class="w-full border-collapse min-w-[640px] md:min-w-0 text-sm">
         <thead>
           <tr>
-            <th style="text-align:left">Feature</th>
-            <th>Season PDF Report<span class="pp">SHARE</span></th>
-            <th class="col-coach">Team Development Report<span class="pp">COACH</span></th>
-            <th>Full Dashboard Analyzer<span class="pp">REUSE</span></th>
+            <th class="text-left p-3.5 bg-navy text-white font-display uppercase tracking-wide text-xs rounded-tl-lg">Feature</th>
+            <th class="p-3.5 bg-navy text-white font-display uppercase tracking-wide text-xs">Season Report<span class="block text-[.6rem] text-green2 tracking-widest mt-0.5">SHARE</span></th>
+            <th class="p-3.5 bg-navy text-white font-display uppercase tracking-wide text-xs bg-green/20">Team Dev Report<span class="block text-[.6rem] text-green2 tracking-widest mt-0.5">COACH</span></th>
+            <th class="p-3.5 bg-navy text-white font-display uppercase tracking-wide text-xs rounded-tr-lg">Full Analyzer<span class="block text-[.6rem] text-green2 tracking-widest mt-0.5">REUSE</span></th>
           </tr>
         </thead>
-        <tbody>
-          <tr><th>Generated from your GameChanger export</th><td class="y">✓</td><td class="y col-coach">✓</td><td class="y">✓</td></tr>
-          <tr><th>Free preview before you buy</th><td class="y">✓</td><td class="y col-coach">✓</td><td class="y">✓</td></tr>
-          <tr><th>Team Scout Board, leaderboards &amp; pitching staff</th><td class="y">✓</td><td class="y col-coach">✓</td><td class="y">✓</td></tr>
-          <tr><th>Awards &amp; Season Recap</th><td class="y">✓</td><td class="y col-coach">✓</td><td class="y">✓</td></tr>
-          <tr><th>Coach's Executive Summary</th><td class="n">—</td><td class="y col-coach">✓</td><td class="n">—</td></tr>
-          <tr><th>Team Strengths &amp; Weaknesses</th><td class="n">—</td><td class="y col-coach">✓</td><td class="n">—</td></tr>
-          <tr><th>Top Practice Priorities (with drills)</th><td class="n">—</td><td class="y col-coach">✓</td><td class="n">—</td></tr>
-          <tr><th>Focus Players</th><td class="n">—</td><td class="y col-coach">✓</td><td class="n">—</td></tr>
-          <tr><th>Lineup &amp; pitching recommendations</th><td class="n">—</td><td class="y col-coach">✓</td><td class="y">✓</td></tr>
-          <tr><th>30-Day Development Plan</th><td class="n">—</td><td class="y col-coach">✓</td><td class="n">—</td></tr>
-          <tr><th>Shareable, print-ready PDF</th><td class="y">✓</td><td class="y col-coach">✓</td><td class="n">—</td></tr>
-          <tr><th>Editable &amp; reusable — import new exports all season</th><td class="n">—</td><td class="n col-coach">—</td><td class="y">✓</td></tr>
-          <tr><th>Best for</th><td>Sharing</td><td class="col-coach">Coaching decisions</td><td>Reusing all season</td></tr>
+        <tbody class="[&_td]:text-center [&_td]:p-3 [&_td]:border-b [&_td]:border-line [&_th]:p-3 [&_th]:border-b [&_th]:border-line [&_th]:text-left [&_th]:font-semibold [&_th]:text-navy [&_th]:bg-graybg">
+          <tr><th>Generated from your export</th><td class="text-green font-bold">✓</td><td class="text-green font-bold bg-green/5">✓</td><td class="text-green font-bold">✓</td></tr>
+          <tr><th>Free preview before you buy</th><td class="text-green font-bold">✓</td><td class="text-green font-bold bg-green/5">✓</td><td class="text-green font-bold">✓</td></tr>
+          <tr><th>Scout Board, leaderboards &amp; pitching</th><td class="text-green font-bold">✓</td><td class="text-green font-bold bg-green/5">✓</td><td class="text-green font-bold">✓</td></tr>
+          <tr><th>Awards &amp; Season Recap</th><td class="text-green font-bold">✓</td><td class="text-green font-bold bg-green/5">✓</td><td class="text-green font-bold">✓</td></tr>
+          <tr><th>Coach's Executive Summary</th><td class="text-slate-300">—</td><td class="text-green font-bold bg-green/5">✓</td><td class="text-slate-300">—</td></tr>
+          <tr><th>Strengths &amp; Weaknesses</th><td class="text-slate-300">—</td><td class="text-green font-bold bg-green/5">✓</td><td class="text-slate-300">—</td></tr>
+          <tr><th>Practice Priorities (with drills)</th><td class="text-slate-300">—</td><td class="text-green font-bold bg-green/5">✓</td><td class="text-slate-300">—</td></tr>
+          <tr><th>Focus Players</th><td class="text-slate-300">—</td><td class="text-green font-bold bg-green/5">✓</td><td class="text-slate-300">—</td></tr>
+          <tr><th>Lineup &amp; pitching recommendations</th><td class="text-slate-300">—</td><td class="text-green font-bold bg-green/5">✓</td><td class="text-green font-bold">✓</td></tr>
+          <tr><th>30-Day Development Plan</th><td class="text-slate-300">—</td><td class="text-green font-bold bg-green/5">✓</td><td class="text-slate-300">—</td></tr>
+          <tr><th>Shareable, print-ready PDF</th><td class="text-green font-bold">✓</td><td class="text-green font-bold bg-green/5">✓</td><td class="text-slate-300">—</td></tr>
+          <tr><th>Editable &amp; reusable — import new exports</th><td class="text-slate-300">—</td><td class="text-slate-300 bg-green/5">—</td><td class="text-green font-bold">✓</td></tr>
+          <tr><th class="!font-bold">Best for</th><td class="font-semibold text-navy">Sharing</td><td class="font-semibold text-navy bg-green/5">Coaching decisions</td><td class="font-semibold text-navy">Reusing all season</td></tr>
         </tbody>
       </table>
     </div>
   </div>
 </section>
 
-<!-- ════════ PROOF / SEE INSIDE ════════ -->
-<section class="light" id="proof">
-  <div class="wrap center">
-    <div class="eyebrow">Sample Outputs</div>
-    <h2>See What You'll Get — Before You Buy</h2>
-    <p class="lead">Real views from real exports. The <b>Season Report</b> shares it, the <b>Team Development Report</b> tells you what to do about it, and the <b>Full Analyzer</b> rebuilds it from every new export.</p>
-    <div class="proof-grid">
-      <div class="proof wide">
-        <img src="img/proof_01_raw_export.webp" alt="The raw GameChanger export next to the finished Scout Dashboard views">
-        <div class="pbody">
-          <span class="ptag">The Whole Story</span>
-          <h3>Raw Export In. Dashboard Out.</h3>
-          <p>The exact file GameChanger gives you, and what Scout Dashboard turns it into. One paste connects every view.</p>
-        </div>
-      </div>
-      <div class="proof">
-        <img src="img/proof_02_import_tab.webp" alt="The Import tab with the marked paste cell" loading="lazy">
-        <div class="pbody">
-          <span class="ptag">Step One</span>
-          <h3>The Import Tab</h3>
-          <p>One marked cell. Paste your export there and you're done — every other tab reads from it automatically.</p>
-        </div>
-      </div>
-      <div class="proof">
-        <img src="img/proof_03_team_dashboard.webp" alt="Team Scout Board with every player ranked and role-tagged" loading="lazy">
-        <div class="pbody">
-          <span class="ptag">The Big Picture</span>
-          <h3>The Team Scout Board</h3>
-          <p>Your whole roster ranked by performance, with role tags and a development focus for every player.</p>
-        </div>
-      </div>
-      <div class="proof">
-        <img src="img/proof_04_player_card.webp" alt="Player Card showing one player's hitting, pitching and fielding stats" loading="lazy">
-        <div class="pbody">
-          <span class="ptag">One Kid, One Page</span>
-          <h3>The Player Card</h3>
-          <p>Hitting, pitching, and fielding for any player on one clean page — ready for a parent conversation or a player check-in.</p>
-        </div>
-      </div>
-      <div class="proof">
-        <img src="img/proof_05_lineup.webp" alt="Lineup Builder with data-backed batting order starting points" loading="lazy">
-        <div class="pbody">
-          <span class="ptag">Game Day</span>
-          <h3>The Lineup Builder</h3>
-          <p>A data-backed starting point for your batting order, built from real on-base and contact numbers. You always make the final call.</p>
-        </div>
-      </div>
-    </div>
-    <p class="demo-note" style="margin-top:30px;font-size:.95rem;color:var(--mut)">Sample data shown for privacy — your own roster populates these same views automatically.</p>
-    <div class="cta-block">
-      <a class="btn big" href="#demo">Try It Free With My Export</a>
-      <span class="btn-sub" style="color:var(--mut)">Upload your export · preview free · choose your product</span>
+<!-- ════════════════ HOW IT WORKS ════════════════ -->
+<section id="how" class="bg-navy3 py-16 sm:py-20">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 text-center">
+    <div class="text-green2 font-display uppercase tracking-[.2em] text-sm font-semibold">How It Works</div>
+    <h2 class="font-display font-bold text-white text-3xl sm:text-4xl mt-2">From Export to Coach-Ready in 4 Steps</h2>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-12 text-left">
+      <div class="bg-navy2 border border-white/10 rounded-2xl p-7"><div class="w-12 h-12 rounded-full bg-green/15 border border-green/40 text-green2 font-display text-xl font-bold flex items-center justify-center mb-4">1</div><h3 class="font-display uppercase text-white text-lg">Export</h3><p class="text-ltblue text-sm mt-1">Download your season stats from GameChanger — the export you already know how to get.</p></div>
+      <div class="bg-navy2 border border-white/10 rounded-2xl p-7"><div class="w-12 h-12 rounded-full bg-green/15 border border-green/40 text-green2 font-display text-xl font-bold flex items-center justify-center mb-4">2</div><h3 class="font-display uppercase text-white text-lg">Upload</h3><p class="text-ltblue text-sm mt-1">Drop the .csv into the free tool right here. Nothing to install.</p></div>
+      <div class="bg-navy2 border border-white/10 rounded-2xl p-7"><div class="w-12 h-12 rounded-full bg-green/15 border border-green/40 text-green2 font-display text-xl font-bold flex items-center justify-center mb-4">3</div><h3 class="font-display uppercase text-white text-lg">Preview</h3><p class="text-ltblue text-sm mt-1">See your real team's leaderboard and player cards instantly — then confirm team name, season, and record.</p></div>
+      <div class="bg-navy2 border border-white/10 rounded-2xl p-7"><div class="w-12 h-12 rounded-full bg-green/15 border border-green/40 text-green2 font-display text-xl font-bold flex items-center justify-center mb-4">4</div><h3 class="font-display uppercase text-white text-lg">Choose</h3><p class="text-ltblue text-sm mt-1">Generate your Season Report, Team Development Report, or Full Dashboard Analyzer.</p></div>
     </div>
   </div>
 </section>
 
-<!-- ════════ HOW IT WORKS ════════ -->
-<section class="dark" id="how">
-  <div class="wrap center">
-    <div class="eyebrow">How It Works</div>
-    <h2>From Export to Coach-Ready in 4 Steps</h2>
-    <p class="lead">No spreadsheet skills required. Upload, preview, and choose — your file is generated for you.</p>
-    <div class="steps">
-      <div class="step">
-        <div class="num">1</div>
-        <h3>Export</h3>
-        <p>Download your season stats from GameChanger — the export you already know how to get.</p>
-      </div>
-      <div class="step">
-        <div class="num">2</div>
-        <h3>Upload</h3>
-        <p>Drop the .csv into the free tool right here on the site. Nothing to install.</p>
-      </div>
-      <div class="step">
-        <div class="num">3</div>
-        <h3>Preview</h3>
-        <p>See your real team's leaderboard and player cards instantly — then confirm your team name, season, and record.</p>
-      </div>
-      <div class="step">
-        <div class="num">4</div>
-        <h3>Choose</h3>
-        <p>Generate your Season PDF Report, Team Development Report, or Full Dashboard Analyzer.</p>
-      </div>
-    </div>
-    <p class="steps-note">Works with standard GameChanger stat exports for baseball &amp; softball.</p>
-  </div>
-</section>
-
-<!-- ════════ FEATURES ════════ -->
-<section class="light">
-  <div class="wrap center">
-    <div class="eyebrow">What's In the File</div>
-    <h2>Built Around the Decisions<br>Coaches Actually Make</h2>
-    <div class="features">
-      <div class="feature">
-        <img src="img/roster.webp" alt="Team Scout Board" loading="lazy">
-        <div class="fbody">
-          <h3>Team Scout Board</h3>
-          <p>Every player ranked by OPS with role tags and a development focus.</p>
-          <p class="fb">Know your roster before you open a lineup card.</p>
-        </div>
-      </div>
-      <div class="feature">
-        <img src="img/lineup.webp" alt="Lineup Builder" loading="lazy">
-        <div class="fbody">
-          <h3>Lineup Builder</h3>
-          <p>Data-backed batting order starting points from on-base, contact, and production numbers — with overrides for your judgment.</p>
-          <p class="fb">Walk into game day with a defensible order.</p>
-        </div>
-      </div>
-      <div class="feature">
-        <img src="img/practice.webp" alt="Practice Plan" loading="lazy">
-        <div class="fbody">
-          <h3>Practice Priorities</h3>
-          <p>Your team's weak spots — first-pitch strikes, fielding consistency, plate discipline — flagged from the numbers, with suggested drills.</p>
-          <p class="fb">Spend practice time where it counts.</p>
-        </div>
-      </div>
-      <div class="feature">
-        <img src="img/pitching.webp" alt="Pitching Staff view" loading="lazy">
-        <div class="fbody">
-          <h3>Pitching Staff View</h3>
-          <p>Every arm ranked by innings with workload, command numbers, and a clear role read.</p>
-          <p class="fb">See your staff's picture before you plan the week.</p>
-        </div>
-      </div>
-      <div class="feature">
-        <img src="img/player_card.webp" alt="Player Card" loading="lazy">
-        <div class="fbody">
-          <h3>Player Cards</h3>
-          <p>One clean page per player — hitting, pitching, fielding, and a coaching read.</p>
-          <p class="fb">Better parent conversations, backed by real numbers.</p>
-        </div>
-      </div>
-      <div class="feature">
-        <img src="img/everything.webp" alt="Everything included" loading="lazy">
-        <div class="fbody">
-          <h3>Plus Leaderboards, Awards &amp; More</h3>
-          <p>Hitting, pitching, and fielding leaderboards. Season awards and recap. A guided Import tab that does the heavy lifting.</p>
-          <p class="fb">Ten connected views from one paste.</p>
-        </div>
+<!-- ════════════════ FULL ANALYZER DETAIL ════════════════ -->
+<section id="offer" class="bg-white text-ink py-16 sm:py-20">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+    <div class="text-green font-display uppercase tracking-[.2em] text-sm font-semibold">Reuse · All Season Long</div>
+    <h2 class="font-display font-bold text-navy text-3xl sm:text-4xl mt-2">The Full Dashboard Analyzer</h2>
+    <p class="text-ink/60 text-lg mt-3">The reusable Excel &amp; Google Sheets product. Paste a fresh GameChanger export anytime and every view rebuilds — leaderboards, player cards, lineup, pitching, practice, and awards.</p>
+    <div class="font-display font-bold text-green text-5xl mt-6" data-price="full"></div>
+    <p class="text-ink/50 text-sm mt-1">One purchase · no subscription · Excel &amp; Google Sheets</p>
+    <div class="mt-6">
+      <button id="fullBtn" type="button" class="bg-green hover:bg-green2 text-white font-display uppercase tracking-wide text-lg px-8 py-4 rounded-xl shadow-xl shadow-green/30 transition">Get Full Analyzer</button>
+      <div id="fullUnlock" style="display:none" class="max-w-sm mx-auto mt-5">
+        <p class="text-ink/60 text-sm mb-2">Paste the unlock code from your receipt:</p>
+        <input id="fullInput" type="text" placeholder="Unlock code" autocomplete="off" class="w-full border border-line rounded-lg px-3 py-3 text-center uppercase text-sm mb-2 focus:outline-none focus:border-green">
+        <button id="fullUnlockBtn" type="button" class="w-full bg-green hover:bg-green2 text-white font-display uppercase tracking-wide py-3 rounded-lg">Unlock &amp; Download</button>
+        <div id="fullErr" class="text-red-600 text-xs mt-2 min-h-[1em]"></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ════════ OFFER ════════ -->
-<section class="dark" id="offer">
-  <div class="wrap center">
-    <div class="eyebrow">Reuse · All Season Long</div>
-    <h2>The Full Dashboard Analyzer</h2>
-    <div class="offer-box">
-      <div class="offer-head">
-        <h3>Import new exports anytime — the dashboards rebuild</h3>
-        <p>Instant digital download · Excel &amp; Google Sheets · Baseball &amp; Softball</p>
-      </div>
-      <div class="offer-body">
-        <ul>
-          <li>Reusable import workflow<small>Paste a fresh GameChanger export anytime</small></li>
-          <li>Dynamic dashboards<small>Every view rebuilds from the new data</small></li>
-          <li>Editable settings &amp; overrides<small>Thresholds, lineup slots, and more</small></li>
-          <li>Lineup, pitching &amp; practice views<small>The full coaching toolkit</small></li>
-          <li>A card for every player + awards<small>Plus leaderboards and season recap</small></li>
-          <li>Personal support from the builder<small>Message Joe directly — a real person answers</small></li>
-        </ul>
-        <div class="offer-price">
-          <span class="now" data-price="full"></span>
-          <span class="tag">One purchase</span>
-        </div>
-        <p class="offer-note">Best for coaches tracking a full season. One purchase, no subscription.</p>
-        <div class="offer-cta">
-          <button id="fullBtn" class="btn big" type="button">Get Full Analyzer</button>
-          <span class="btn-sub">Instant download · Excel &amp; Google Sheets · One purchase, no subscription</span>
-          <div id="fullUnlock" class="unlock" style="display:none;max-width:420px;margin:18px auto 0">
-            <p>Paste the unlock code from your receipt:</p>
-            <input id="fullInput" type="text" placeholder="Unlock code" autocomplete="off">
-            <button id="fullUnlockBtn" class="ubtn" type="button">Unlock &amp; Download</button>
-            <div id="fullErr" class="uerr"></div>
-          </div>
-        </div>
-      </div>
+<!-- ════════════════ GUARANTEE + TESTIMONIALS ════════════════ -->
+<section class="bg-navy3 py-16 sm:py-20">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6">
+    <div class="grid md:grid-cols-3 gap-5">
+      <div class="bg-navy2 border border-white/10 rounded-2xl p-7"><div class="w-12 h-12 rounded-xl bg-greenhl text-green flex items-center justify-center text-xl font-bold mb-4">✓</div><h3 class="font-display uppercase text-white text-lg">Works-With-Your-Export Guarantee</h3><p class="text-ltblue text-sm mt-2">If your valid GameChanger export doesn't work, I'll help fix it or refund your purchase.</p></div>
+      <div class="bg-navy2 border border-white/10 rounded-2xl p-7"><div class="w-12 h-12 rounded-xl bg-greenhl text-green flex items-center justify-center text-xl font-bold mb-4">🔒</div><h3 class="font-display uppercase text-white text-lg">Private by Design</h3><p class="text-ltblue text-sm mt-2">Your stats are used only to generate your files — never sold, never shared. No account, no subscription.</p></div>
+      <div class="bg-navy2 border border-white/10 rounded-2xl p-7"><div class="w-12 h-12 rounded-xl bg-greenhl text-green flex items-center justify-center text-xl font-bold mb-4">✉</div><h3 class="font-display uppercase text-white text-lg">Real Support from Joe</h3><p class="text-ltblue text-sm mt-2">Questions before or after you buy? Email <b class="text-white">coach@scoutdashboard.com</b> — the coach who built it answers.</p></div>
+    </div>
+    <!-- TESTIMONIALS — add 2–3 real coach quotes here when you have them (do not invent). -->
+    <!-- <div class="grid md:grid-cols-2 gap-5 mt-5"> ...real quotes... </div> -->
+  </div>
+</section>
+
+<!-- ════════════════ FAQ ════════════════ -->
+<section id="faq" class="bg-white text-ink py-16 sm:py-20">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6">
+    <div class="text-center"><div class="text-green font-display uppercase tracking-[.2em] text-sm font-semibold">FAQ</div><h2 class="font-display font-bold text-navy text-3xl sm:text-4xl mt-2">Before You Choose</h2></div>
+    <div class="mt-8 space-y-3 [&_summary]:cursor-pointer [&_summary]:list-none [&_summary]:font-semibold [&_summary]:text-navy [&_details]:bg-graybg [&_details]:border [&_details]:border-line [&_details]:rounded-xl [&_details]:p-5 [&_p]:text-ink/70 [&_p]:text-sm [&_p]:mt-2">
+      <details><summary>What do I need to use this?</summary><p>A GameChanger baseball or softball stats export (the .csv you download from GameChanger). Upload it here and preview your team for free.</p></details>
+      <details><summary>Can I preview before I pay?</summary><p>Yes. Upload your export and preview your team leaderboard and top player cards before choosing a product. No sign-up required.</p></details>
+      <details><summary>What's the difference between the Season Report and the Team Development Report?</summary><p>The <b>Season Report</b> is a polished 6-page recap — Scout Board, leaderboards, pitching staff, and awards. The <b>Team Development Report</b> includes all of that (12 pages total) <i>plus</i> a coaching analysis: executive summary, strengths &amp; weaknesses, practice priorities with drills, focus players, lineup &amp; pitching notes, and a 30-day plan.</p></details>
+      <details><summary>What's the Full Dashboard Analyzer?</summary><p>The reusable Excel &amp; Google Sheets product — import new GameChanger exports all season and the dashboards rebuild. The reports are finished PDFs; the Analyzer is the living, editable file.</p></details>
+      <details><summary>Is it for baseball and softball?</summary><p>Both. GameChanger exports the same stat categories for each, so everything works identically — travel, rec, Little League, or school ball.</p></details>
+      <details><summary>Is my data private?</summary><p>Yes. Your stats are used only to generate your preview and files. They are never sold or shared, and there's no account to create.</p></details>
+      <details><summary>Is this affiliated with GameChanger?</summary><p>No. Scout Dashboard is an independent product built to work with GameChanger exports. It is not affiliated with, endorsed by, or connected to GameChanger.</p></details>
     </div>
   </div>
 </section>
 
-<!-- ════════ GUARANTEE / TRUST ════════ -->
-<section class="light">
-  <div class="wrap center">
-    <div class="eyebrow">No-Stress Promise</div>
-    <h2>You Won't Be Left Figuring It Out Alone</h2>
-    <div class="guarantee">
-      <div class="g-card">
-        <div class="gi">✓</div>
-        <h3>Works-With-Your-Export Guarantee</h3>
-        <p>If your valid GameChanger export doesn't work, I'll help fix it or refund your purchase. <b>You're never stuck with something that doesn't fit your file.</b></p>
-      </div>
-      <div class="g-card">
-        <div class="gi">🔒</div>
-        <h3>Private by Design</h3>
-        <p>Your stats are used only to generate your preview and files — <b>never sold, never shared.</b> No account to create, and no subscription, ever.</p>
-      </div>
-      <div class="g-card">
-        <div class="gi">✉</div>
-        <h3>Real Support from Joe</h3>
-        <p>Questions before or after you buy? Email <b>coach@scoutdashboard.com</b> and I'll personally help. Not a help desk, not a chatbot — the coach who built it.</p>
-      </div>
-    </div>
+<!-- ════════════════ FINAL CTA ════════════════ -->
+<section class="bg-[radial-gradient(ellipse_at_50%_120%,#1A4A7A_0%,#0A2540_70%)] py-16 sm:py-20 text-center">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6">
+    <h2 class="font-display font-bold text-white text-3xl sm:text-4xl">Ready to Turn Your Export Into Something <span class="text-green2">Coach-Ready?</span></h2>
+    <p class="text-ltblue text-lg mt-4">Upload your GameChanger export, preview your real team free, and choose your report.</p>
+    <a href="#demo" class="inline-block mt-7 bg-green hover:bg-green2 text-white font-display uppercase tracking-wide text-lg px-9 py-4 rounded-xl shadow-xl shadow-green/30">Try It Free With My Export</a>
+    <p class="text-ltblue/70 text-sm mt-4">Free preview · no sign-up · baseball &amp; softball</p>
   </div>
 </section>
 
-<!--
-  ════════ TESTIMONIALS — READY TO TURN ON ════════
-  When you have 2–3 real coach reviews, delete this comment wrapper (the line
-  above and the closing line below) to make the section visible, and replace
-  the placeholder quotes/names. Do NOT invent reviews — only use real ones.
-
-<section class="light">
-  <div class="wrap center">
-    <div class="eyebrow">What Coaches Say</div>
-    <h2>Coaches Are Using It</h2>
-    <div class="features" style="margin-top:44px">
-      <div class="feature" style="padding:0">
-        <div class="fbody">
-          <p style="color:#1F2937;font-size:1.05rem">"REAL QUOTE HERE — what changed for them, in their words."</p>
-          <p class="fb" style="border:0;color:#0F2A44">★★★★★ — Coach First Name, 12U Travel</p>
-        </div>
-      </div>
-      <div class="feature" style="padding:0">
-        <div class="fbody">
-          <p style="color:#1F2937;font-size:1.05rem">"REAL QUOTE HERE."</p>
-          <p class="fb" style="border:0;color:#0F2A44">★★★★★ — Coach First Name, Rec League</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-  ════════ END TESTIMONIALS ════════
--->
-
-<!-- ════════ FOUNDER ════════ -->
-<section class="dark">
-  <div class="wrap">
-    <div class="founder">
-      <div class="eyebrow">From the Builder</div>
-      <blockquote>"I built this for the coach who wants to use the stats without becoming the spreadsheet guy. You already do the hard part — you track every game. The answers you want are sitting in that export. Scout Dashboard just gets them in front of you in a way you can actually use between work and practice. And if you get stuck, you message me, and we'll get it sorted."</blockquote>
-      <div class="sig">— Joe, DugoutData</div>
-      <div class="role">Coach, dad, and the guy who answers your support messages</div>
-    </div>
-  </div>
-</section>
-
-<!-- ════════ FAQ ════════ -->
-<section class="light" id="faq">
-  <div class="wrap center">
-    <div class="eyebrow">Questions Coaches Ask</div>
-    <h2>Before You Choose</h2>
-    <div class="faq">
-      <details>
-        <summary>What do I need to use this?</summary>
-        <p>A GameChanger baseball or softball stats export (the .csv you download from GameChanger). That's it — upload it here and preview your team for free.</p>
-      </details>
-      <details>
-        <summary>Can I preview before I pay?</summary>
-        <p>Yes. Upload your export and preview key stats — your team leaderboard and top player cards — before choosing a product. No sign-up required.</p>
-      </details>
-      <details>
-        <summary>What's the difference between the Season Report and the Team Development Report?</summary>
-        <p>The <b>Season PDF Report</b> is a polished, shareable recap — Team Scout Board, leaderboards, pitching staff, and season awards. The <b>Team Development Report</b> includes all of that <em>plus</em> a full coaching analysis: an executive summary, team strengths &amp; weaknesses, top practice priorities with drills, focus players, lineup &amp; pitching notes, and a 30-day development plan.</p>
-      </details>
-      <details>
-        <summary>What's the difference between the Team Development Report and the Full Analyzer?</summary>
-        <p>The <b>Team Development Report</b> is a finished, print-ready PDF built from one export — read it, share it, coach from it. The <b>Full Dashboard Analyzer</b> is the reusable Excel &amp; Google Sheets product: import new GameChanger exports all season and the dashboards rebuild.</p>
-      </details>
-      <details>
-        <summary>Can I edit the Team Development Report?</summary>
-        <p>It's a polished, print-ready PDF — perfect to share with coaches, parents, and players. If you want files you can edit and reuse all season, choose the <b>Full Dashboard Analyzer</b>.</p>
-      </details>
-      <details>
-        <summary>Is the Team Development Report built from one export?</summary>
-        <p>Yes — it's generated from a single GameChanger export, so it reflects your team at that point in the season. Run it again anytime with a fresh export. To import new exports into one reusable file, choose the Full Dashboard Analyzer.</p>
-      </details>
-      <details>
-        <summary>Is it for baseball and softball?</summary>
-        <p>Both. GameChanger exports the same stat categories for baseball and softball, so everything works identically for either — travel, rec, Little League, school ball.</p>
-      </details>
-      <details>
-        <summary>Is my data private?</summary>
-        <p>Yes. Your stats are used only to generate your preview and files. They are never sold or shared, and there's no account to create.</p>
-      </details>
-      <details>
-        <summary>What if my export looks a little different?</summary>
-        <p>Scout Dashboard finds your stats by column name, not position, so normal variations are handled automatically. If something looks off, email me and I'll get it working with you.</p>
-      </details>
-      <details>
-        <summary>Is this affiliated with GameChanger?</summary>
-        <p>No. Scout Dashboard is an independent product built to work with GameChanger exports. It is not affiliated with, endorsed by, or connected to GameChanger. GameChanger is a trademark of its respective owner.</p>
-      </details>
-    </div>
-  </div>
-</section>
-
-<!-- ════════ FINAL CTA ════════ -->
-<section class="final">
-  <div class="wrap">
-    <div class="eyebrow">Your Stats Are Already Waiting</div>
-    <h2>Ready to Turn Your Export<br>Into Something <em>Coach-Ready?</em></h2>
-    <p class="lead">Upload your GameChanger export, preview your real team free, and choose your report, workbook, or dashboard.</p>
-    <a class="btn big" href="#demo">Try It Free With My Export</a>
-    <a class="btn-ghost" href="#proof" style="margin-left:14px">See Sample Outputs</a>
-    <p style="margin-top:18px;color:var(--ltblue);font-size:.9rem">Free preview · no sign-up · baseball &amp; softball</p>
-  </div>
-</section>
-
-<!-- ════════ FOOTER ════════ -->
-<footer>
-  <div class="wrap">
-    <p><b style="color:#fff">Scout Dashboard</b> by DugoutData · Built for baseball &amp; softball coaches</p>
-    <p class="flinks">
-      <a href="/refund">Refund Policy</a> ·
-      <a href="/terms">Terms</a> ·
-      <a href="/privacy">Privacy</a> ·
-      <a href="mailto:coach@scoutdashboard.com">coach@scoutdashboard.com</a>
-    </p>
-    <p class="dis">Scout Dashboard is an independent product and is not affiliated with, endorsed by, or connected to GameChanger. GameChanger is a trademark of its respective owner. Stats shown in product images are sample data.</p>
-  </div>
+<!-- ════════════════ FOOTER ════════════════ -->
+<footer class="bg-navy3 border-t border-white/10 py-9 text-center px-4">
+  <p class="text-ltblue text-sm"><b class="text-white">Scout Dashboard</b> by DugoutData · Built for baseball &amp; softball coaches</p>
+  <p class="mt-2 text-sm"><a href="/refund" class="text-green2 hover:underline">Refund Policy</a> · <a href="/terms" class="text-green2 hover:underline">Terms</a> · <a href="/privacy" class="text-green2 hover:underline">Privacy</a> · <a href="mailto:coach@scoutdashboard.com" class="text-green2 hover:underline">coach@scoutdashboard.com</a></p>
+  <p class="text-[#5A7088] text-xs max-w-2xl mx-auto mt-3">Scout Dashboard is an independent product and is not affiliated with, endorsed by, or connected to GameChanger. GameChanger is a trademark of its respective owner. Stats shown in product images are sample data.</p>
 </footer>
 
-<!-- ════════ PRINTABLE TEAM REPORT (screen-hidden; populated from upload; only this prints) ════════ -->
+<!-- hidden printable report (client-side $4.99 fallback; populated from upload) -->
 <div id="reportDoc" class="pad" style="max-width:8in;margin:0 auto"></div>
 
-<!-- ════════ MOBILE STICKY CTA ════════ -->
-<div class="mobile-cta">
-  <a class="btn" href="#demo">Try It Free With My Export</a>
+<!-- mobile sticky CTA -->
+<div class="md:hidden fixed bottom-0 inset-x-0 z-40 bg-navy3/97 border-t border-green/40 p-3">
+  <a href="#demo" class="block text-center bg-green text-white font-display uppercase tracking-wide py-3.5 rounded-xl">Try It Free With My Export</a>
 </div>
+<div class="md:hidden h-16"></div><!-- spacer so content clears the sticky CTA -->
 
+<!-- ════════════════ NAV TOGGLE (tiny, standalone) ════════════════ -->
+<script>
+  (function(){
+    var t=document.getElementById('navToggle'), m=document.getElementById('navMenu');
+    if(t&&m){ t.addEventListener('click',function(){ m.classList.toggle('hidden'); });
+      m.querySelectorAll('a').forEach(function(a){ a.addEventListener('click',function(){ m.classList.add('hidden'); }); }); }
+  })();
+</script>
+
+<!-- ════════════════ INTERACTIVE TOOL — PRESERVED VERBATIM ════════════════
+     This is the tested upload → parse → preview → generate → unlock pipeline.
+     It POSTs to the Cloud Run backend (fmt=pdf / fmt=devreport / POST /full)
+     using the exact field names and code gates the live store relies on.
+     Do not refactor casually — it drives checkout. -->
 <script>
   // ── OUTPUT BACKEND — Cloud Run service that generates the Season Report / Team Development Report and
   //    serves the Full Analyzer bundle. All three products are sold direct on-site. ──
@@ -1416,14 +828,14 @@
     // ════ PRODUCTS — checkout codes + unlock (soft gate, client-side) ════
     // Set each PAY_URL_* to your checkout link when payment is wired. All three are
     // sold direct on-site: the buyer enters the code from their receipt and the file
-    // is generated (PDF/Workbook) or downloaded (Full Analyzer bundle).
-    const PAY_URL_REPORT   = "";              // $4.99 PDF checkout link
+    // is generated (PDF) or downloaded (Full Analyzer bundle).
+    const PAY_URL_REPORT   = "";              // $4.99 Season Report checkout link
     const PAY_URL_WORKBOOK = "";              // $8.99 Team Development Report checkout link
     const PAY_URL_FULL     = "";              // $14.99 Full Analyzer checkout link
     const REPORT_CODE      = "DUGOUT-PDF";    // code shown on the $4.99 receipt
     const WORKBOOK_CODE    = "DUGOUT-XLS";    // code shown on the $8.99 receipt
     const FULL_CODE        = "DUGOUT-FULL";   // code shown on the $14.99 receipt
-    const TEST_CODE        = "GATORS-TEST";   // ⚙ universal TESTING code — unlocks all three (remove before launch if you want)
+    const TEST_CODE        = "GATORS-TEST";   // ⚙ universal TESTING code — unlocks all three
 
     // ── Full Dashboard Analyzer: direct on-site download (gated zip from the backend) ──
     const fullBtn=$('fullBtn'), fullUnlock=$('fullUnlock'), fullUnlockBtn=$('fullUnlockBtn'),
@@ -1438,7 +850,7 @@
         const v=(fullInput.value||'').trim().toUpperCase();
         if(!(v===FULL_CODE.toUpperCase() || v===TEST_CODE)){
           fullErr.textContent="That code didn't match. Check your receipt, or email coach@scoutdashboard.com."; return; }
-        fullErr.style.color='var(--mut)'; fullErr.textContent='Preparing your download…';
+        fullErr.style.color='#6B7280'; fullErr.textContent='Preparing your download…';
         const fd=new FormData(); fd.append('code', fullInput.value.trim());
         fetch(BACKEND_URL.replace(/\/+$/,'')+'/full',{method:'POST',body:fd})
           .then(r=>{ if(!r.ok) throw new Error('http'); return r.blob(); })
@@ -1449,12 +861,12 @@
       });
     }
 
-    // ── Tier 1: $4.99 PDF ──
+    // ── Tier 1: $4.99 Season Report (backend fmt=pdf) ──
     const reportBtn=$('reportBtn'), unlockArea=$('unlockArea'), unlockBtn=$('unlockBtn'),
           unlockInput=$('unlockInput'), unlockErr=$('unlockErr');
     if(reportBtn){
       reportBtn.addEventListener('click',()=>{
-        track('Checkout_PDF',{value:4.99}); if(typeof fbq==='function') fbq('track','InitiateCheckout',{content_name:'Team Report PDF',value:4.99,currency:'USD'});
+        track('Checkout_PDF',{value:4.99}); if(typeof fbq==='function') fbq('track','InitiateCheckout',{content_name:'Season Report PDF',value:4.99,currency:'USD'});
         if(PAY_URL_REPORT) window.open(PAY_URL_REPORT,'_blank','noopener');
         unlockArea.style.display='block'; unlockArea.scrollIntoView({behavior:'smooth',block:'center'});
       });
@@ -1470,7 +882,7 @@
       });
     }
     function backendReport(){
-      unlockErr.style.color='var(--mut)'; unlockErr.textContent='Building your report… (first one can take up to a minute)';
+      unlockErr.style.color='#6B7280'; unlockErr.textContent='Building your report… (first one can take up to a minute)';
       const fd=new FormData();
       fd.append('file', new Blob([current.rawCsv],{type:'text/csv'}), 'export.csv');
       fd.append('fmt','pdf'); fd.append('code',(unlockInput.value||'').trim()); appendMeta(fd);
@@ -1486,17 +898,8 @@
 
     // ── Tier 2: Team Development Report (backend fmt=devreport → multi-page PDF) ──
     const wbBtn=$('wbBtn'), wbUnlock=$('wbUnlock'), wbUnlockBtn=$('wbUnlockBtn'), wbInput=$('wbInput'), wbErr=$('wbErr');
-    // ExcelJS (free, in-browser) — supports real styling so the workbook looks like the product.
-    function loadExcelJS(cb){
-      if(window.ExcelJS) return cb();
-      const s=document.createElement('script');
-      s.src='https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js';
-      s.onload=cb; s.onerror=()=>{ wbErr.textContent='Could not load the workbook engine — check your connection and try again.'; };
-      document.head.appendChild(s);
-    }
     function generateWorkbook(){
       if(!current){ wbErr.textContent='Please upload your export again.'; return; }
-      // Team Development Report is generated server-side from the real export.
       if(current.isSample || !current.rawCsv){
         wbErr.style.color=''; wbErr.textContent='This is the sample team — upload your own GameChanger export above to generate your Team Development Report.';
         $('dropzone').scrollIntoView({behavior:'smooth',block:'center'}); return;
@@ -1504,7 +907,7 @@
       backendWorkbook();
     }
     function backendWorkbook(){
-      wbErr.style.color='var(--mut)'; wbErr.textContent='Building your Team Development Report… (first one can take up to a minute)';
+      wbErr.style.color='#6B7280'; wbErr.textContent='Building your Team Development Report… (first one can take up to a minute)';
       const fd=new FormData();
       fd.append('file', new Blob([current.rawCsv],{type:'text/csv'}), 'export.csv');
       fd.append('fmt','devreport'); fd.append('code',(wbInput.value||'').trim()); appendMeta(fd);
@@ -1516,84 +919,6 @@
           setTimeout(()=>URL.revokeObjectURL(a.href),1500); wbErr.textContent='';
         })
         .catch(()=>{ wbErr.style.color=''; wbErr.textContent='Server was busy — please try again in a moment, or email coach@scoutdashboard.com.'; });
-    }
-    function clientSideWorkbook(){
-      loadExcelJS(async ()=>{
-       try{
-        const {list, anyArm}=current;
-        const NAVY='FF0F2A44',SLATE='FF34495E',GREEN='FF16A34A',GREENHL='FFDCFCE7',
-              WHITE='FFFFFFFF',LINE='FFE5E7EB',ALT='FFF7F8FA',INK='FF1F2937';
-        const thin={style:'thin',color:{argb:LINE}};
-        const wb=new ExcelJS.Workbook(); wb.creator='Scout Dashboard';
-        function sheet(name,title,cols,rows,highlight){
-          const ws=wb.addWorksheet(name,{views:[{state:'frozen',ySplit:2}]});
-          const n=cols.length;
-          ws.mergeCells(1,1,1,n);
-          const tc=ws.getCell(1,1); tc.value=title;
-          tc.fill={type:'pattern',pattern:'solid',fgColor:{argb:NAVY}};
-          tc.font={name:'Arial',bold:true,size:13,color:{argb:WHITE}};
-          tc.alignment={vertical:'middle',horizontal:'left',indent:1};
-          ws.getRow(1).height=26;
-          cols.forEach((c,i)=>{
-            const h=ws.getCell(2,i+1); h.value=c.label;
-            h.fill={type:'pattern',pattern:'solid',fgColor:{argb:SLATE}};
-            h.font={name:'Arial',bold:true,size:10.5,color:{argb:WHITE}};
-            h.alignment={vertical:'middle',horizontal:c.align||'center'};
-            h.border={bottom:thin};
-            ws.getColumn(i+1).width=c.w;
-          });
-          ws.getRow(2).height=20;
-          rows.forEach((rv,ri)=>{
-            const er=ri+3, hl=highlight&&ri===0;
-            cols.forEach((c,i)=>{
-              const cell=ws.getCell(er,i+1), v=rv[i];
-              cell.value=(v===null||v===undefined||v==='')?null:v;
-              if(c.fmt && typeof cell.value==='number') cell.numFmt=c.fmt;
-              cell.font={name:'Arial',size:10.5,bold:!!hl,color:{argb:INK}};
-              cell.alignment={vertical:'middle',horizontal:c.align||'center'};
-              cell.fill={type:'pattern',pattern:'solid',fgColor:{argb:hl?GREENHL:(ri%2?ALT:WHITE)}};
-              cell.border={bottom:thin};
-            });
-            ws.getRow(er).height=18;
-          });
-        }
-        const AVG='#.000';
-        const tbCols=[{label:'Rank',w:7,fmt:'0'},{label:'#',w:6},{label:'Player',w:24,align:'left'},
-          {label:'GP',w:6,fmt:'0'},{label:'AVG',w:8,fmt:AVG},{label:'OBP',w:8,fmt:AVG},
-          {label:'OPS',w:8,fmt:AVG},{label:'SLG',w:8,fmt:AVG},{label:'SB',w:6,fmt:'0'}]
-          .concat(anyArm?[{label:'IP',w:7,fmt:'0.0'},{label:'ERA',w:8,fmt:'0.00'},{label:'WHIP',w:8,fmt:'0.00'}]:[]);
-        sheet('Team Board','SCOUT DASHBOARD  ·  TEAM BOARD', tbCols, list.map((p,i)=>{
-          const r=[i+1,p.number,p.name,p.gp,p.avg,p.obp,p.ops,p.slg,p.sb];
-          if(anyArm) r.push(p.ip,p.era,p.whip); return r;
-        }), true);
-        const lu=suggestLineup(list);
-        sheet('Suggested Lineup','SCOUT DASHBOARD  ·  SUGGESTED BATTING ORDER',
-          [{label:'Spot',w:12,align:'left'},{label:'#',w:6},{label:'Player',w:24,align:'left'},{label:'Why',w:24,align:'left'}],
-          lu.map(r=>[r.spot,r.p.number,r.p.name,r.note]), false);
-        if(anyArm){
-          const arms=list.filter(p=>p.ip).sort((a,b)=>(a.era==null?99:a.era)-(b.era==null?99:b.era));
-          sheet('Pitching','SCOUT DASHBOARD  ·  PITCHING STAFF',
-            [{label:'#',w:6},{label:'Player',w:24,align:'left'},{label:'IP',w:7,fmt:'0.0'},{label:'ERA',w:8,fmt:'0.00'},{label:'WHIP',w:8,fmt:'0.00'}],
-            arms.map(p=>[p.number,p.name,p.ip,p.era,p.whip]), true);
-        }
-        const rm=wb.addWorksheet('Read Me'); rm.getColumn(1).width=95;
-        const rt=rm.getCell(1,1); rt.value='SCOUT DASHBOARD — COACH WORKBOOK (OFFLINE COPY)';
-        rt.fill={type:'pattern',pattern:'solid',fgColor:{argb:NAVY}};
-        rt.font={name:'Arial',bold:true,size:13,color:{argb:WHITE}};
-        rt.alignment={vertical:'middle',indent:1}; rm.getRow(1).height=26;
-        ['Generated '+new Date().toLocaleDateString()+' from your GameChanger export.',
-         'This is a lightweight offline copy your browser built because the server was busy. For the full Team Development Report, try again in a moment.',
-         'For the reusable version that imports new exports all season, see the Full Dashboard Analyzer at scoutdashboard.com.',
-         'Independent product — not affiliated with, endorsed by, or connected to GameChanger.'
-        ].forEach((t,i)=>{ const c=rm.getCell(i+3,1); c.value=t; c.font={name:'Arial',size:11,color:{argb:INK}}; });
-
-        const buf=await wb.xlsx.writeBuffer();
-        const blob=new Blob([buf],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
-        const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
-        a.download='Scout_Dashboard_Coach_Workbook_offline.xlsx'; document.body.appendChild(a); a.click(); a.remove();
-        setTimeout(()=>URL.revokeObjectURL(a.href),1500);
-       }catch(e){ wbErr.textContent='Workbook build error — try again, or email coach@scoutdashboard.com.'; }
-      });
     }
     if(wbBtn){
       wbBtn.addEventListener('click',()=>{
@@ -1609,7 +934,6 @@
     }
 
     // Embedded sample team (real demo data) — runs through the SAME parser path.
-    // Canonical sample team (real GameChanger export — same team used in promo assets).
     const S=[
       ['Number','Last','First','GP','PA','AB','AVG','OBP','OPS','SLG','SB','QAB%','IP','ERA','WHIP','BAA','FPCT'],
       ['3','Redgrave','Derek','18','49','41','0.293','0.408','0.75','0.341','12','38.78','0','0','0','0','0.857'],
@@ -1629,8 +953,7 @@
   })();
 </script>
 
-<!-- Vercel Web Analytics — turn on in Vercel dashboard → your project → Analytics.
-     Harmless (404s quietly) until the site is deployed on Vercel. -->
+<!-- Vercel Web Analytics -->
 <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
