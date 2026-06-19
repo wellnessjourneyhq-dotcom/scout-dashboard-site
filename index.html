@@ -24,7 +24,7 @@
   "offers": [
     { "@type": "Offer", "name": "Season Report", "price": "4.99", "priceCurrency": "USD", "availability": "https://schema.org/InStock" },
     { "@type": "Offer", "name": "Team Development Report", "price": "8.99", "priceCurrency": "USD", "availability": "https://schema.org/InStock" },
-    { "@type": "Offer", "name": "Full Dashboard Analyzer", "price": "14.99", "priceCurrency": "USD", "availability": "https://schema.org/InStock" }
+    { "@type": "Offer", "name": "Full Dashboard Analyzer", "price": "19.99", "priceCurrency": "USD", "availability": "https://schema.org/InStock" }
   ]
 }
 </script>
@@ -347,13 +347,9 @@
     <div class="grid md:grid-cols-3 gap-6 mt-12 text-left">
       <!-- Season -->
       <div class="bg-navy2 border border-white/10 rounded-2xl overflow-hidden flex flex-col">
+        <!-- big primary + big secondary report pages -->
         <img src="img/season1.webp" alt="Season Report — Team Scout Board" class="w-full" loading="lazy">
-        <!-- page thumbnail strip -->
-        <div class="grid grid-cols-3 gap-px bg-white/10 border-y border-white/10">
-          <img src="img/season5.webp" alt="Awards &amp; Recap" class="w-full bg-navy2" loading="lazy">
-          <img src="img/season2.webp" alt="Hitting Leaderboards" class="w-full bg-navy2" loading="lazy">
-          <img src="img/season4.webp" alt="Pitching Staff" class="w-full bg-navy2" loading="lazy">
-        </div>
+        <img src="img/season5.webp" alt="Season Report — Awards &amp; Season Recap" class="w-full border-t border-white/10" loading="lazy">
         <div class="p-6 flex flex-col flex-1">
           <div class="text-[.66rem] font-display uppercase tracking-[.15em] text-blue-300">Share</div>
           <div class="flex items-baseline gap-2 mt-1"><span class="font-display font-bold text-white text-4xl" data-price="pdf"></span><span class="text-ltblue text-sm">one-time</span></div>
@@ -365,12 +361,11 @@
       <!-- Team Development (featured) -->
       <div class="bg-navy2 border-2 border-green rounded-2xl overflow-hidden flex flex-col relative md:-mt-3 shadow-2xl shadow-green/20">
         <div class="bg-green text-white text-center text-[.66rem] font-display uppercase tracking-[.1em] font-bold py-1.5">★ Most Popular</div>
+        <!-- big primary + two big secondary report pages -->
         <img src="img/team_dev1.webp" alt="Team Development Report — Coach's Executive Summary" class="w-full" loading="lazy">
-        <!-- page thumbnail strip -->
-        <div class="grid grid-cols-3 gap-px bg-white/10 border-y border-white/10">
-          <img src="img/team_dev4.webp" alt="Focus Players" class="w-full bg-navy2" loading="lazy">
-          <img src="img/team_dev6.webp" alt="30-Day Development Plan" class="w-full bg-navy2" loading="lazy">
-          <img src="img/team_dev2.webp" alt="Strengths &amp; Weaknesses" class="w-full bg-navy2" loading="lazy">
+        <div class="grid grid-cols-2 gap-px bg-white/10 border-y border-white/10">
+          <img src="img/team_dev4.webp" alt="Team Development Report — Focus Players" class="w-full bg-navy2" loading="lazy">
+          <img src="img/team_dev6.webp" alt="Team Development Report — 30-Day Development Plan" class="w-full bg-navy2" loading="lazy">
         </div>
         <div class="p-6 flex flex-col flex-1">
           <div class="text-[.66rem] font-display uppercase tracking-[.15em] text-green2">Coach</div>
@@ -382,13 +377,9 @@
       </div>
       <!-- Full -->
       <div class="bg-navy2 border border-white/10 rounded-2xl overflow-hidden flex flex-col">
+        <!-- big primary dashboard + big report page -->
         <img src="img/roster.webp" alt="Full Dashboard Analyzer — reusable interactive dashboard" class="w-full" loading="lazy">
-        <!-- page thumbnail strip (dashboard + report feel) -->
-        <div class="grid grid-cols-3 gap-px bg-white/10 border-y border-white/10">
-          <img src="img/season1.webp" alt="Team Scout Board" class="w-full bg-navy2" loading="lazy">
-          <img src="img/lineup.webp" alt="Lineup Builder" class="w-full bg-navy2" loading="lazy">
-          <img src="img/pitching.webp" alt="Pitching view" class="w-full bg-navy2" loading="lazy">
-        </div>
+        <img src="img/season1.webp" alt="Team Scout Board, rebuilt from every new export" class="w-full border-t border-white/10" loading="lazy">
         <div class="p-6 flex flex-col flex-1">
           <div class="text-[.66rem] font-display uppercase tracking-[.15em] text-amber-300">Reuse</div>
           <div class="flex items-baseline gap-2 mt-1"><span class="font-display font-bold text-white text-4xl" data-price="full"></span><span class="text-ltblue text-sm">one-time</span></div>
@@ -611,7 +602,7 @@
   const BACKEND_URL = "https://scout-output-hd7ufzrqxa-uc.a.run.app";
 
   // ── SINGLE SOURCE OF TRUTH for displayed prices (change here only) ──
-  const PRICES = { pdf: "4.99", coach: "8.99", full: "14.99" };
+  const PRICES = { pdf: "4.99", coach: "8.99", full: "19.99" };
   document.querySelectorAll("[data-price]").forEach(el => {
     const p = PRICES[el.getAttribute("data-price")]; if (p) el.textContent = "$" + p;
   });
@@ -867,10 +858,10 @@
     // is generated (PDF) or downloaded (Full Analyzer bundle).
     const PAY_URL_REPORT   = "";              // $4.99 Season Report checkout link
     const PAY_URL_WORKBOOK = "";              // $8.99 Team Development Report checkout link
-    const PAY_URL_FULL     = "";              // $14.99 Full Analyzer checkout link
+    const PAY_URL_FULL     = "";              // $19.99 Full Analyzer checkout link
     const REPORT_CODE      = "DUGOUT-PDF";    // code shown on the $4.99 receipt
     const WORKBOOK_CODE    = "DUGOUT-XLS";    // code shown on the $8.99 receipt
-    const FULL_CODE        = "DUGOUT-FULL";   // code shown on the $14.99 receipt
+    const FULL_CODE        = "DUGOUT-FULL";   // code shown on the $19.99 receipt
     const TEST_CODE        = "GATORS-TEST";   // ⚙ universal TESTING code — unlocks all three
 
     // ── Full Dashboard Analyzer: direct on-site download (gated zip from the backend) ──
@@ -878,7 +869,7 @@
           fullInput=$('fullInput'), fullErr=$('fullErr');
     if(fullBtn){
       fullBtn.addEventListener('click',()=>{
-        track('Checkout_Full',{value:14.99}); if(typeof fbq==='function') fbq('track','InitiateCheckout',{content_name:'Full Analyzer',value:14.99,currency:'USD'});
+        track('Checkout_Full',{value:19.99}); if(typeof fbq==='function') fbq('track','InitiateCheckout',{content_name:'Full Analyzer',value:19.99,currency:'USD'});
         if(PAY_URL_FULL) window.open(PAY_URL_FULL,'_blank','noopener');
         fullUnlock.style.display='block'; fullUnlock.scrollIntoView({behavior:'smooth',block:'center'});
       });
