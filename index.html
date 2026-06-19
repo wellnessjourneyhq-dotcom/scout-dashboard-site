@@ -320,6 +320,7 @@
     <div class="text-green font-display uppercase tracking-[.2em] text-sm font-semibold">See It In Action</div>
     <h2 class="font-display font-bold text-navy text-3xl sm:text-4xl mt-2">Try It Free — With Your Own Team</h2>
     <p class="text-ink/60 text-lg max-w-xl mx-auto mt-3">Drop your export. See your real roster — free, no sign-up.</p>
+    <div id="purchaseMsg" style="display:none" class="max-w-xl mx-auto mt-5 bg-greenhl border border-green/30 text-green-800 rounded-xl px-4 py-3 text-sm font-medium">✓ Purchase complete! Upload your GameChanger export below, then paste the unlock/license code from your Lemon Squeezy email to download your report.</div>
     <div class="flex flex-wrap justify-center gap-2 mt-5">
       <span class="inline-flex items-center gap-1.5 text-ink/70 text-xs sm:text-sm bg-white border border-line rounded-full px-3 py-1.5"><span class="text-green">✓</span> No sign-up</span>
       <span class="inline-flex items-center gap-1.5 text-ink/70 text-xs sm:text-sm bg-white border border-line rounded-full px-3 py-1.5"><span class="text-green">✓</span> No spreadsheet knowledge needed</span>
@@ -389,9 +390,9 @@
             <div class="flex items-baseline gap-2"><span class="font-display font-bold text-navy text-3xl" data-price="pdf"></span><span class="text-ink/45 text-xs">one-time</span></div>
             <div class="font-display uppercase tracking-wide text-navy text-sm mt-1">Season Report</div>
             <p class="text-ink/55 text-xs mt-1 flex-1">Polished 6-page PDF — share &amp; print.</p>
-            <button id="reportBtn" type="button" data-cta="pdf" class="mt-4 w-full bg-navy hover:bg-navy2 text-white font-display uppercase tracking-wide text-sm py-3 rounded-lg transition">Generate PDF Report</button>
+            <button id="reportBtn" type="button" data-cta="pdf" class="mt-4 w-full bg-navy hover:bg-navy2 text-white font-display uppercase tracking-wide text-sm py-3 rounded-lg transition">Buy Season Report — $4.99</button>
             <div id="unlockArea" style="display:none" class="mt-3">
-              <p class="text-ink/60 text-xs mb-2">Paste the unlock code from your receipt:</p>
+              <p class="text-ink/60 text-xs mb-2">Paste the unlock / license code from your Lemon Squeezy email:</p>
               <input id="unlockInput" type="text" placeholder="Unlock code" autocomplete="off" class="w-full border border-line rounded-lg px-3 py-2.5 text-center uppercase text-sm mb-2 focus:outline-none focus:border-green">
               <button id="unlockBtn" type="button" class="w-full bg-green hover:bg-green2 text-white font-display uppercase tracking-wide py-3 rounded-lg">Unlock &amp; Download PDF</button>
               <div id="unlockErr" class="text-red-600 text-xs mt-2 min-h-[1em]"></div>
@@ -404,9 +405,9 @@
             <div class="flex items-baseline gap-2 mt-1"><span class="font-display font-bold text-green text-3xl" data-price="coach"></span><span class="text-ink/45 text-xs">one-time</span></div>
             <div class="font-display uppercase tracking-wide text-navy text-sm mt-1">Team Development Report</div>
             <p class="text-ink/55 text-xs mt-1 flex-1">Season Report + full coaching analysis.</p>
-            <button id="wbBtn" type="button" data-cta="devreport" class="mt-4 w-full bg-green hover:bg-green2 text-white font-display uppercase tracking-wide text-sm py-3 rounded-lg shadow-lg shadow-green/30 transition">Generate Report</button>
+            <button id="wbBtn" type="button" data-cta="devreport" class="mt-4 w-full bg-green hover:bg-green2 text-white font-display uppercase tracking-wide text-sm py-3 rounded-lg shadow-lg shadow-green/30 transition">Buy Team Development Report — $8.99</button>
             <div id="wbUnlock" style="display:none" class="mt-3">
-              <p class="text-ink/60 text-xs mb-2">Paste the unlock code from your receipt:</p>
+              <p class="text-ink/60 text-xs mb-2">Paste the unlock / license code from your Lemon Squeezy email:</p>
               <input id="wbInput" type="text" placeholder="Unlock code" autocomplete="off" class="w-full border border-line rounded-lg px-3 py-2.5 text-center uppercase text-sm mb-2 focus:outline-none focus:border-green">
               <button id="wbUnlockBtn" type="button" class="w-full bg-green hover:bg-green2 text-white font-display uppercase tracking-wide py-3 rounded-lg">Unlock &amp; Download Report</button>
               <div id="wbErr" class="text-red-600 text-xs mt-2 min-h-[1em]"></div>
@@ -939,15 +940,28 @@
     ['dragleave','dragend'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove('drag');}));
     dz.addEventListener('drop',e=>{ e.preventDefault(); dz.classList.remove('drag'); readFile(e.dataTransfer.files[0]); });
 
-    // ════ PRODUCTS — checkout codes + unlock (soft gate, client-side) ════
-    // Set each PAY_URL_* to your checkout link when payment is wired. Both products
-    // are sold direct on-site: the buyer enters the code from their receipt and the
-    // finished PDF is generated.
-    const PAY_URL_REPORT   = "";              // $4.99 Season Report checkout link
-    const PAY_URL_WORKBOOK = "";              // $8.99 Team Development Report checkout link
-    const REPORT_CODE      = "DUGOUT-PDF";    // code shown on the $4.99 receipt
-    const WORKBOOK_CODE    = "DUGOUT-XLS";    // code shown on the $8.99 receipt
-    const TEST_CODE        = "GATORS-TEST";   // ⚙ universal TESTING code
+    // ════ PRODUCTS — Lemon Squeezy checkout + server-validated unlock ════
+    // Paste your two Lemon Squeezy checkout URLs below. While empty, the buy
+    // buttons show a friendly "checkout being configured" message (never a silent
+    // fail). The unlock/license code is validated SERVER-SIDE by the backend
+    // (/generate). The backend accepts: GATORS-TEST (owner testing), any static
+    // receipt codes you configure, and — once you set your LS variant IDs on the
+    // backend — real Lemon Squeezy license keys. NO secrets live in this file.
+    const LEMON_CHECKOUT_URL_SEASON_REPORT           = "";  // $4.99 Season Report — paste LS checkout URL
+    const LEMON_CHECKOUT_URL_TEAM_DEVELOPMENT_REPORT = "";  // $8.99 Team Development Report — paste LS checkout URL
+    const TEST_CODE = "GATORS-TEST";   // ⚙ owner testing only (also accepted by the backend)
+
+    function openCheckout(url, errEl){
+      if(url){ window.open(url,'_blank','noopener'); errEl.textContent=''; return; }
+      errEl.style.color=''; errEl.textContent="Checkout is being configured. Please email coach@scoutdashboard.com and I’ll help you complete your order.";
+    }
+    // Friendly return-from-checkout nudge. Set each LS product's "redirect/success
+    // URL" to:  https://www.scoutdashboard.com/?purchase=complete#demo
+    try{
+      if(/[?&]purchase=complete/i.test(location.search)){
+        const pm=$('purchaseMsg'); if(pm) pm.style.display='block';
+      }
+    }catch(e){}
 
     // ── Tier 1: $4.99 Season Report (backend fmt=pdf) ──
     const reportBtn=$('reportBtn'), unlockArea=$('unlockArea'), unlockBtn=$('unlockBtn'),
@@ -955,69 +969,72 @@
     if(reportBtn){
       reportBtn.addEventListener('click',()=>{
         track('Checkout_PDF',{value:4.99}); if(typeof fbq==='function') fbq('track','InitiateCheckout',{content_name:'Season Report PDF',value:4.99,currency:'USD'});
-        if(PAY_URL_REPORT) window.open(PAY_URL_REPORT,'_blank','noopener');
+        openCheckout(LEMON_CHECKOUT_URL_SEASON_REPORT, unlockErr);
         unlockArea.style.display='block'; unlockArea.scrollIntoView({behavior:'smooth',block:'center'});
       });
       unlockBtn.addEventListener('click',()=>{
-        const v=(unlockInput.value||'').trim().toUpperCase();
-        if(v && (v===REPORT_CODE.toUpperCase() || v===TEST_CODE)){
-          unlockErr.textContent='';
-          if(BACKEND_URL && current && current.rawCsv && !current.isSample) backendReport();
-          else window.print();   // sample team / no backend → printable client report
-        } else {
-          unlockErr.textContent="That code didn't match. Check your receipt, or email coach@scoutdashboard.com.";
+        const v=(unlockInput.value||'').trim();
+        if(!v){ unlockErr.style.color=''; unlockErr.textContent='Enter the unlock/license code from your Lemon Squeezy email.'; return; }
+        if(current && current.isSample){
+          if(v.toUpperCase()===TEST_CODE){ unlockErr.textContent=''; window.print(); }   // demo printable only
+          else { unlockErr.style.color=''; unlockErr.textContent='This is the sample team — upload your own GameChanger export above, then enter your code.'; }
+          return;
         }
+        if(BACKEND_URL && current && current.rawCsv){ backendReport(); }
+        else { unlockErr.style.color=''; unlockErr.textContent='Please upload your export again, then enter your code.'; }
       });
     }
     function backendReport(){
-      unlockErr.style.color='#6B7280'; unlockErr.textContent='Building your report… (first one can take up to a minute)';
+      unlockErr.style.color='#6B7280'; unlockErr.textContent='Checking your code and building your report… (first one can take up to a minute)';
       const fd=new FormData();
       fd.append('file', new Blob([current.rawCsv],{type:'text/csv'}), 'export.csv');
       fd.append('fmt','pdf'); fd.append('code',(unlockInput.value||'').trim()); appendMeta(fd);
       fetch(BACKEND_URL.replace(/\/+$/,'')+'/generate',{method:'POST',body:fd})
-        .then(r=>{ if(!r.ok) throw new Error('http'); return r.blob(); })
+        .then(r=>{ if(r.status===403) throw {k:'invalid'}; if(!r.ok) throw {k:'server'}; return r.blob(); })
         .then(blob=>{
           const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
           a.download='Scout_Dashboard_Season_Report.pdf'; document.body.appendChild(a); a.click(); a.remove();
-          setTimeout(()=>URL.revokeObjectURL(a.href),1500); unlockErr.textContent='';
+          setTimeout(()=>URL.revokeObjectURL(a.href),1500); unlockErr.style.color=''; unlockErr.textContent='✓ Downloaded — check your downloads folder.';
         })
-        .catch(()=>{ unlockErr.style.color=''; unlockErr.textContent='Server was busy — opening a printable copy instead.'; window.print(); });
+        .catch(err=>{ unlockErr.style.color='';
+          unlockErr.textContent = (err&&err.k==='invalid')
+            ? "That code didn't match your Season Report purchase. Check your Lemon Squeezy email, or email coach@scoutdashboard.com."
+            : "Server was busy — please try again in a moment, or email coach@scoutdashboard.com."; });
     }
 
     // ── Tier 2: Team Development Report (backend fmt=devreport → multi-page PDF) ──
     const wbBtn=$('wbBtn'), wbUnlock=$('wbUnlock'), wbUnlockBtn=$('wbUnlockBtn'), wbInput=$('wbInput'), wbErr=$('wbErr');
-    function generateWorkbook(){
-      if(!current){ wbErr.textContent='Please upload your export again.'; return; }
-      if(current.isSample || !current.rawCsv){
-        wbErr.style.color=''; wbErr.textContent='This is the sample team — upload your own GameChanger export above to generate your Team Development Report.';
-        $('dropzone').scrollIntoView({behavior:'smooth',block:'center'}); return;
-      }
-      backendWorkbook();
-    }
     function backendWorkbook(){
-      wbErr.style.color='#6B7280'; wbErr.textContent='Building your Team Development Report… (first one can take up to a minute)';
+      wbErr.style.color='#6B7280'; wbErr.textContent='Checking your code and building your Team Development Report… (first one can take up to a minute)';
       const fd=new FormData();
       fd.append('file', new Blob([current.rawCsv],{type:'text/csv'}), 'export.csv');
       fd.append('fmt','devreport'); fd.append('code',(wbInput.value||'').trim()); appendMeta(fd);
       fetch(BACKEND_URL.replace(/\/+$/,'')+'/generate',{method:'POST',body:fd})
-        .then(r=>{ if(!r.ok) throw new Error('http'); return r.blob(); })
+        .then(r=>{ if(r.status===403) throw {k:'invalid'}; if(!r.ok) throw {k:'server'}; return r.blob(); })
         .then(blob=>{
           const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
           a.download='Scout_Dashboard_Team_Development_Report.pdf'; document.body.appendChild(a); a.click(); a.remove();
-          setTimeout(()=>URL.revokeObjectURL(a.href),1500); wbErr.textContent='';
+          setTimeout(()=>URL.revokeObjectURL(a.href),1500); wbErr.style.color=''; wbErr.textContent='✓ Downloaded — check your downloads folder.';
         })
-        .catch(()=>{ wbErr.style.color=''; wbErr.textContent='Server was busy — please try again in a moment, or email coach@scoutdashboard.com.'; });
+        .catch(err=>{ wbErr.style.color='';
+          wbErr.textContent = (err&&err.k==='invalid')
+            ? "That code didn't match your Team Development Report purchase. Check your Lemon Squeezy email, or email coach@scoutdashboard.com."
+            : "Server was busy — please try again in a moment, or email coach@scoutdashboard.com."; });
     }
     if(wbBtn){
       wbBtn.addEventListener('click',()=>{
         track('Checkout_Workbook',{value:8.99}); if(typeof fbq==='function') fbq('track','InitiateCheckout',{content_name:'Team Development Report',value:8.99,currency:'USD'});
-        if(PAY_URL_WORKBOOK) window.open(PAY_URL_WORKBOOK,'_blank','noopener');
+        openCheckout(LEMON_CHECKOUT_URL_TEAM_DEVELOPMENT_REPORT, wbErr);
         wbUnlock.style.display='block'; wbUnlock.scrollIntoView({behavior:'smooth',block:'center'});
       });
       wbUnlockBtn.addEventListener('click',()=>{
-        const v=(wbInput.value||'').trim().toUpperCase();
-        if(v && (v===WORKBOOK_CODE.toUpperCase() || v===TEST_CODE)){ wbErr.textContent=''; generateWorkbook(); }
-        else wbErr.textContent="That code didn't match. Check your receipt, or email coach@scoutdashboard.com.";
+        const v=(wbInput.value||'').trim();
+        if(!v){ wbErr.style.color=''; wbErr.textContent='Enter the unlock/license code from your Lemon Squeezy email.'; return; }
+        if(current && current.isSample){
+          wbErr.style.color=''; wbErr.textContent='This is the sample team — upload your own GameChanger export above, then enter your code.'; return;
+        }
+        if(BACKEND_URL && current && current.rawCsv){ backendWorkbook(); }
+        else { wbErr.style.color=''; wbErr.textContent='Please upload your export again, then enter your code.'; }
       });
     }
 
