@@ -106,6 +106,68 @@
   .pcard .pt .v{font-family:'Oswald',sans-serif;font-size:1.2rem;font-weight:700;color:#1F2937}
   .pcard .pt.arm .v{color:#B7791F}
 
+  /* ════ on-brand elevation: shared atmosphere, motion & card polish ════ */
+  /* reusable atmospheric backdrop for dark sections (glow + faint grid) */
+  .atmos{position:relative;overflow:hidden}
+  .atmos::before{content:"";position:absolute;inset:0;pointer-events:none;
+    background:
+      radial-gradient(58% 46% at 50% -6%, rgba(34,197,94,.14), transparent 72%),
+      radial-gradient(42% 42% at 88% 112%, rgba(19,53,90,.6), transparent 72%);}
+  .atmos::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;
+    background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);
+    background-size:46px 46px;
+    -webkit-mask-image:radial-gradient(70% 60% at 50% 30%,#000,transparent 82%);
+    mask-image:radial-gradient(70% 60% at 50% 30%,#000,transparent 82%);}
+  .atmos > *{position:relative;z-index:1}
+
+  /* card lift + image zoom on hover */
+  .lift{transition:transform .4s cubic-bezier(.2,.7,.2,1),box-shadow .4s,border-color .4s}
+  .lift:hover{transform:translateY(-6px)}
+  .pcardx{transition:transform .4s cubic-bezier(.2,.7,.2,1),box-shadow .4s,border-color .4s}
+  .pcardx:hover{transform:translateY(-6px)}
+  .shot{transition:transform .55s cubic-bezier(.2,.7,.2,1);will-change:transform}
+  .pcardx:hover .shot{transform:scale(1.05)}
+  .zoom img{transition:transform .55s cubic-bezier(.2,.7,.2,1)}
+  .zoom:hover img{transform:scale(1.06)}
+  .tierbar{height:4px;width:100%;flex:0 0 auto}
+
+  /* How-it-works connector line (desktop only) */
+  .steps{position:relative}
+  @media(min-width:1024px){
+    .steps::before{content:"";position:absolute;top:52px;left:13%;right:13%;height:2px;z-index:0;
+      background:linear-gradient(90deg,transparent,rgba(34,197,94,.45) 18%,rgba(34,197,94,.45) 82%,transparent)}
+  }
+
+  /* hero entrance + floating accent (motion-safe; visible by default) */
+  @keyframes hrise{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+  @keyframes floaty{0%,100%{transform:translateY(0) rotate(2deg)}50%{transform:translateY(-12px) rotate(2deg)}}
+  @media (prefers-reduced-motion: no-preference){
+    .hrise{opacity:0;animation:hrise .7s cubic-bezier(.2,.7,.2,1) forwards}
+    .hrise.d1{animation-delay:.06s}.hrise.d2{animation-delay:.16s}
+    .hrise.d3{animation-delay:.26s}.hrise.d4{animation-delay:.36s}
+    .float{animation:floaty 6.5s ease-in-out infinite}
+  }
+
+  /* FAQ chevrons + hover */
+  .faq summary{position:relative;padding-right:2rem;transition:color .2s}
+  .faq summary::after{content:"";position:absolute;right:.35rem;top:50%;width:9px;height:9px;
+    border-right:2px solid #16A34A;border-bottom:2px solid #16A34A;
+    transform:translateY(-65%) rotate(45deg);transition:transform .25s}
+  .faq details[open] summary::after{transform:translateY(-35%) rotate(225deg)}
+  .faq details{transition:border-color .2s,box-shadow .2s}
+  .faq details:hover{border-color:rgba(22,163,74,.45)}
+
+  /* scroll reveal — progressive enhancement only (visible by default) */
+  @supports (animation-timeline: view()){
+    @media (prefers-reduced-motion: no-preference){
+      .reveal{opacity:0;transform:translateY(26px);
+        animation:revealIn linear both;animation-timeline:view();
+        animation-range:entry 2% cover 24%}
+    }
+  }
+  @keyframes revealIn{to{opacity:1;transform:none}}
+
   @media(max-width:640px){
     .glance,.pcards{grid-template-columns:1fr}
     .lb th:nth-child(3),.lb td:nth-child(3),.lb th:nth-child(4),.lb td:nth-child(4){display:none}
@@ -165,20 +227,24 @@
 <!-- ════════════════ HERO ════════════════ -->
 <section id="top" class="relative overflow-hidden">
   <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_-10%,#1A4A7A_0%,#0F2A44_45%,#0A2540_100%)]"></div>
+  <!-- faint grid texture, faded toward edges -->
+  <div class="absolute inset-0 pointer-events-none opacity-50 [background-image:linear-gradient(rgba(255,255,255,.035)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.035)_1px,transparent_1px)] [background-size:48px_48px] [mask-image:radial-gradient(75%_70%_at_50%_25%,#000,transparent_85%)] [-webkit-mask-image:radial-gradient(75%_70%_at_50%_25%,#000,transparent_85%)]"></div>
+  <!-- soft green glow, top-left -->
+  <div class="absolute -top-24 -left-24 w-[34rem] h-[34rem] bg-green2/10 blur-[100px] rounded-full pointer-events-none"></div>
   <div class="relative max-w-6xl mx-auto px-4 sm:px-6 pt-14 pb-12 grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
     <div>
-      <span class="inline-flex items-center gap-2 bg-green/10 border border-green/40 text-green2 font-display uppercase tracking-[.12em] text-[.72rem] font-semibold px-4 py-1.5 rounded-full mb-5">For Baseball &amp; Softball Coaches</span>
-      <h1 class="font-display font-bold text-white leading-[1.05] text-[2.1rem] sm:text-5xl">
+      <span class="hrise d1 inline-flex items-center gap-2 bg-green/10 border border-green/40 text-green2 font-display uppercase tracking-[.12em] text-[.72rem] font-semibold px-4 py-1.5 rounded-full mb-5"><span class="w-1.5 h-1.5 rounded-full bg-green2"></span>For Baseball &amp; Softball Coaches</span>
+      <h1 class="hrise d1 font-display font-bold text-white leading-[1.05] text-[2.1rem] sm:text-5xl">
         Your GameChanger Export,<br><span class="text-green2">Finally Coach-Ready</span>
       </h1>
-      <p class="mt-5 text-ltblue text-lg max-w-xl">
+      <p class="hrise d2 mt-5 text-ltblue text-lg max-w-xl">
         Upload your season stats and get a polished, <b class="text-white">coach-ready report</b> in about two minutes — leaderboards, player roles, awards, practice priorities, and a 30-day plan.
       </p>
-      <div class="mt-7 flex flex-col sm:flex-row gap-3">
-        <a href="#demo" class="bg-green hover:bg-green2 text-white text-center font-display uppercase tracking-wide text-lg px-8 py-4 rounded-xl shadow-xl shadow-green/30 transition">Try It Free With My Export</a>
+      <div class="hrise d3 mt-7 flex flex-col sm:flex-row gap-3">
+        <a href="#demo" class="bg-green hover:bg-green2 text-white text-center font-display uppercase tracking-wide text-lg px-8 py-4 rounded-xl shadow-xl shadow-green/30 hover:shadow-green/50 hover:-translate-y-0.5 transition">Try It Free With My Export</a>
         <a href="#gallery" class="border-2 border-green2/50 hover:border-green2 hover:bg-green2/10 text-green2 text-center font-display uppercase tracking-wide px-7 py-4 rounded-xl transition">See Sample Output</a>
       </div>
-      <div class="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-ltblue">
+      <div class="hrise d4 mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-ltblue">
         <span class="flex items-center gap-2"><span class="text-green2">✓</span> Free preview — no sign-up</span>
         <span class="flex items-center gap-2"><span class="text-green2">✓</span> From $4.99 · no subscription</span>
       </div>
@@ -186,13 +252,13 @@
     <!-- HERO COLLAGE: real report pages layered into a mockup.
          Primary = season1; a Team Development page peeks in on sm+ (clipped by the
          hero's overflow-hidden). IMAGE SWAP: primary img/season1.webp, peek img/team_dev3.webp -->
-    <div class="relative sm:pb-10 sm:pr-6">
+    <div class="hrise d3 relative sm:pb-10 sm:pr-6">
       <div class="absolute -inset-4 bg-green2/10 blur-3xl rounded-[2rem]"></div>
       <span class="hidden sm:inline-flex absolute -top-3 left-3 z-20 items-center gap-1.5 bg-green text-white text-[.62rem] font-display uppercase tracking-widest font-bold px-3 py-1 rounded-full shadow-lg">★ Real report output</span>
       <img src="img/season1.webp" alt="Scout Dashboard Team Scout Board — every player ranked with roles and coaching notes"
            class="relative z-10 rounded-xl border border-white/15 shadow-2xl shadow-black/50 w-full sm:-rotate-1" loading="eager">
       <img src="img/team_dev3.webp" alt="Team Development Report — Top Practice Priorities"
-           class="hidden sm:block absolute z-20 -bottom-4 -right-2 w-[48%] rounded-lg border border-white/20 ring-1 ring-green2/30 shadow-2xl shadow-black/60 rotate-2" loading="lazy">
+           class="float hidden sm:block absolute z-20 -bottom-4 -right-2 w-[48%] rounded-lg border border-white/20 ring-1 ring-green2/30 shadow-2xl shadow-black/60 rotate-2" loading="lazy">
     </div>
     <div class="lg:col-span-2 -mt-2 text-center text-[.8rem] text-ltblue">Real output — a coach-ready Season Report &amp; Team Development Report from one export.</div>
   </div>
@@ -220,8 +286,12 @@
 
     <div class="mt-10 text-left">
       <!-- STAGE 1: dropzone (IDs preserved) -->
-      <div id="dropzone" class="bg-navy3 border-[2.5px] border-dashed border-ltblue/60 rounded-3xl px-6 py-12 text-center cursor-pointer transition hover:border-green">
-        <div class="text-5xl mb-3">⚾</div>
+      <div id="dropzone" class="relative overflow-hidden bg-gradient-to-b from-navy2 to-navy3 ring-1 ring-white/5 border-[2.5px] border-dashed border-ltblue/50 rounded-3xl px-6 py-12 text-center cursor-pointer transition hover:border-green shadow-2xl shadow-navy/30">
+        <div class="absolute -top-20 left-1/2 -translate-x-1/2 w-80 h-40 bg-green2/10 blur-3xl rounded-full pointer-events-none"></div>
+        <div class="relative">
+        <div class="mx-auto mb-4 w-16 h-16 rounded-2xl bg-green/15 border border-green/40 flex items-center justify-center text-green2 shadow-lg shadow-green/20">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        </div>
         <h3 class="font-display font-bold text-white text-2xl">Upload Your GameChanger Export</h3>
         <p class="text-ltblue mt-2">Drag your stats <b class="text-white">.csv</b> here, or pick it from your device.</p>
         <div class="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
@@ -237,6 +307,7 @@
         <div class="text-ltblue/70 text-xs mt-2">Optional — appears on your purchased report.</div>
         <div class="inline-flex items-center gap-2 mt-5 bg-greenhl text-green-800 text-sm font-semibold px-4 py-2 rounded-full"><span>🔒</span> Your stats are used only to build your report — never sold, never shared.</div>
         <div id="tryError" class="hidden mt-5 bg-red-50 border border-red-200 text-red-800 rounded-xl px-5 py-4 text-sm text-left"></div>
+        </div><!-- /.relative content wrapper -->
       </div>
 
       <!-- STAGE 2: results (revealed by JS — keep style=display:none) -->
@@ -338,58 +409,92 @@
      tool (#demo), where the buyer uploads and the functional generate/unlock
      buttons live. IMAGE SWAP: Season=season1.png, Team Dev=team_dev3.png,
      Full=img/roster.webp (dashboard view). -->
-<section id="pricing" class="bg-navy3 py-16 sm:py-20">
+<section id="pricing" class="atmos bg-navy3 py-16 sm:py-24">
   <div class="max-w-6xl mx-auto px-4 sm:px-6 text-center">
-    <div class="text-green2 font-display uppercase tracking-[.2em] text-sm font-semibold">Pricing</div>
-    <h2 class="font-display font-bold text-white text-3xl sm:text-4xl mt-2">Three Ways to Use Your Stats</h2>
-    <p class="text-ltblue text-lg max-w-2xl mx-auto mt-3">All three start from the same free preview of your real team. Pick what you need to do — share it, coach from it, or reuse it all season.</p>
+    <div class="text-green2 font-display uppercase tracking-[.22em] text-sm font-semibold">Pricing</div>
+    <h2 class="font-display font-bold text-white text-3xl sm:text-[2.6rem] leading-tight mt-2">Three Ways to Use Your Stats</h2>
+    <div class="w-20 h-px bg-gradient-to-r from-transparent via-green2/70 to-transparent mx-auto mt-5"></div>
+    <p class="text-ltblue text-lg max-w-2xl mx-auto mt-5">All three start from the same free preview of your real team. Pick what you need to do — share it, coach from it, or reuse it all season.</p>
 
-    <div class="grid md:grid-cols-3 gap-6 mt-12 text-left">
+    <div class="grid md:grid-cols-3 gap-6 lg:gap-7 mt-14 text-left items-stretch">
+
       <!-- Season -->
-      <div class="bg-navy2 border border-white/10 rounded-2xl overflow-hidden flex flex-col">
-        <!-- big primary + big secondary report pages -->
-        <img src="img/season1.webp" alt="Season Report — Team Scout Board" class="w-full" loading="lazy">
+      <div class="pcardx reveal bg-navy2 border border-white/10 hover:border-white/25 hover:shadow-2xl hover:shadow-black/40 rounded-2xl overflow-hidden flex flex-col">
+        <div class="tierbar" style="background:linear-gradient(90deg,#93C5FD,#3B82F6)"></div>
+        <div class="relative overflow-hidden">
+          <img src="img/season1.webp" alt="Season Report — Team Scout Board" class="shot w-full" loading="lazy">
+          <span class="absolute top-3 left-3 text-[.58rem] font-display uppercase tracking-[.15em] text-ltblue bg-navy3/75 backdrop-blur-sm border border-white/10 px-2.5 py-1 rounded-full">Real report page</span>
+        </div>
         <img src="img/season5.webp" alt="Season Report — Awards &amp; Season Recap" class="w-full border-t border-white/10" loading="lazy">
-        <div class="p-6 flex flex-col flex-1">
-          <div class="text-[.66rem] font-display uppercase tracking-[.15em] text-blue-300">Share</div>
-          <div class="flex items-baseline gap-2 mt-1"><span class="font-display font-bold text-white text-4xl" data-price="pdf"></span><span class="text-ltblue text-sm">one-time</span></div>
-          <div class="font-display uppercase tracking-wide text-white mt-1">Season Report</div>
-          <p class="text-ltblue text-sm mt-2 flex-1">A polished 6-page PDF — Team Scout Board, leaderboards, pitching staff, and season awards. Perfect to share with parents and players.</p>
-          <a href="#demo" class="mt-5 block text-center bg-white/10 hover:bg-white/15 border border-white/15 text-white font-display uppercase tracking-wide py-3 rounded-xl transition">Start Free Preview</a>
+        <div class="p-6 sm:p-7 flex flex-col flex-1">
+          <div class="text-[.66rem] font-display uppercase tracking-[.18em] text-blue-300">Share</div>
+          <div class="flex items-baseline gap-2 mt-1.5"><span class="font-display font-bold text-white text-5xl" data-price="pdf"></span><span class="text-ltblue text-sm">one-time</span></div>
+          <div class="font-display uppercase tracking-wide text-white text-lg mt-1.5">Season Report</div>
+          <p class="text-ltblue text-sm mt-2">A polished 6-page PDF to share with parents and players.</p>
+          <ul class="text-ltblue/90 text-sm space-y-2 mt-4 mb-1 flex-1">
+            <li class="flex gap-2"><span class="text-green2 shrink-0">✓</span>Cover, Team Scout Board &amp; leaderboards</li>
+            <li class="flex gap-2"><span class="text-green2 shrink-0">✓</span>Pitching staff &amp; season awards</li>
+            <li class="flex gap-2"><span class="text-green2 shrink-0">✓</span>Shareable, printable PDF</li>
+          </ul>
+          <a href="#demo" class="mt-6 block text-center bg-white/10 hover:bg-white/15 border border-white/15 text-white font-display uppercase tracking-wide py-3.5 rounded-xl transition">Start Free Preview</a>
         </div>
       </div>
+
       <!-- Team Development (featured) -->
-      <div class="bg-navy2 border-2 border-green rounded-2xl overflow-hidden flex flex-col relative md:-mt-3 shadow-2xl shadow-green/20">
-        <div class="bg-green text-white text-center text-[.66rem] font-display uppercase tracking-[.1em] font-bold py-1.5">★ Most Popular</div>
-        <!-- big primary + two big secondary report pages -->
-        <img src="img/team_dev1.webp" alt="Team Development Report — Coach's Executive Summary" class="w-full" loading="lazy">
+      <div class="pcardx reveal bg-navy2 border-2 border-green ring-1 ring-green/25 rounded-2xl overflow-hidden flex flex-col relative md:-mt-4 shadow-2xl shadow-green/25 hover:shadow-green/45">
+        <div class="bg-green text-white text-center text-[.66rem] font-display uppercase tracking-[.14em] font-bold py-1.5">★ Most Popular with Coaches</div>
+        <div class="relative overflow-hidden">
+          <img src="img/team_dev1.webp" alt="Team Development Report — Coach's Executive Summary" class="shot w-full" loading="lazy">
+          <span class="absolute top-3 left-3 text-[.58rem] font-display uppercase tracking-[.15em] text-white bg-green/85 backdrop-blur-sm border border-white/20 px-2.5 py-1 rounded-full">Real report page</span>
+        </div>
         <div class="grid grid-cols-2 gap-px bg-white/10 border-y border-white/10">
           <img src="img/team_dev4.webp" alt="Team Development Report — Focus Players" class="w-full bg-navy2" loading="lazy">
           <img src="img/team_dev6.webp" alt="Team Development Report — 30-Day Development Plan" class="w-full bg-navy2" loading="lazy">
         </div>
-        <div class="p-6 flex flex-col flex-1">
-          <div class="text-[.66rem] font-display uppercase tracking-[.15em] text-green2">Coach</div>
-          <div class="flex items-baseline gap-2 mt-1"><span class="font-display font-bold text-green2 text-4xl" data-price="coach"></span><span class="text-ltblue text-sm">one-time</span></div>
-          <div class="font-display uppercase tracking-wide text-white mt-1">Team Development Report</div>
-          <p class="text-ltblue text-sm mt-2 flex-1">Everything in the Season Report (12 pages total) plus the coaching analysis: strengths &amp; weaknesses, practice priorities with drills, focus players, lineup &amp; pitching notes, and a 30-day plan.</p>
-          <a href="#demo" class="mt-5 block text-center bg-green hover:bg-green2 text-white font-display uppercase tracking-wide py-3 rounded-xl shadow-lg shadow-green/30 transition">Start Free Preview</a>
+        <div class="p-6 sm:p-7 flex flex-col flex-1">
+          <div class="text-[.66rem] font-display uppercase tracking-[.18em] text-green2">Coach</div>
+          <div class="flex items-baseline gap-2 mt-1.5"><span class="font-display font-bold text-green2 text-5xl" data-price="coach"></span><span class="text-ltblue text-sm">one-time</span></div>
+          <div class="font-display uppercase tracking-wide text-white text-lg mt-1.5">Team Development Report</div>
+          <p class="text-ltblue text-sm mt-2">Everything in the Season Report (12 pages) plus a full coaching analysis.</p>
+          <ul class="text-ltblue/90 text-sm space-y-2 mt-4 mb-1 flex-1">
+            <li class="flex gap-2"><span class="text-green2 shrink-0">✓</span>The complete Season Report — 12 pages total</li>
+            <li class="flex gap-2"><span class="text-green2 shrink-0">✓</span>Strengths &amp; weaknesses + practice priorities with drills</li>
+            <li class="flex gap-2"><span class="text-green2 shrink-0">✓</span><span class="text-white font-medium">Focus players, lineup &amp; pitching notes, 30-day plan</span></li>
+          </ul>
+          <a href="#demo" class="mt-6 block text-center bg-green hover:bg-green2 text-white font-display uppercase tracking-wide py-3.5 rounded-xl shadow-lg shadow-green/30 transition">Start Free Preview</a>
         </div>
       </div>
+
       <!-- Full -->
-      <div class="bg-navy2 border border-white/10 rounded-2xl overflow-hidden flex flex-col">
-        <!-- big primary dashboard + big report page -->
-        <img src="img/roster.webp" alt="Full Dashboard Analyzer — reusable interactive dashboard" class="w-full" loading="lazy">
+      <div class="pcardx reveal bg-navy2 border border-white/10 hover:border-white/25 hover:shadow-2xl hover:shadow-black/40 rounded-2xl overflow-hidden flex flex-col">
+        <div class="tierbar" style="background:linear-gradient(90deg,#FCD34D,#F59E0B)"></div>
+        <div class="relative overflow-hidden">
+          <img src="img/roster.webp" alt="Full Dashboard Analyzer — reusable interactive dashboard" class="shot w-full" loading="lazy">
+          <span class="absolute top-3 left-3 text-[.58rem] font-display uppercase tracking-[.15em] text-ltblue bg-navy3/75 backdrop-blur-sm border border-white/10 px-2.5 py-1 rounded-full">Live dashboard</span>
+        </div>
         <img src="img/season1.webp" alt="Team Scout Board, rebuilt from every new export" class="w-full border-t border-white/10" loading="lazy">
-        <div class="p-6 flex flex-col flex-1">
-          <div class="text-[.66rem] font-display uppercase tracking-[.15em] text-amber-300">Reuse</div>
-          <div class="flex items-baseline gap-2 mt-1"><span class="font-display font-bold text-white text-4xl" data-price="full"></span><span class="text-ltblue text-sm">one-time</span></div>
-          <div class="font-display uppercase tracking-wide text-white mt-1">Full Dashboard Analyzer</div>
-          <p class="text-ltblue text-sm mt-2 flex-1">The reusable Excel &amp; Google Sheets product. Import new exports all season and the dashboards rebuild — lineup, pitching, practice, and awards.</p>
-          <a href="#offer" class="mt-5 block text-center bg-white/10 hover:bg-white/15 border border-white/15 text-white font-display uppercase tracking-wide py-3 rounded-xl transition">Learn More</a>
+        <div class="p-6 sm:p-7 flex flex-col flex-1">
+          <div class="text-[.66rem] font-display uppercase tracking-[.18em] text-amber-300">Reuse</div>
+          <div class="flex items-baseline gap-2 mt-1.5"><span class="font-display font-bold text-white text-5xl" data-price="full"></span><span class="text-ltblue text-sm">one-time</span></div>
+          <div class="font-display uppercase tracking-wide text-white text-lg mt-1.5">Full Dashboard Analyzer</div>
+          <p class="text-ltblue text-sm mt-2">The reusable product — import new exports all season and the dashboards rebuild.</p>
+          <ul class="text-ltblue/90 text-sm space-y-2 mt-4 mb-1 flex-1">
+            <li class="flex gap-2"><span class="text-green2 shrink-0">✓</span><span class="text-white font-medium">Reusable — import new exports anytime</span></li>
+            <li class="flex gap-2"><span class="text-green2 shrink-0">✓</span>Dynamic dashboards + manual overrides</li>
+            <li class="flex gap-2"><span class="text-green2 shrink-0">✓</span>Lineup, pitching, practice &amp; awards</li>
+            <li class="flex gap-2"><span class="text-green2 shrink-0">✓</span>Excel &amp; Google Sheets</li>
+          </ul>
+          <a href="#offer" class="mt-6 block text-center bg-white/10 hover:bg-white/15 border border-white/15 text-white font-display uppercase tracking-wide py-3.5 rounded-xl transition">Learn More</a>
         </div>
       </div>
     </div>
-    <p class="text-ltblue/70 text-sm mt-6">One-time purchase · no subscription · baseball &amp; softball</p>
+
+    <div class="flex flex-wrap justify-center gap-2.5 mt-10">
+      <span class="inline-flex items-center gap-1.5 text-ltblue text-sm bg-white/5 border border-white/10 rounded-full px-3.5 py-1.5"><span class="text-green2">✓</span>One-time purchase</span>
+      <span class="inline-flex items-center gap-1.5 text-ltblue text-sm bg-white/5 border border-white/10 rounded-full px-3.5 py-1.5"><span class="text-green2">✓</span>No subscription</span>
+      <span class="inline-flex items-center gap-1.5 text-ltblue text-sm bg-white/5 border border-white/10 rounded-full px-3.5 py-1.5"><span class="text-green2">✓</span>Baseball &amp; softball</span>
+      <span class="inline-flex items-center gap-1.5 text-ltblue text-sm bg-white/5 border border-white/10 rounded-full px-3.5 py-1.5"><span class="text-green2">✓</span>Ready in ~2 minutes</span>
+    </div>
   </div>
 </section>
 
@@ -398,25 +503,41 @@
   <div class="max-w-6xl mx-auto px-4 sm:px-6 text-center">
     <div class="text-green font-display uppercase tracking-[.2em] text-sm font-semibold">The Transformation</div>
     <h2 class="font-display font-bold text-navy text-3xl sm:text-4xl mt-2">From Stat Dump to Coach-Ready</h2>
-    <div class="grid md:grid-cols-2 gap-6 mt-10 items-center text-left">
+    <div class="grid md:grid-cols-[1fr_auto_1fr] gap-6 lg:gap-4 mt-12 items-center text-left">
       <!-- BEFORE: raw export (CSS mock — no image needed) -->
       <div class="min-w-0">
-        <div class="text-xs font-display uppercase tracking-widest text-red-400 mb-2">Before — the raw export</div>
-        <div class="rounded-xl border border-line bg-graybg p-4 overflow-hidden">
-          <div class="font-mono text-[.6rem] leading-relaxed text-ink/50 whitespace-nowrap overflow-hidden">
+        <div class="inline-flex items-center gap-2 text-[.68rem] font-display uppercase tracking-widest text-red-500 mb-2.5"><span class="w-1.5 h-1.5 rounded-full bg-red-400"></span>Before — the raw export</div>
+        <div class="relative rounded-xl border border-line bg-[#0f1720] p-4 overflow-hidden shadow-lg shadow-navy/10">
+          <div class="flex gap-1.5 mb-3"><span class="w-2.5 h-2.5 rounded-full bg-red-400/70"></span><span class="w-2.5 h-2.5 rounded-full bg-amber-400/70"></span><span class="w-2.5 h-2.5 rounded-full bg-green-400/70"></span></div>
+          <div class="font-mono text-[.6rem] leading-relaxed text-slate-400 whitespace-nowrap overflow-hidden">
             Number,Last,First,GP,PA,AB,AVG,OBP,OPS,SLG,H,RBI,R,BB,SO,SB,QAB%,...<br>
             4,Maloney,Ryan,23,73,64,.516,.575,1.560,.984,33,31,...,52.05,...<br>
             14,Fariello,Hunter,23,68,61,.377,.441,1.244,.803,...<br>
             12,Rich,Brian,22,60,49,.388,.500,1.214,.714,...<br>
-            <span class="text-ink/30">…174 columns across batting, pitching &amp; fielding…</span>
+            7,Donato,Alex,21,55,47,.340,.418,1.090,.672,...<br>
+            <span class="text-slate-600">…174 columns across batting, pitching &amp; fielding…</span>
           </div>
+          <div class="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-[#0f1720] to-transparent"></div>
         </div>
         <p class="text-ink/50 text-sm mt-3">174 columns. Manual sorting for every question. The export sits unopened.</p>
       </div>
+      <!-- connector -->
+      <div class="flex md:flex-col items-center justify-center text-green">
+        <div class="hidden md:flex w-11 h-11 rounded-full bg-green/10 border border-green/40 items-center justify-center shadow-lg shadow-green/20">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+        <div class="md:hidden flex w-11 h-11 rounded-full bg-green/10 border border-green/40 items-center justify-center rotate-90 shadow-lg shadow-green/20">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+      </div>
       <!-- AFTER: real report page -->
       <div class="min-w-0">
-        <div class="text-xs font-display uppercase tracking-widest text-green mb-2">After — Scout Dashboard</div>
-        <img src="img/season1.webp" alt="Organized Team Scout Board" class="rounded-xl border border-line shadow-xl shadow-navy/10 w-full" loading="lazy">
+        <div class="inline-flex items-center gap-2 text-[.68rem] font-display uppercase tracking-widest text-green mb-2.5"><span class="w-1.5 h-1.5 rounded-full bg-green2"></span>After — Scout Dashboard</div>
+        <div class="relative">
+          <div class="absolute -inset-3 bg-green2/10 blur-2xl rounded-2xl"></div>
+          <span class="absolute z-10 -top-3 -right-2 bg-green text-white text-[.62rem] font-display uppercase tracking-widest font-bold px-3 py-1 rounded-full shadow-lg">~2 minutes</span>
+          <img src="img/season1.webp" alt="Organized Team Scout Board" class="relative rounded-xl border border-line shadow-xl shadow-navy/15 w-full" loading="lazy">
+        </div>
         <p class="text-ink/50 text-sm mt-3">Same data, same two minutes — every player ranked, role-tagged, and coach-ready.</p>
       </div>
     </div>
@@ -426,7 +547,7 @@
 <!-- ════════════════ PROOF GALLERY (all screenshots) ════════════════
      IMAGE SWAP: season1–5.png (Season Report pages) + team_dev1–6.png
      (Team Development Report pages). All are real rendered report pages. -->
-<section id="gallery" class="bg-navy3 py-16 sm:py-20">
+<section id="gallery" class="atmos bg-navy3 py-16 sm:py-20">
   <div class="max-w-6xl mx-auto px-4 sm:px-6 text-center">
     <div class="text-green2 font-display uppercase tracking-[.2em] text-sm font-semibold">Sample Output</div>
     <h2 class="font-display font-bold text-white text-3xl sm:text-4xl mt-2">See Exactly What You'll Get</h2>
@@ -434,22 +555,22 @@
 
     <h3 class="text-left font-display uppercase tracking-wide text-green2 text-sm mt-10 mb-4">Season Report — 6 pages</h3>
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      <figure class="bg-navy2 border border-white/10 rounded-xl overflow-hidden"><img src="img/season1.webp" loading="lazy" alt="Team Scout Board" class="w-full"><figcaption class="text-ltblue text-xs py-2.5 px-3">Team Scout Board</figcaption></figure>
-      <figure class="bg-navy2 border border-white/10 rounded-xl overflow-hidden"><img src="img/season2.webp" loading="lazy" alt="Hitting Leaderboards" class="w-full"><figcaption class="text-ltblue text-xs py-2.5 px-3">Hitting Leaderboards</figcaption></figure>
-      <figure class="bg-navy2 border border-white/10 rounded-xl overflow-hidden"><img src="img/season3.webp" loading="lazy" alt="Pitching &amp; Defense Leaderboards" class="w-full"><figcaption class="text-ltblue text-xs py-2.5 px-3">Pitching &amp; Defense Leaderboards</figcaption></figure>
-      <figure class="bg-navy2 border border-white/10 rounded-xl overflow-hidden"><img src="img/season4.webp" loading="lazy" alt="Pitching Staff" class="w-full"><figcaption class="text-ltblue text-xs py-2.5 px-3">Pitching Staff</figcaption></figure>
-      <figure class="bg-navy2 border border-white/10 rounded-xl overflow-hidden"><img src="img/season5.webp" loading="lazy" alt="Awards &amp; Season Recap" class="w-full"><figcaption class="text-ltblue text-xs py-2.5 px-3">Awards &amp; Season Recap</figcaption></figure>
-      <figure class="bg-navy2 border border-white/10 rounded-xl overflow-hidden"><img src="img/report_cover.webp" loading="lazy" alt="Report cover" class="w-full"><figcaption class="text-ltblue text-xs py-2.5 px-3">Premium cover page</figcaption></figure>
+      <figure class="lift zoom bg-navy2 border border-white/10 hover:border-green2/40 rounded-xl overflow-hidden shadow-lg shadow-black/20"><img src="img/season1.webp" loading="lazy" alt="Team Scout Board" class="w-full"><figcaption class="text-ltblue text-xs py-2.5 px-3">Team Scout Board</figcaption></figure>
+      <figure class="lift zoom bg-navy2 border border-white/10 hover:border-green2/40 rounded-xl overflow-hidden shadow-lg shadow-black/20"><img src="img/season2.webp" loading="lazy" alt="Hitting Leaderboards" class="w-full"><figcaption class="text-ltblue text-xs py-2.5 px-3">Hitting Leaderboards</figcaption></figure>
+      <figure class="lift zoom bg-navy2 border border-white/10 hover:border-green2/40 rounded-xl overflow-hidden shadow-lg shadow-black/20"><img src="img/season3.webp" loading="lazy" alt="Pitching &amp; Defense Leaderboards" class="w-full"><figcaption class="text-ltblue text-xs py-2.5 px-3">Pitching &amp; Defense Leaderboards</figcaption></figure>
+      <figure class="lift zoom bg-navy2 border border-white/10 hover:border-green2/40 rounded-xl overflow-hidden shadow-lg shadow-black/20"><img src="img/season4.webp" loading="lazy" alt="Pitching Staff" class="w-full"><figcaption class="text-ltblue text-xs py-2.5 px-3">Pitching Staff</figcaption></figure>
+      <figure class="lift zoom bg-navy2 border border-white/10 hover:border-green2/40 rounded-xl overflow-hidden shadow-lg shadow-black/20"><img src="img/season5.webp" loading="lazy" alt="Awards &amp; Season Recap" class="w-full"><figcaption class="text-ltblue text-xs py-2.5 px-3">Awards &amp; Season Recap</figcaption></figure>
+      <figure class="lift zoom bg-navy2 border border-white/10 hover:border-green2/40 rounded-xl overflow-hidden shadow-lg shadow-black/20"><img src="img/report_cover.webp" loading="lazy" alt="Report cover" class="w-full"><figcaption class="text-ltblue text-xs py-2.5 px-3">Premium cover page</figcaption></figure>
     </div>
 
     <h3 class="text-left font-display uppercase tracking-wide text-green2 text-sm mt-12 mb-4">Team Development Report — adds 6 analysis pages</h3>
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      <figure class="bg-navy2 border border-white/10 rounded-xl overflow-hidden"><img src="img/team_dev1.webp" loading="lazy" alt="Coach's Executive Summary" class="w-full"><figcaption class="text-ltblue text-xs py-2.5 px-3">Coach's Executive Summary</figcaption></figure>
-      <figure class="bg-navy2 border border-white/10 rounded-xl overflow-hidden"><img src="img/team_dev2.webp" loading="lazy" alt="Team Strengths &amp; Weaknesses" class="w-full"><figcaption class="text-ltblue text-xs py-2.5 px-3">Team Strengths &amp; Weaknesses</figcaption></figure>
-      <figure class="bg-navy2 border border-white/10 rounded-xl overflow-hidden"><img src="img/team_dev3.webp" loading="lazy" alt="Top Practice Priorities" class="w-full"><figcaption class="text-ltblue text-xs py-2.5 px-3">Top Practice Priorities</figcaption></figure>
-      <figure class="bg-navy2 border border-white/10 rounded-xl overflow-hidden"><img src="img/team_dev4.webp" loading="lazy" alt="Focus Players" class="w-full"><figcaption class="text-ltblue text-xs py-2.5 px-3">Focus Players</figcaption></figure>
-      <figure class="bg-navy2 border border-white/10 rounded-xl overflow-hidden"><img src="img/team_dev5.webp" loading="lazy" alt="Lineup &amp; Pitching Notes" class="w-full"><figcaption class="text-ltblue text-xs py-2.5 px-3">Lineup &amp; Pitching Notes</figcaption></figure>
-      <figure class="bg-navy2 border border-white/10 rounded-xl overflow-hidden"><img src="img/team_dev6.webp" loading="lazy" alt="30-Day Development Plan" class="w-full"><figcaption class="text-ltblue text-xs py-2.5 px-3">30-Day Development Plan</figcaption></figure>
+      <figure class="lift zoom bg-navy2 border border-white/10 hover:border-green2/40 rounded-xl overflow-hidden shadow-lg shadow-black/20"><img src="img/team_dev1.webp" loading="lazy" alt="Coach's Executive Summary" class="w-full"><figcaption class="text-ltblue text-xs py-2.5 px-3">Coach's Executive Summary</figcaption></figure>
+      <figure class="lift zoom bg-navy2 border border-white/10 hover:border-green2/40 rounded-xl overflow-hidden shadow-lg shadow-black/20"><img src="img/team_dev2.webp" loading="lazy" alt="Team Strengths &amp; Weaknesses" class="w-full"><figcaption class="text-ltblue text-xs py-2.5 px-3">Team Strengths &amp; Weaknesses</figcaption></figure>
+      <figure class="lift zoom bg-navy2 border border-white/10 hover:border-green2/40 rounded-xl overflow-hidden shadow-lg shadow-black/20"><img src="img/team_dev3.webp" loading="lazy" alt="Top Practice Priorities" class="w-full"><figcaption class="text-ltblue text-xs py-2.5 px-3">Top Practice Priorities</figcaption></figure>
+      <figure class="lift zoom bg-navy2 border border-white/10 hover:border-green2/40 rounded-xl overflow-hidden shadow-lg shadow-black/20"><img src="img/team_dev4.webp" loading="lazy" alt="Focus Players" class="w-full"><figcaption class="text-ltblue text-xs py-2.5 px-3">Focus Players</figcaption></figure>
+      <figure class="lift zoom bg-navy2 border border-white/10 hover:border-green2/40 rounded-xl overflow-hidden shadow-lg shadow-black/20"><img src="img/team_dev5.webp" loading="lazy" alt="Lineup &amp; Pitching Notes" class="w-full"><figcaption class="text-ltblue text-xs py-2.5 px-3">Lineup &amp; Pitching Notes</figcaption></figure>
+      <figure class="lift zoom bg-navy2 border border-white/10 hover:border-green2/40 rounded-xl overflow-hidden shadow-lg shadow-black/20"><img src="img/team_dev6.webp" loading="lazy" alt="30-Day Development Plan" class="w-full"><figcaption class="text-ltblue text-xs py-2.5 px-3">30-Day Development Plan</figcaption></figure>
     </div>
     <div class="mt-10"><a href="#demo" class="inline-block bg-green hover:bg-green2 text-white font-display uppercase tracking-wide text-lg px-8 py-4 rounded-xl shadow-xl shadow-green/30">Try It Free With My Export</a></div>
   </div>
@@ -469,24 +590,24 @@
           <tr>
             <th class="text-left p-3.5 bg-navy text-white font-display uppercase tracking-wide text-xs rounded-tl-lg">Feature</th>
             <th class="p-3.5 bg-navy text-white font-display uppercase tracking-wide text-xs">Season Report<span class="block text-[.6rem] text-green2 tracking-widest mt-0.5">SHARE</span></th>
-            <th class="p-3.5 bg-navy text-white font-display uppercase tracking-wide text-xs bg-green/20">Team Dev Report<span class="block text-[.6rem] text-green2 tracking-widest mt-0.5">COACH</span></th>
+            <th class="p-3.5 bg-green text-white font-display uppercase tracking-wide text-xs">Team Dev Report<span class="block text-[.6rem] text-greenhl tracking-widest mt-0.5">★ Coach · Popular</span></th>
             <th class="p-3.5 bg-navy text-white font-display uppercase tracking-wide text-xs rounded-tr-lg">Full Analyzer<span class="block text-[.6rem] text-green2 tracking-widest mt-0.5">REUSE</span></th>
           </tr>
         </thead>
         <tbody class="[&_td]:text-center [&_td]:p-3 [&_td]:border-b [&_td]:border-line [&_th]:p-3 [&_th]:border-b [&_th]:border-line [&_th]:text-left [&_th]:font-semibold [&_th]:text-navy [&_th]:bg-graybg">
-          <tr><th>Generated from your export</th><td class="text-green font-bold">✓</td><td class="text-green font-bold bg-green/5">✓</td><td class="text-green font-bold">✓</td></tr>
-          <tr><th>Free preview before you buy</th><td class="text-green font-bold">✓</td><td class="text-green font-bold bg-green/5">✓</td><td class="text-green font-bold">✓</td></tr>
-          <tr><th>Scout Board, leaderboards &amp; pitching</th><td class="text-green font-bold">✓</td><td class="text-green font-bold bg-green/5">✓</td><td class="text-green font-bold">✓</td></tr>
-          <tr><th>Awards &amp; Season Recap</th><td class="text-green font-bold">✓</td><td class="text-green font-bold bg-green/5">✓</td><td class="text-green font-bold">✓</td></tr>
-          <tr><th>Coach's Executive Summary</th><td class="text-slate-300">—</td><td class="text-green font-bold bg-green/5">✓</td><td class="text-slate-300">—</td></tr>
-          <tr><th>Strengths &amp; Weaknesses</th><td class="text-slate-300">—</td><td class="text-green font-bold bg-green/5">✓</td><td class="text-slate-300">—</td></tr>
-          <tr><th>Practice Priorities (with drills)</th><td class="text-slate-300">—</td><td class="text-green font-bold bg-green/5">✓</td><td class="text-slate-300">—</td></tr>
-          <tr><th>Focus Players</th><td class="text-slate-300">—</td><td class="text-green font-bold bg-green/5">✓</td><td class="text-slate-300">—</td></tr>
-          <tr><th>Lineup &amp; pitching recommendations</th><td class="text-slate-300">—</td><td class="text-green font-bold bg-green/5">✓</td><td class="text-green font-bold">✓</td></tr>
-          <tr><th>30-Day Development Plan</th><td class="text-slate-300">—</td><td class="text-green font-bold bg-green/5">✓</td><td class="text-slate-300">—</td></tr>
-          <tr><th>Shareable, print-ready PDF</th><td class="text-green font-bold">✓</td><td class="text-green font-bold bg-green/5">✓</td><td class="text-slate-300">—</td></tr>
-          <tr><th>Editable &amp; reusable — import new exports</th><td class="text-slate-300">—</td><td class="text-slate-300 bg-green/5">—</td><td class="text-green font-bold">✓</td></tr>
-          <tr><th class="!font-bold">Best for</th><td class="font-semibold text-navy">Sharing</td><td class="font-semibold text-navy bg-green/5">Coaching decisions</td><td class="font-semibold text-navy">Reusing all season</td></tr>
+          <tr><th>Generated from your export</th><td class="text-green font-bold">✓</td><td class="text-green font-bold bg-green/10">✓</td><td class="text-green font-bold">✓</td></tr>
+          <tr><th>Free preview before you buy</th><td class="text-green font-bold">✓</td><td class="text-green font-bold bg-green/10">✓</td><td class="text-green font-bold">✓</td></tr>
+          <tr><th>Scout Board, leaderboards &amp; pitching</th><td class="text-green font-bold">✓</td><td class="text-green font-bold bg-green/10">✓</td><td class="text-green font-bold">✓</td></tr>
+          <tr><th>Awards &amp; Season Recap</th><td class="text-green font-bold">✓</td><td class="text-green font-bold bg-green/10">✓</td><td class="text-green font-bold">✓</td></tr>
+          <tr><th>Coach's Executive Summary</th><td class="text-slate-300">—</td><td class="text-green font-bold bg-green/10">✓</td><td class="text-slate-300">—</td></tr>
+          <tr><th>Strengths &amp; Weaknesses</th><td class="text-slate-300">—</td><td class="text-green font-bold bg-green/10">✓</td><td class="text-slate-300">—</td></tr>
+          <tr><th>Practice Priorities (with drills)</th><td class="text-slate-300">—</td><td class="text-green font-bold bg-green/10">✓</td><td class="text-slate-300">—</td></tr>
+          <tr><th>Focus Players</th><td class="text-slate-300">—</td><td class="text-green font-bold bg-green/10">✓</td><td class="text-slate-300">—</td></tr>
+          <tr><th>Lineup &amp; pitching recommendations</th><td class="text-slate-300">—</td><td class="text-green font-bold bg-green/10">✓</td><td class="text-green font-bold">✓</td></tr>
+          <tr><th>30-Day Development Plan</th><td class="text-slate-300">—</td><td class="text-green font-bold bg-green/10">✓</td><td class="text-slate-300">—</td></tr>
+          <tr><th>Shareable, print-ready PDF</th><td class="text-green font-bold">✓</td><td class="text-green font-bold bg-green/10">✓</td><td class="text-slate-300">—</td></tr>
+          <tr><th>Editable &amp; reusable — import new exports</th><td class="text-slate-300">—</td><td class="text-slate-300 bg-green/10">—</td><td class="text-green font-bold">✓</td></tr>
+          <tr><th class="!font-bold">Best for</th><td class="font-semibold text-navy">Sharing</td><td class="font-semibold text-navy bg-green/10">Coaching decisions</td><td class="font-semibold text-navy">Reusing all season</td></tr>
         </tbody>
       </table>
     </div>
@@ -494,46 +615,80 @@
 </section>
 
 <!-- ════════════════ HOW IT WORKS ════════════════ -->
-<section id="how" class="bg-navy3 py-16 sm:py-20">
+<section id="how" class="atmos bg-navy3 py-16 sm:py-20">
   <div class="max-w-6xl mx-auto px-4 sm:px-6 text-center">
     <div class="text-green2 font-display uppercase tracking-[.2em] text-sm font-semibold">How It Works</div>
     <h2 class="font-display font-bold text-white text-3xl sm:text-4xl mt-2">From Export to Coach-Ready in 4 Steps</h2>
-    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-12 text-left">
-      <div class="bg-navy2 border border-white/10 rounded-2xl p-7"><div class="w-12 h-12 rounded-full bg-green/15 border border-green/40 text-green2 font-display text-xl font-bold flex items-center justify-center mb-4">1</div><h3 class="font-display uppercase text-white text-lg">Export</h3><p class="text-ltblue text-sm mt-1">Download your season stats from GameChanger — the export you already know how to get.</p></div>
-      <div class="bg-navy2 border border-white/10 rounded-2xl p-7"><div class="w-12 h-12 rounded-full bg-green/15 border border-green/40 text-green2 font-display text-xl font-bold flex items-center justify-center mb-4">2</div><h3 class="font-display uppercase text-white text-lg">Upload</h3><p class="text-ltblue text-sm mt-1">Drop the .csv into the free tool right here. Nothing to install.</p></div>
-      <div class="bg-navy2 border border-white/10 rounded-2xl p-7"><div class="w-12 h-12 rounded-full bg-green/15 border border-green/40 text-green2 font-display text-xl font-bold flex items-center justify-center mb-4">3</div><h3 class="font-display uppercase text-white text-lg">Preview</h3><p class="text-ltblue text-sm mt-1">See your real team's leaderboard and player cards instantly — then confirm team name, season, and record.</p></div>
-      <div class="bg-navy2 border border-white/10 rounded-2xl p-7"><div class="w-12 h-12 rounded-full bg-green/15 border border-green/40 text-green2 font-display text-xl font-bold flex items-center justify-center mb-4">4</div><h3 class="font-display uppercase text-white text-lg">Choose</h3><p class="text-ltblue text-sm mt-1">Generate your Season Report, Team Development Report, or Full Dashboard Analyzer.</p></div>
+    <div class="w-20 h-px bg-gradient-to-r from-transparent via-green2/70 to-transparent mx-auto mt-5"></div>
+    <div class="steps grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-12 text-left">
+      <div class="lift reveal bg-navy2 border border-white/10 hover:border-green2/30 rounded-2xl p-7"><div class="w-12 h-12 rounded-full bg-gradient-to-br from-green/30 to-green/10 border border-green/50 text-green2 font-display text-xl font-bold flex items-center justify-center mb-4 shadow-lg shadow-green/20">1</div><h3 class="font-display uppercase text-white text-lg">Export</h3><p class="text-ltblue text-sm mt-1.5">Download your season stats from GameChanger — the export you already know how to get.</p></div>
+      <div class="lift reveal bg-navy2 border border-white/10 hover:border-green2/30 rounded-2xl p-7"><div class="w-12 h-12 rounded-full bg-gradient-to-br from-green/30 to-green/10 border border-green/50 text-green2 font-display text-xl font-bold flex items-center justify-center mb-4 shadow-lg shadow-green/20">2</div><h3 class="font-display uppercase text-white text-lg">Upload</h3><p class="text-ltblue text-sm mt-1.5">Drop the .csv into the free tool right here. Nothing to install.</p></div>
+      <div class="lift reveal bg-navy2 border border-white/10 hover:border-green2/30 rounded-2xl p-7"><div class="w-12 h-12 rounded-full bg-gradient-to-br from-green/30 to-green/10 border border-green/50 text-green2 font-display text-xl font-bold flex items-center justify-center mb-4 shadow-lg shadow-green/20">3</div><h3 class="font-display uppercase text-white text-lg">Preview</h3><p class="text-ltblue text-sm mt-1.5">See your real team's leaderboard and player cards instantly — then confirm team name, season, and record.</p></div>
+      <div class="lift reveal bg-navy2 border border-white/10 hover:border-green2/30 rounded-2xl p-7"><div class="w-12 h-12 rounded-full bg-gradient-to-br from-green/30 to-green/10 border border-green/50 text-green2 font-display text-xl font-bold flex items-center justify-center mb-4 shadow-lg shadow-green/20">4</div><h3 class="font-display uppercase text-white text-lg">Choose</h3><p class="text-ltblue text-sm mt-1.5">Generate your Season Report, Team Development Report, or Full Dashboard Analyzer.</p></div>
     </div>
   </div>
 </section>
 
 <!-- ════════════════ FULL ANALYZER DETAIL ════════════════ -->
-<section id="offer" class="bg-white text-ink py-16 sm:py-20">
-  <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
-    <div class="text-green font-display uppercase tracking-[.2em] text-sm font-semibold">Reuse · All Season Long</div>
-    <h2 class="font-display font-bold text-navy text-3xl sm:text-4xl mt-2">The Full Dashboard Analyzer</h2>
-    <p class="text-ink/60 text-lg mt-3">The reusable Excel &amp; Google Sheets product. Paste a fresh GameChanger export anytime and every view rebuilds — leaderboards, player cards, lineup, pitching, practice, and awards.</p>
-    <div class="font-display font-bold text-green text-5xl mt-6" data-price="full"></div>
-    <p class="text-ink/50 text-sm mt-1">One purchase · no subscription · Excel &amp; Google Sheets</p>
-    <div class="mt-6">
-      <button id="fullBtn" type="button" class="bg-green hover:bg-green2 text-white font-display uppercase tracking-wide text-lg px-8 py-4 rounded-xl shadow-xl shadow-green/30 transition">Get Full Analyzer</button>
-      <div id="fullUnlock" style="display:none" class="max-w-sm mx-auto mt-5">
-        <p class="text-ink/60 text-sm mb-2">Paste the unlock code from your receipt:</p>
-        <input id="fullInput" type="text" placeholder="Unlock code" autocomplete="off" class="w-full border border-line rounded-lg px-3 py-3 text-center uppercase text-sm mb-2 focus:outline-none focus:border-green">
-        <button id="fullUnlockBtn" type="button" class="w-full bg-green hover:bg-green2 text-white font-display uppercase tracking-wide py-3 rounded-lg">Unlock &amp; Download</button>
-        <div id="fullErr" class="text-red-600 text-xs mt-2 min-h-[1em]"></div>
+<section id="offer" class="bg-white text-ink py-16 sm:py-20 overflow-hidden">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
+    <!-- LEFT: copy, features, price, CTA -->
+    <div>
+      <div class="inline-flex items-center gap-2 text-green font-display uppercase tracking-[.2em] text-sm font-semibold"><span class="w-1.5 h-1.5 rounded-full bg-green"></span>Reuse · All Season Long</div>
+      <h2 class="font-display font-bold text-navy text-3xl sm:text-4xl mt-3 leading-tight">The Full Dashboard Analyzer</h2>
+      <p class="text-ink/60 text-lg mt-4">The reusable Excel &amp; Google Sheets product. Paste a fresh GameChanger export anytime and every view rebuilds — no formulas to touch.</p>
+
+      <div class="grid sm:grid-cols-2 gap-3 mt-7">
+        <div class="flex items-start gap-3 bg-graybg border border-line rounded-xl p-4">
+          <span class="shrink-0 w-9 h-9 rounded-lg bg-green/10 text-green flex items-center justify-center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></span>
+          <div><div class="font-display uppercase text-navy text-sm">Reusable</div><div class="text-ink/55 text-sm">Import new exports any time</div></div>
+        </div>
+        <div class="flex items-start gap-3 bg-graybg border border-line rounded-xl p-4">
+          <span class="shrink-0 w-9 h-9 rounded-lg bg-green/10 text-green flex items-center justify-center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg></span>
+          <div><div class="font-display uppercase text-navy text-sm">Dynamic + Overrides</div><div class="text-ink/55 text-sm">Dashboards rebuild; tweak by hand</div></div>
+        </div>
+        <div class="flex items-start gap-3 bg-graybg border border-line rounded-xl p-4">
+          <span class="shrink-0 w-9 h-9 rounded-lg bg-green/10 text-green flex items-center justify-center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg></span>
+          <div><div class="font-display uppercase text-navy text-sm">Every View</div><div class="text-ink/55 text-sm">Lineup, pitching, practice, awards</div></div>
+        </div>
+        <div class="flex items-start gap-3 bg-graybg border border-line rounded-xl p-4">
+          <span class="shrink-0 w-9 h-9 rounded-lg bg-green/10 text-green flex items-center justify-center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg></span>
+          <div><div class="font-display uppercase text-navy text-sm">Excel &amp; Sheets</div><div class="text-ink/55 text-sm">Works in both, instant download</div></div>
+        </div>
       </div>
+
+      <div class="flex items-baseline gap-3 mt-7">
+        <span class="font-display font-bold text-green text-5xl" data-price="full"></span>
+        <span class="text-ink/50 text-sm">one purchase · no subscription</span>
+      </div>
+      <div class="mt-5">
+        <button id="fullBtn" type="button" class="bg-green hover:bg-green2 text-white font-display uppercase tracking-wide text-lg px-8 py-4 rounded-xl shadow-xl shadow-green/30 hover:-translate-y-0.5 transition">Get Full Analyzer</button>
+        <div id="fullUnlock" style="display:none" class="max-w-sm mt-5">
+          <p class="text-ink/60 text-sm mb-2">Paste the unlock code from your receipt:</p>
+          <input id="fullInput" type="text" placeholder="Unlock code" autocomplete="off" class="w-full border border-line rounded-lg px-3 py-3 text-center uppercase text-sm mb-2 focus:outline-none focus:border-green">
+          <button id="fullUnlockBtn" type="button" class="w-full bg-green hover:bg-green2 text-white font-display uppercase tracking-wide py-3 rounded-lg">Unlock &amp; Download</button>
+          <div id="fullErr" class="text-red-600 text-xs mt-2 min-h-[1em]"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: layered product screenshots -->
+    <div class="relative sm:px-6 lg:px-0">
+      <div class="absolute -inset-4 bg-green2/10 blur-3xl rounded-[2rem]"></div>
+      <span class="hidden sm:inline-flex absolute -top-3 left-3 z-20 items-center gap-1.5 bg-navy text-white text-[.62rem] font-display uppercase tracking-widest font-bold px-3 py-1 rounded-full shadow-lg">Live dashboard</span>
+      <img src="img/roster.webp" alt="Full Dashboard Analyzer — interactive roster dashboard that rebuilds from every export" class="relative z-10 rounded-xl border border-line shadow-2xl shadow-navy/20 w-full" loading="lazy">
+      <img src="img/season1.webp" alt="Team Scout Board, rebuilt from a fresh export" class="hidden sm:block absolute z-20 -bottom-5 -right-3 w-[46%] rounded-lg border border-white/40 ring-1 ring-green2/30 shadow-2xl shadow-black/40 rotate-2" loading="lazy">
     </div>
   </div>
 </section>
 
 <!-- ════════════════ GUARANTEE + TESTIMONIALS ════════════════ -->
-<section class="bg-navy3 py-16 sm:py-20">
+<section class="atmos bg-navy3 py-16 sm:py-20">
   <div class="max-w-6xl mx-auto px-4 sm:px-6">
     <div class="grid md:grid-cols-3 gap-5">
-      <div class="bg-navy2 border border-white/10 rounded-2xl p-7"><div class="w-12 h-12 rounded-xl bg-greenhl text-green flex items-center justify-center text-xl font-bold mb-4">✓</div><h3 class="font-display uppercase text-white text-lg">Works-With-Your-Export Guarantee</h3><p class="text-ltblue text-sm mt-2">If your valid GameChanger export doesn't work, I'll help fix it or refund your purchase.</p></div>
-      <div class="bg-navy2 border border-white/10 rounded-2xl p-7"><div class="w-12 h-12 rounded-xl bg-greenhl text-green flex items-center justify-center text-xl font-bold mb-4">🔒</div><h3 class="font-display uppercase text-white text-lg">Private by Design</h3><p class="text-ltblue text-sm mt-2">Your stats are used only to generate your files — never sold, never shared. No account, no subscription.</p></div>
-      <div class="bg-navy2 border border-white/10 rounded-2xl p-7"><div class="w-12 h-12 rounded-xl bg-greenhl text-green flex items-center justify-center text-xl font-bold mb-4">✉</div><h3 class="font-display uppercase text-white text-lg">Real Support from Joe</h3><p class="text-ltblue text-sm mt-2">Questions before or after you buy? Email <b class="text-white">coach@scoutdashboard.com</b> — the coach who built it answers.</p></div>
+      <div class="lift reveal bg-navy2 border border-white/10 hover:border-green2/30 rounded-2xl p-7"><div class="w-12 h-12 rounded-xl bg-gradient-to-br from-greenhl to-green/30 text-green flex items-center justify-center text-xl font-bold mb-4 shadow-lg shadow-green/10">✓</div><h3 class="font-display uppercase text-white text-lg">Works-With-Your-Export Guarantee</h3><p class="text-ltblue text-sm mt-2">If your valid GameChanger export doesn't work, I'll help fix it or refund your purchase.</p></div>
+      <div class="lift reveal bg-navy2 border border-white/10 hover:border-green2/30 rounded-2xl p-7"><div class="w-12 h-12 rounded-xl bg-gradient-to-br from-greenhl to-green/30 text-green flex items-center justify-center text-xl font-bold mb-4 shadow-lg shadow-green/10">🔒</div><h3 class="font-display uppercase text-white text-lg">Private by Design</h3><p class="text-ltblue text-sm mt-2">Your stats are used only to generate your files — never sold, never shared. No account, no subscription.</p></div>
+      <div class="lift reveal bg-navy2 border border-white/10 hover:border-green2/30 rounded-2xl p-7"><div class="w-12 h-12 rounded-xl bg-gradient-to-br from-greenhl to-green/30 text-green flex items-center justify-center text-xl font-bold mb-4 shadow-lg shadow-green/10">✉</div><h3 class="font-display uppercase text-white text-lg">Real Support from Joe</h3><p class="text-ltblue text-sm mt-2">Questions before or after you buy? Email <b class="text-white">coach@scoutdashboard.com</b> — the coach who built it answers.</p></div>
     </div>
     <!-- TESTIMONIALS — add 2–3 real coach quotes here when you have them (do not invent). -->
     <!-- <div class="grid md:grid-cols-2 gap-5 mt-5"> ...real quotes... </div> -->
@@ -544,7 +699,7 @@
 <section id="faq" class="bg-white text-ink py-16 sm:py-20">
   <div class="max-w-3xl mx-auto px-4 sm:px-6">
     <div class="text-center"><div class="text-green font-display uppercase tracking-[.2em] text-sm font-semibold">FAQ</div><h2 class="font-display font-bold text-navy text-3xl sm:text-4xl mt-2">Before You Choose</h2></div>
-    <div class="mt-8 space-y-3 [&_summary]:cursor-pointer [&_summary]:list-none [&_summary]:font-semibold [&_summary]:text-navy [&_details]:bg-graybg [&_details]:border [&_details]:border-line [&_details]:rounded-xl [&_details]:p-5 [&_p]:text-ink/70 [&_p]:text-sm [&_p]:mt-2">
+    <div class="faq mt-8 space-y-3 [&_summary]:cursor-pointer [&_summary]:list-none [&_summary]:font-semibold [&_summary]:text-navy [&_details]:bg-graybg [&_details]:border [&_details]:border-line [&_details]:rounded-xl [&_details]:p-5 [&_p]:text-ink/70 [&_p]:text-sm [&_p]:mt-2">
       <details><summary>What do I need to use this?</summary><p>A GameChanger baseball or softball stats export (the .csv you download from GameChanger). Upload it here and preview your team for free.</p></details>
       <details><summary>Can I preview before I pay?</summary><p>Yes. Upload your export and preview your team leaderboard and top player cards before choosing a product. No sign-up required.</p></details>
       <details><summary>What's the difference between the Season Report and the Team Development Report?</summary><p>The <b>Season Report</b> is a polished 6-page recap — Scout Board, leaderboards, pitching staff, and awards. The <b>Team Development Report</b> includes all of that (12 pages total) <i>plus</i> a coaching analysis: executive summary, strengths &amp; weaknesses, practice priorities with drills, focus players, lineup &amp; pitching notes, and a 30-day plan.</p></details>
@@ -557,8 +712,9 @@
 </section>
 
 <!-- ════════════════ FINAL CTA ════════════════ -->
-<section class="bg-[radial-gradient(ellipse_at_50%_120%,#1A4A7A_0%,#0A2540_70%)] py-16 sm:py-20 text-center">
-  <div class="max-w-3xl mx-auto px-4 sm:px-6">
+<section class="relative overflow-hidden bg-[radial-gradient(ellipse_at_50%_120%,#1A4A7A_0%,#0A2540_70%)] py-16 sm:py-20 text-center">
+  <div class="absolute inset-0 pointer-events-none opacity-40 [background-image:linear-gradient(rgba(255,255,255,.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.03)_1px,transparent_1px)] [background-size:46px_46px] [mask-image:radial-gradient(70%_70%_at_50%_60%,#000,transparent_85%)] [-webkit-mask-image:radial-gradient(70%_70%_at_50%_60%,#000,transparent_85%)]"></div>
+  <div class="relative max-w-3xl mx-auto px-4 sm:px-6">
     <h2 class="font-display font-bold text-white text-3xl sm:text-4xl">Ready to Turn Your Export Into Something <span class="text-green2">Coach-Ready?</span></h2>
     <p class="text-ltblue text-lg mt-4">Upload your GameChanger export, preview your real team free, and choose your report.</p>
     <a href="#demo" class="inline-block mt-7 bg-green hover:bg-green2 text-white font-display uppercase tracking-wide text-lg px-9 py-4 rounded-xl shadow-xl shadow-green/30">Try It Free With My Export</a>
