@@ -1,0 +1,35 @@
+# Scout Dashboard by DugoutData
+
+Scout Dashboard is a web-based tool built by DugoutData for youth baseball and softball coaches. It turns a GameChanger stats export into a professional, coach-ready PDF report.
+
+## What it does
+
+Coaches upload their GameChanger season stats export (CSV) directly on the site. The tool parses the file and shows an instant free preview of the team's leaderboard and top player cards — no sign-up, no spreadsheet knowledge, no account required.
+
+After the free preview, coaches choose between two reports generated on-demand:
+
+**Season Report ($4.99)** — A polished 6-page PDF that includes a Team Scout Board (every player ranked with role tags and coaching notes), hitting, pitching, and defense leaderboards, a pitching staff summary, and an awards and season recap. Built to share with parents, players, and coaching staff.
+
+**Team Development Report ($8.99)** — The full Season Report (12 pages total) plus a complete coaching analysis written in plain English: a coach's executive summary, team strengths and weaknesses, top practice priorities with suggested drills, focus players, lineup and pitching notes, and a 30-day development plan.
+
+## Who it's for
+
+Youth baseball and softball coaches at any level — travel teams, rec leagues, Little League, and school ball. Works with standard GameChanger season exports for both sports.
+
+## How to get started
+
+Go to scoutdashboard.com, upload your GameChanger export (the CSV file you download from the GameChanger platform), and preview your team for free. No account is required. After previewing, choose a report and receive a downloadable PDF in about 30 seconds.
+
+## Privacy
+
+Player stats are used only to generate the requested report. No data is stored, sold, or shared between sessions.
+
+## Contact
+
+Built by Joe, a youth baseball and softball coach.
+Email: coach@scoutdashboard.com
+Website: https://www.scoutdashboard.com/
+
+## Not affiliated with GameChanger
+
+Scout Dashboard is an independent product and is not affiliated with, endorsed by, or connected to GameChanger. GameChanger is a trademark of its respective owner.
