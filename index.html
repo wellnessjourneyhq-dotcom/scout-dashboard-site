@@ -320,7 +320,7 @@
     <div class="text-green font-display uppercase tracking-[.2em] text-sm font-semibold">See It In Action</div>
     <h2 class="font-display font-bold text-navy text-3xl sm:text-4xl mt-2">Try It Free — With Your Own Team</h2>
     <p class="text-ink/60 text-lg max-w-xl mx-auto mt-3">Drop your export. See your real roster — free, no sign-up.</p>
-    <div id="purchaseMsg" style="display:none" class="max-w-xl mx-auto mt-5 bg-greenhl border border-green/30 text-green-800 rounded-xl px-4 py-3 text-sm font-medium">✓ Purchase complete! Upload your GameChanger export below, then paste the unlock/license code from your Lemon Squeezy email to download your report.</div>
+    <div id="purchaseMsg" style="display:none" class="max-w-xl mx-auto mt-5 bg-greenhl border border-green/30 text-green-800 rounded-xl px-4 py-3 text-sm font-medium">✓ Purchase complete! Re-upload your GameChanger export below — your unlock box will appear automatically so you can paste the license key from your email.</div>
     <div class="flex flex-wrap justify-center gap-2 mt-5">
       <span class="inline-flex items-center gap-1.5 text-ink/70 text-xs sm:text-sm bg-white border border-line rounded-full px-3 py-1.5"><span class="text-green">✓</span> No sign-up</span>
       <span class="inline-flex items-center gap-1.5 text-ink/70 text-xs sm:text-sm bg-white border border-line rounded-full px-3 py-1.5"><span class="text-green">✓</span> No spreadsheet knowledge needed</span>
@@ -823,6 +823,14 @@
       ['Team','Season','Record'].forEach(k=>{ const a=$('meta'+k), b=$('meta'+k+'2'); if(a&&b&&!b.value&&a.value) b.value=a.value; });
       dz.style.display='none'; results.style.display='block';
       results.scrollIntoView({behavior:'smooth',block:'start'});
+      // If buyer returned from checkout, auto-reveal the unlock boxes so they don't
+      // have to click "Buy" again just to see where to paste their license key.
+      if(/[?&]purchase=complete/i.test(location.search)){
+        const ua=$('unlockArea'), wu=$('wbUnlock');
+        if(ua) ua.style.display='block';
+        if(wu) wu.style.display='block';
+        setTimeout(()=>{ if(ua) ua.scrollIntoView({behavior:'smooth',block:'center'}); },450);
+      }
     }
 
     // Mean of a numeric field across players who have it.
