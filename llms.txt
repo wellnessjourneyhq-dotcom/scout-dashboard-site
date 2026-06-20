@@ -26,7 +26,7 @@ Player stats are used only to generate the requested report. No data is stored, 
 
 ## Contact
 
-Built by Joe, a youth baseball and softball coach.
+Built by Coach Campbell, a youth baseball and softball coach.
 Email: coach@scoutdashboard.com
 Website: https://www.scoutdashboard.com/
 
