@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Scout Dashboard — Turn Your GameChanger Export Into a Coach-Ready Report</title>
+<title>Scout Dashboard — GameChanger Export → Coach-Ready Report</title>
 <meta name="description" content="Upload your GameChanger export and preview your real team free — then choose a Season Report ($4.99) or Team Development Report ($8.99). No sign-up.">
 <link rel="canonical" href="https://www.scoutdashboard.com/">
 <meta property="og:type" content="website">
@@ -25,28 +25,64 @@
   "name": "Scout Dashboard",
   "brand": { "@type": "Brand", "name": "DugoutData" },
   "description": "Turn your GameChanger stats export into coach-ready reports for baseball and softball coaches.",
-  "image": "https://www.scoutdashboard.com/img/season1.png",
+  "image": [
+    "https://www.scoutdashboard.com/img/season1.webp",
+    "https://www.scoutdashboard.com/img/season2.webp",
+    "https://www.scoutdashboard.com/img/season5.webp",
+    "https://www.scoutdashboard.com/img/team_dev1.webp",
+    "https://www.scoutdashboard.com/img/team_dev6.webp"
+  ],
   "url": "https://www.scoutdashboard.com/",
+  "hasMerchantReturnPolicy": {
+    "@type": "MerchantReturnPolicy",
+    "applicableCountry": "US",
+    "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+    "merchantReturnDays": 14,
+    "returnMethod": "https://schema.org/ReturnShipmentNotRequired",
+    "returnFees": "https://schema.org/FreeReturn"
+  },
   "offers": [
     {
       "@type": "Offer",
       "name": "Season Report",
+      "sku": "season-report",
       "price": "4.99",
       "priceCurrency": "USD",
       "availability": "https://schema.org/InStock",
       "priceValidUntil": "2027-01-01",
       "url": "https://www.scoutdashboard.com/#demo",
-      "seller": { "@type": "Organization", "name": "DugoutData" }
+      "seller": { "@type": "Organization", "name": "DugoutData" },
+      "shippingDetails": {
+        "@type": "OfferShippingDetails",
+        "shippingRate": { "@type": "MonetaryAmount", "value": "0", "currency": "USD" },
+        "shippingDestination": { "@type": "DefinedRegion", "addressCountry": "US" },
+        "deliveryTime": {
+          "@type": "ShippingDeliveryTime",
+          "handlingTime": { "@type": "QuantitativeValue", "minValue": 0, "maxValue": 0, "unitCode": "MIN" },
+          "transitTime": { "@type": "QuantitativeValue", "minValue": 0, "maxValue": 1, "unitCode": "MIN" }
+        }
+      }
     },
     {
       "@type": "Offer",
       "name": "Team Development Report",
+      "sku": "team-dev-report",
       "price": "8.99",
       "priceCurrency": "USD",
       "availability": "https://schema.org/InStock",
       "priceValidUntil": "2027-01-01",
       "url": "https://www.scoutdashboard.com/#demo",
-      "seller": { "@type": "Organization", "name": "DugoutData" }
+      "seller": { "@type": "Organization", "name": "DugoutData" },
+      "shippingDetails": {
+        "@type": "OfferShippingDetails",
+        "shippingRate": { "@type": "MonetaryAmount", "value": "0", "currency": "USD" },
+        "shippingDestination": { "@type": "DefinedRegion", "addressCountry": "US" },
+        "deliveryTime": {
+          "@type": "ShippingDeliveryTime",
+          "handlingTime": { "@type": "QuantitativeValue", "minValue": 0, "maxValue": 0, "unitCode": "MIN" },
+          "transitTime": { "@type": "QuantitativeValue", "minValue": 0, "maxValue": 1, "unitCode": "MIN" }
+        }
+      }
     }
   ]
 }
@@ -131,6 +167,16 @@
     "publisher": { "@id": "https://www.scoutdashboard.com/#organization" }
   }
 ]
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.scoutdashboard.com/" },
+    { "@type": "ListItem", "position": 2, "name": "Scout Dashboard", "item": "https://www.scoutdashboard.com/" }
+  ]
+}
 </script>
 <link rel="preload" as="image" href="img/season1.webp" fetchpriority="high">
 <link rel="icon" href="img/logo.png" type="image/png">
@@ -277,7 +323,7 @@
   }
   .rep-head{background:#0F2A44;color:#fff;padding:24px 28px;border-radius:12px;margin-bottom:22px}
   .rep-head .rk{color:#22C55E;font-family:'Oswald',sans-serif;letter-spacing:2px;font-size:.8rem;text-transform:uppercase}
-  .rep-head h1{font-family:'Oswald',sans-serif;font-size:1.8rem;text-transform:uppercase;margin:4px 0}
+  .rep-head h2{font-family:'Oswald',sans-serif;font-size:1.8rem;text-transform:uppercase;margin:4px 0}
   .rep-head .rsub{color:#9DB2C6;font-size:.9rem}
   .rep-sec{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.5px;color:#0F2A44;font-size:1.2rem;margin:18px 0 10px}
   .rep-foot{margin-top:18px;border-top:1px solid #E5E7EB;padding-top:10px;color:#6B7280;font-size:.75rem;text-align:center}
@@ -727,7 +773,7 @@
   <div class="max-w-3xl mx-auto px-4 sm:px-6">
     <div class="text-center"><div class="text-green font-display uppercase tracking-[.2em] text-sm font-semibold">FAQ</div><h2 class="font-display font-bold text-navy text-3xl sm:text-4xl mt-2">Before You Choose</h2></div>
     <div class="faq mt-8 space-y-3 [&_summary]:cursor-pointer [&_summary]:list-none [&_summary]:font-semibold [&_summary]:text-navy [&_details]:bg-graybg [&_details]:border [&_details]:border-line [&_details]:rounded-xl [&_details]:p-5 [&_p]:text-ink/70 [&_p]:text-sm [&_p]:mt-2">
-      <details><summary>What do I need to use this?</summary><p>A GameChanger baseball or softball stats export (the .csv you download from GameChanger). Upload it here and preview your team for free.</p></details>
+      <details><summary>What do I need to use this?</summary><p>A GameChanger baseball or softball stats export — the .csv file you download from your team's GameChanger account. (<a href="https://help.gc.com/hc/en-us/articles/360043583651-Exporting-Season-Stats">How to export your stats from GameChanger</a>) Upload it here and preview your team for free.</p></details>
       <details><summary>Can I preview before I pay?</summary><p>Yes. Upload your export and preview your team leaderboard and top player cards before choosing a product. No sign-up required.</p></details>
       <details><summary>What's the difference between the Season Report and the Team Development Report?</summary><p>The <b>Season Report</b> is a polished 6-page recap — Scout Board, leaderboards, pitching staff, and awards. The <b>Team Development Report</b> includes all of that (12 pages total) <i>plus</i> a coaching analysis: executive summary, strengths &amp; weaknesses, practice priorities with drills, focus players, lineup &amp; pitching notes, and a 30-day plan.</p></details>
       <details><summary>Is it for baseball and softball?</summary><p>Both. GameChanger exports the same stat categories for each, so everything works identically — travel, rec, Little League, or school ball.</p></details>
@@ -1009,7 +1055,7 @@
       }).join('');
 
       $('reportDoc').innerHTML =
-        '<div class="rep-head"><div class="rk">Scout Dashboard · Team Report</div><h1>Team Stat Report</h1>'+
+        '<div class="rep-head"><div class="rk">Scout Dashboard · Team Report</div><h2>Team Stat Report</h2>'+
           '<div class="rsub">Generated '+today+' · '+list.length+' players · from your GameChanger export</div></div>'+
         '<div class="rep-sec">Team Summary</div>'+
         '<div class="glance" style="grid-template-columns:repeat(3,1fr)">'+sum+'</div>'+
