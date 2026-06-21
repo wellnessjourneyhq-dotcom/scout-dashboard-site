@@ -535,7 +535,7 @@
             <button id="reportBtn" type="button" data-cta="pdf" class="mt-4 w-full bg-navy hover:bg-navy2 text-white font-display uppercase tracking-wide text-sm py-3 rounded-lg transition">Buy Season Report — $4.99</button>
             <button id="showUnlockSeason" type="button" class="mt-2 w-full text-center text-ink/40 text-xs hover:text-ink/70 transition">Already purchased? Enter your code →</button>
             <div id="unlockArea" style="display:none" class="mt-3">
-              <p class="text-ink/60 text-xs mb-2">Paste the unlock / license code from your Lemon Squeezy email:</p>
+              <p class="text-ink/60 text-xs mb-2">Enter your purchase code or promo code:</p>
               <input id="unlockInput" type="text" placeholder="Unlock code" autocomplete="off" class="w-full border border-line rounded-lg px-3 py-2.5 text-center uppercase text-sm mb-2 focus:outline-none focus:border-green">
               <button id="unlockBtn" type="button" class="w-full bg-green hover:bg-green2 text-white font-display uppercase tracking-wide py-3 rounded-lg">Unlock &amp; Download PDF</button>
               <div id="unlockErr" class="text-red-600 text-xs mt-2 min-h-[1em]"></div>
@@ -551,7 +551,7 @@
             <button id="wbBtn" type="button" data-cta="devreport" class="mt-4 w-full bg-green hover:bg-green2 text-white font-display uppercase tracking-wide text-sm py-3 rounded-lg shadow-lg shadow-green/30 transition">Buy Team Development Report — $8.99</button>
             <button id="showUnlockDev" type="button" class="mt-2 w-full text-center text-ink/40 text-xs hover:text-ink/70 transition">Already purchased? Enter your code →</button>
             <div id="wbUnlock" style="display:none" class="mt-3">
-              <p class="text-ink/60 text-xs mb-2">Paste the unlock / license code from your Lemon Squeezy email:</p>
+              <p class="text-ink/60 text-xs mb-2">Enter your purchase code or promo code:</p>
               <input id="wbInput" type="text" placeholder="Unlock code" autocomplete="off" class="w-full border border-line rounded-lg px-3 py-2.5 text-center uppercase text-sm mb-2 focus:outline-none focus:border-green">
               <button id="wbUnlockBtn" type="button" class="w-full bg-green hover:bg-green2 text-white font-display uppercase tracking-wide py-3 rounded-lg">Unlock &amp; Download Report</button>
               <div id="wbErr" class="text-red-600 text-xs mt-2 min-h-[1em]"></div>
@@ -1140,7 +1140,7 @@
       });
       unlockBtn.addEventListener('click',()=>{
         const v=(unlockInput.value||'').trim();
-        if(!v){ unlockErr.style.color=''; unlockErr.textContent='Enter the unlock/license code from your Lemon Squeezy email.'; return; }
+        if(!v){ unlockErr.style.color=''; unlockErr.textContent='Enter your purchase code or promo code.'; return; }
         if(current && current.isSample){
           if(v.toUpperCase()===TEST_CODE){ unlockErr.textContent=''; window.print(); }   // demo printable only
           else { unlockErr.style.color=''; unlockErr.textContent='This is the sample team — upload your own GameChanger export above, then enter your code.'; }
@@ -1164,7 +1164,7 @@
         })
         .catch(err=>{ unlockErr.style.color='';
           unlockErr.textContent = (err&&err.k==='invalid')
-            ? "That code didn't match your Season Report purchase. Check your Lemon Squeezy email, or email coach@scoutdashboard.com."
+            ? "That code didn't work. Double-check it and try again, or email coach@scoutdashboard.com."
             : "Server was busy — please try again in a moment, or email coach@scoutdashboard.com."; });
     }
 
@@ -1184,7 +1184,7 @@
         })
         .catch(err=>{ wbErr.style.color='';
           wbErr.textContent = (err&&err.k==='invalid')
-            ? "That code didn't match your Team Development Report purchase. Check your Lemon Squeezy email, or email coach@scoutdashboard.com."
+            ? "That code didn't work. Double-check it and try again, or email coach@scoutdashboard.com."
             : "Server was busy — please try again in a moment, or email coach@scoutdashboard.com."; });
     }
     if(wbBtn){
@@ -1196,7 +1196,7 @@
       });
       wbUnlockBtn.addEventListener('click',()=>{
         const v=(wbInput.value||'').trim();
-        if(!v){ wbErr.style.color=''; wbErr.textContent='Enter the unlock/license code from your Lemon Squeezy email.'; return; }
+        if(!v){ wbErr.style.color=''; wbErr.textContent='Enter your purchase code or promo code.'; return; }
         if(current && current.isSample){
           wbErr.style.color=''; wbErr.textContent='This is the sample team — upload your own GameChanger export above, then enter your code.'; return;
         }
