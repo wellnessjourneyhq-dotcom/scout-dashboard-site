@@ -397,6 +397,7 @@
         <span class="flex items-center gap-2"><span class="text-green2">✓</span> Season Report <b class="text-white">$4.99</b></span>
         <span class="flex items-center gap-2"><span class="text-green2">✓</span> Team Development Report <b class="text-white">$8.99</b></span>
       </div>
+      <p class="hrise d4 mt-4 text-sm text-ltblue/55">Already purchased? <a href="#demo" onclick="window._redeemMode=true" class="text-green2 font-semibold hover:underline transition">Redeem your license code →</a></p>
     </div>
 
     <!-- ── RIGHT: before → after (messy export turns into a real report page) ── -->
@@ -494,6 +495,7 @@
         <div id="tryError" class="hidden mt-5 bg-red-50 border border-red-200 text-red-800 rounded-xl px-5 py-4 text-sm text-left"></div>
         </div><!-- /.relative content wrapper -->
       </div>
+      <p class="text-center text-ink/40 text-xs mt-3">Already purchased? Upload your export above — your code box appears automatically.</p>
 
       <!-- STAGE 2: results (revealed by JS — keep style=display:none) -->
       <div id="tryResults" style="display:none" class="mt-9">
@@ -531,6 +533,7 @@
             <div class="font-display uppercase tracking-wide text-navy text-sm mt-1">Season Report</div>
             <p class="text-ink/55 text-xs mt-1 flex-1">Polished 6-page PDF — share &amp; print.</p>
             <button id="reportBtn" type="button" data-cta="pdf" class="mt-4 w-full bg-navy hover:bg-navy2 text-white font-display uppercase tracking-wide text-sm py-3 rounded-lg transition">Buy Season Report — $4.99</button>
+            <button id="showUnlockSeason" type="button" class="mt-2 w-full text-center text-ink/40 text-xs hover:text-ink/70 transition">Already purchased? Enter your code →</button>
             <div id="unlockArea" style="display:none" class="mt-3">
               <p class="text-ink/60 text-xs mb-2">Paste the unlock / license code from your Lemon Squeezy email:</p>
               <input id="unlockInput" type="text" placeholder="Unlock code" autocomplete="off" class="w-full border border-line rounded-lg px-3 py-2.5 text-center uppercase text-sm mb-2 focus:outline-none focus:border-green">
@@ -546,6 +549,7 @@
             <div class="font-display uppercase tracking-wide text-navy text-sm mt-1">Team Development Report</div>
             <p class="text-ink/55 text-xs mt-1 flex-1">Season Report + full coaching analysis.</p>
             <button id="wbBtn" type="button" data-cta="devreport" class="mt-4 w-full bg-green hover:bg-green2 text-white font-display uppercase tracking-wide text-sm py-3 rounded-lg shadow-lg shadow-green/30 transition">Buy Team Development Report — $8.99</button>
+            <button id="showUnlockDev" type="button" class="mt-2 w-full text-center text-ink/40 text-xs hover:text-ink/70 transition">Already purchased? Enter your code →</button>
             <div id="wbUnlock" style="display:none" class="mt-3">
               <p class="text-ink/60 text-xs mb-2">Paste the unlock / license code from your Lemon Squeezy email:</p>
               <input id="wbInput" type="text" placeholder="Unlock code" autocomplete="off" class="w-full border border-line rounded-lg px-3 py-2.5 text-center uppercase text-sm mb-2 focus:outline-none focus:border-green">
@@ -975,10 +979,13 @@
       results.scrollIntoView({behavior:'smooth',block:'start'});
       // If buyer returned from checkout, auto-reveal the unlock boxes so they don't
       // have to click "Buy" again just to see where to paste their license key.
-      if(/[?&]purchase=complete/i.test(location.search)){
+      if(/[?&]purchase=complete/i.test(location.search) || window._redeemMode){
         const ua=$('unlockArea'), wu=$('wbUnlock');
+        const ss=$('showUnlockSeason'), sd=$('showUnlockDev');
         if(ua) ua.style.display='block';
         if(wu) wu.style.display='block';
+        if(ss) ss.style.display='none';
+        if(sd) sd.style.display='none';
         setTimeout(()=>{ if(ua) ua.scrollIntoView({behavior:'smooth',block:'center'}); },450);
       }
     }
@@ -1129,6 +1136,7 @@
         track('Checkout_PDF',{value:4.99}); if(typeof fbq==='function') fbq('track','InitiateCheckout',{content_name:'Season Report PDF',value:4.99,currency:'USD'});
         openCheckout(LEMON_CHECKOUT_URL_SEASON_REPORT, unlockErr);
         unlockArea.style.display='block'; unlockArea.scrollIntoView({behavior:'smooth',block:'center'});
+        const ss=$('showUnlockSeason'); if(ss) ss.style.display='none';
       });
       unlockBtn.addEventListener('click',()=>{
         const v=(unlockInput.value||'').trim();
@@ -1184,6 +1192,7 @@
         track('Checkout_Workbook',{value:8.99}); if(typeof fbq==='function') fbq('track','InitiateCheckout',{content_name:'Team Development Report',value:8.99,currency:'USD'});
         openCheckout(LEMON_CHECKOUT_URL_TEAM_DEVELOPMENT_REPORT, wbErr);
         wbUnlock.style.display='block'; wbUnlock.scrollIntoView({behavior:'smooth',block:'center'});
+        const sd=$('showUnlockDev'); if(sd) sd.style.display='none';
       });
       wbUnlockBtn.addEventListener('click',()=>{
         const v=(wbInput.value||'').trim();
@@ -1193,6 +1202,22 @@
         }
         if(BACKEND_URL && current && current.rawCsv){ backendWorkbook(); }
         else { wbErr.style.color=''; wbErr.textContent='Please upload your export again, then enter your code.'; }
+      });
+    }
+
+    // "Already purchased? Enter your code" — reveal unlock area without opening checkout
+    const showUnlockSeason=$('showUnlockSeason');
+    if(showUnlockSeason){
+      showUnlockSeason.addEventListener('click',()=>{
+        if(unlockArea){ unlockArea.style.display='block'; unlockArea.scrollIntoView({behavior:'smooth',block:'center'}); }
+        showUnlockSeason.style.display='none';
+      });
+    }
+    const showUnlockDev=$('showUnlockDev');
+    if(showUnlockDev){
+      showUnlockDev.addEventListener('click',()=>{
+        if(wbUnlock){ wbUnlock.style.display='block'; wbUnlock.scrollIntoView({behavior:'smooth',block:'center'}); }
+        showUnlockDev.style.display='none';
       });
     }
 
