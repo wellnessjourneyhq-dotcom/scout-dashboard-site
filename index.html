@@ -1160,7 +1160,7 @@
         .then(blob=>{
           const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
           a.download='Scout_Dashboard_Season_Report.pdf'; document.body.appendChild(a); a.click(); a.remove();
-          setTimeout(()=>URL.revokeObjectURL(a.href),1500); unlockErr.style.color=''; unlockErr.textContent='✓ Downloaded — check your downloads folder.';
+          setTimeout(()=>URL.revokeObjectURL(a.href),1500); unlockErr.style.color='#16A34A'; unlockErr.textContent='✓ Downloaded — check your downloads folder. A copy is also on its way to your inbox.';
         })
         .catch(err=>{ unlockErr.style.color='';
           unlockErr.textContent = (err&&err.k==='invalid')
@@ -1180,7 +1180,7 @@
         .then(blob=>{
           const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
           a.download='Scout_Dashboard_Team_Development_Report.pdf'; document.body.appendChild(a); a.click(); a.remove();
-          setTimeout(()=>URL.revokeObjectURL(a.href),1500); wbErr.style.color=''; wbErr.textContent='✓ Downloaded — check your downloads folder.';
+          setTimeout(()=>URL.revokeObjectURL(a.href),1500); wbErr.style.color='#16A34A'; wbErr.textContent='✓ Downloaded — check your downloads folder. A copy is also on its way to your inbox.';
         })
         .catch(err=>{ wbErr.style.color='';
           wbErr.textContent = (err&&err.k==='invalid')
